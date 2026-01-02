@@ -9,20 +9,20 @@ const Navbar = () => {
     { name: "Home", href: "#home" },
     { name: "Features", href: "#features" },
     { name: "How It Works", href: "#how-it-works" },
-    { name: "Contact", href: "#contact" },
+    { name: "FAQ", href: "#faq" },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-strong">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-magenta flex items-center justify-center">
-              <span className="font-display font-bold text-background text-lg">V</span>
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
+              <span className="font-bold text-primary-foreground text-lg">V</span>
             </div>
-            <span className="font-display font-bold text-xl text-foreground">
-              Velo<span className="text-gradient">Xyra</span>
+            <span className="font-semibold text-xl text-foreground tracking-tight">
+              Velo<span className="text-primary">Xyra</span>
             </span>
           </div>
 
@@ -32,7 +32,7 @@ const Navbar = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium"
               >
                 {link.name}
               </a>
@@ -58,13 +58,13 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-border/50 pt-4">
+          <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}

@@ -40,13 +40,13 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section className="py-20 relative">
+    <section id="faq" className="py-20 bg-secondary/50">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
             Frequently Asked{" "}
-            <span className="text-gradient">Questions</span>
+            <span className="text-primary">Questions</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Got questions? We've got answers. Find everything you need to know about VeloXyra Tournaments.
@@ -55,12 +55,12 @@ const FAQSection = () => {
 
         {/* FAQ Accordion */}
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
+          <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="glass rounded-xl border-border/50 px-6 overflow-hidden"
+                className="bg-background rounded-lg border border-border px-6 overflow-hidden shadow-card"
               >
                 <AccordionTrigger className="text-left text-foreground hover:text-primary hover:no-underline py-5 text-base md:text-lg font-medium">
                   {faq.question}
@@ -73,9 +73,6 @@ const FAQSection = () => {
           </Accordion>
         </div>
       </div>
-
-      {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-purple/10 rounded-full blur-3xl pointer-events-none" />
     </section>
   );
 };
