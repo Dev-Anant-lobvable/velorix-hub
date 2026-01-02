@@ -1,4 +1,4 @@
-import { Instagram, Twitter, MessageCircle } from "lucide-react";
+import { Instagram, Twitter, Mail } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -13,29 +13,36 @@ const Footer = () => {
               <span className="font-display font-bold text-background text-lg">V</span>
             </div>
             <span className="font-display font-bold text-xl text-foreground">
-              Velo<span className="text-gradient">Xyra</span>
+              Velo<span className="text-gradient">Span</span>
             </span>
           </div>
 
           {/* Social Links */}
           <div className="flex items-center gap-4">
             <a
-              href="#"
+              href="https://www.instagram.com/veloxyra._.official"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 glass rounded-lg flex items-center justify-center hover:border-primary/50 transition-all duration-300 group"
+              aria-label="Follow us on Instagram"
             >
               <Instagram className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </a>
             <a
-              href="#"
+              href="https://x.com/Anant__sgh"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 glass rounded-lg flex items-center justify-center hover:border-primary/50 transition-all duration-300 group"
+              aria-label="Follow us on X"
             >
               <Twitter className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </a>
             <a
-              href="#"
+              href="mailto:veloxyra@gmail.com"
               className="w-10 h-10 glass rounded-lg flex items-center justify-center hover:border-primary/50 transition-all duration-300 group"
+              aria-label="Email us"
             >
-              <MessageCircle className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <Mail className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </a>
           </div>
 
