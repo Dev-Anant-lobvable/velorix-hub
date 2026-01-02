@@ -14,55 +14,60 @@
 
 @layer base {
   :root {
-    --background: 220 20% 4%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
 
-    --card: 220 20% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 220 20% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 190 100% 50%;
-    --primary-foreground: 220 20% 4%;
+    --primary: 355 85% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 320 100% 60%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
 
-    --muted: 220 15% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 270 100% 65%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 355 75% 92%;
+    --accent-foreground: 355 85% 40%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 190 100% 50%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 355 85% 45%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Custom colors */
-    --neon-cyan: 190 100% 50%;
-    --neon-magenta: 320 100% 60%;
-    --neon-purple: 270 100% 65%;
+    /* Custom brand colors */
+    --brand-red: 355 85% 45%;
+    --brand-dark: 355 60% 25%;
+    --brand-light: 355 75% 95%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)));
-    --gradient-glow: linear-gradient(180deg, hsl(var(--neon-cyan) / 0.3), transparent);
-    --gradient-card: linear-gradient(145deg, hsl(220 20% 10%), hsl(220 20% 6%));
+    --gradient-primary: linear-gradient(135deg, hsl(355 85% 45%), hsl(355 60% 35%));
+    --gradient-hero: linear-gradient(135deg, hsl(355 85% 40%), hsl(355 70% 30%));
     
     /* Shadows */
-    --glow-cyan: 0 0 40px hsl(var(--neon-cyan) / 0.4);
-    --glow-magenta: 0 0 40px hsl(var(--neon-magenta) / 0.4);
-    --glow-soft: 0 4px 30px hsl(var(--neon-cyan) / 0.15);
+    --shadow-soft: 0 4px 20px hsl(0 0% 0% / 0.08);
+    --shadow-card: 0 2px 10px hsl(0 0% 0% / 0.05);
   }
 
   .dark {
-    --background: 220 20% 4%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
+    --primary: 355 85% 55%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --border: 0 0% 20%;
   }
 }
 
@@ -77,7 +82,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'GFF Devanagari', 'Inter', sans-serif;
+    font-weight: 600;
   }
 }
 
@@ -87,20 +93,16 @@
     background-image: var(--gradient-primary);
   }
 
-  .glow-cyan {
-    box-shadow: var(--glow-cyan);
+  .bg-hero-gradient {
+    background: var(--gradient-hero);
   }
 
-  .glow-magenta {
-    box-shadow: var(--glow-magenta);
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
   }
 
-  .glass {
-    @apply bg-card/50 backdrop-blur-xl border border-border/50;
-  }
-
-  .glass-strong {
-    @apply bg-card/70 backdrop-blur-2xl border border-border/30;
+  .shadow-card {
+    box-shadow: var(--shadow-card);
   }
 }
 
@@ -109,13 +111,8 @@
     animation: float 6s ease-in-out infinite;
   }
 
-  .animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 4s ease infinite;
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
   }
 }
 
@@ -124,29 +121,17 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-15px);
   }
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 1;
-    filter: brightness(1);
-  }
-  50% {
-    opacity: 0.8;
-    filter: brightness(1.2);
-  }
-}
-
-@keyframes gradient-shift {
+@keyframes fade-up {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+    opacity: 0;
+    transform: translateY(30px);
   }
   100% {
-    background-position: 0% 50%;
+    opacity: 1;
+    transform: translateY(0);
   }
 }

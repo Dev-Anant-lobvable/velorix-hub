@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['GFF Devanagari', 'Inter', 'sans-serif'],
-        display: ['Orbitron', 'sans-serif'],
+        display: ['GFF Devanagari', 'Inter', 'sans-serif'],
         devanagari: ['GFF Devanagari', 'sans-serif'],
       },
       colors: {
@@ -52,10 +52,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        neon: {
-          cyan: "hsl(var(--neon-cyan))",
-          magenta: "hsl(var(--neon-magenta))",
-          purple: "hsl(var(--neon-purple))",
+        brand: {
+          red: "hsl(var(--brand-red))",
+          dark: "hsl(var(--brand-dark))",
+          light: "hsl(var(--brand-light))",
         },
       },
       borderRadius: {

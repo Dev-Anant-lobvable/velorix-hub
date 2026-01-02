@@ -25,18 +25,14 @@ const steps = [
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="py-20 relative">
-      {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-cyan/10 rounded-full blur-[200px]" />
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            How <span className="text-gradient">VeloXyra</span> Works
+    <section id="how-it-works" className="py-20 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
+            How <span className="text-primary">It Works</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Your gaming journey becomes seamless with smart features that players
-            already use every day.
+            Your gaming journey becomes seamless with smart features that players already use every day.
           </p>
         </div>
 
@@ -48,20 +44,20 @@ const HowItWorksSection = () => {
             >
               {/* Connector Line */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-12 left-[60%] w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent" />
+                <div className="hidden lg:block absolute top-8 left-[60%] w-full h-0.5 bg-border" />
               )}
 
-              <div className="glass rounded-2xl p-6 h-full hover:border-primary/50 transition-all duration-300 hover:-translate-y-2">
+              <div className="bg-background border border-border rounded-xl p-6 h-full hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft">
                 {/* Step Number */}
-                <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-gradient-to-br from-neon-cyan to-neon-magenta flex items-center justify-center font-display font-bold text-sm text-background">
+                <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center font-bold text-sm text-primary-foreground">
                   {index + 1}
                 </div>
 
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-magenta/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300">
                   <step.icon className="w-7 h-7 text-primary" />
                 </div>
 
-                <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   {step.title}
                 </h3>
                 <p className="text-sm text-muted-foreground">{step.description}</p>
