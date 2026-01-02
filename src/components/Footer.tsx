@@ -38,7 +38,7 @@ const Footer = () => {
               <Twitter className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </a>
             <a
-              href="mailto:veloxyra@gmail.com"
+              href="mailto:service.veloxyra@gmail.com"
               className="w-10 h-10 glass rounded-lg flex items-center justify-center hover:border-primary/50 transition-all duration-300 group"
               aria-label="Email us"
             >
