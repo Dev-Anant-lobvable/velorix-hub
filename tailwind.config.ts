@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['GFF Devanagari', 'Inter', 'sans-serif'],
         display: ['Orbitron', 'sans-serif'],
+        devanagari: ['GFF Devanagari', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
