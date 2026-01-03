@@ -29,7 +29,7 @@ const Footer = () => {
               <img 
                 src={veloxyraLogo} 
                 alt="VeloXyra" 
-                className="h-12 w-auto"
+                className="h-20 w-auto"
               />
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs">
