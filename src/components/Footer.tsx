@@ -1,5 +1,6 @@
 import { Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import veloxyraLogo from "@/assets/veloxyra-logo.png";
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
@@ -24,14 +25,13 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Logo & Description */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-                <span className="font-bold text-primary-foreground text-lg">V</span>
-              </div>
-              <span className="font-semibold text-xl text-foreground">
-                Velo<span className="text-primary">Xyra</span>
-              </span>
-            </div>
+            <Link to="/" className="block">
+              <img 
+                src={veloxyraLogo} 
+                alt="VeloXyra" 
+                className="h-12 w-auto"
+              />
+            </Link>
             <p className="text-muted-foreground text-sm max-w-xs">
               The premier esports tournament platform. Compete, win, and dominate.
             </p>

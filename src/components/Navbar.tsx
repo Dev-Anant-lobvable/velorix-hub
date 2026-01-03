@@ -1,6 +1,8 @@
 import { Download, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import veloxyraLogo from "@/assets/veloxyra-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,14 +19,13 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-              <span className="font-bold text-primary-foreground text-lg">V</span>
-            </div>
-            <span className="font-semibold text-xl text-foreground tracking-tight">
-              Velo<span className="text-primary">Xyra</span>
-            </span>
-          </div>
+          <Link to="/" className="flex items-center gap-2">
+            <img 
+              src={veloxyraLogo} 
+              alt="VeloXyra" 
+              className="h-10 w-auto"
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
