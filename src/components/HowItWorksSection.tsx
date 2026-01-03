@@ -47,7 +47,7 @@ const HowItWorksSection = () => {
                 <div className="hidden lg:block absolute top-8 left-[60%] w-full h-0.5 bg-border" />
               )}
 
-              <div className="bg-background border border-border rounded-xl p-6 h-full hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft">
+              <div className="bg-card border border-border rounded-xl p-6 h-full hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft">
                 {/* Step Number */}
                 <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center font-bold text-sm text-primary-foreground">
                   {index + 1}

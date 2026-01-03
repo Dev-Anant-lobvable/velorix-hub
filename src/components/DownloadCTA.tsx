@@ -5,7 +5,7 @@ const DownloadCTA = () => {
   return (
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="bg-hero-gradient rounded-2xl p-8 md:p-12 lg:p-16 text-center max-w-4xl mx-auto shadow-lg">
+        <div className="bg-primary rounded-2xl p-8 md:p-12 lg:p-16 text-center max-w-4xl mx-auto shadow-glow">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 rounded-2xl bg-primary-foreground flex items-center justify-center">
               <Smartphone className="w-8 h-8 text-primary" />
