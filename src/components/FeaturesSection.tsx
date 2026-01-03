@@ -29,7 +29,7 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-20 bg-secondary/50">
+    <section id="features" className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
@@ -44,7 +44,7 @@ const FeaturesSection = () => {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="bg-background rounded-xl p-6 shadow-card hover:shadow-soft transition-all duration-300 hover:-translate-y-1"
+              className="bg-card border border-border rounded-xl p-6 shadow-card hover:shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-primary/30"
             >
               <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
                 <feature.icon className="w-6 h-6 text-primary" />
