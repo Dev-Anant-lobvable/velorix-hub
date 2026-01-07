@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import phoneMockup from "@/assets/phone-mockup-new.png";
 import gallery1 from "@/assets/gallery-1.png";
 import gallery2 from "@/assets/gallery-2.png";
 import gallery3 from "@/assets/gallery-3.png";
@@ -31,24 +30,6 @@ const AppGallerySection = () => {
     <section className="relative py-16 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      
-      {/* Full-width phone mockup - fits screen */}
-      <div className="relative z-10 mb-16">
-        <div className="relative w-full flex justify-center">
-          {/* Glow effect behind */}
-          <div className="absolute inset-0 bg-primary/15 blur-[120px] rounded-full" />
-          
-          {/* Main phone display - full width fitting */}
-          <div className="relative w-full px-4">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 blur-3xl" />
-            <img
-              src={phoneMockup}
-              alt="VeloXyra App Interface"
-              className="relative z-10 w-full h-auto object-contain max-h-[90vh] mx-auto drop-shadow-2xl"
-            />
-          </div>
-        </div>
-      </div>
 
       {/* Gallery Section with Auto Carousel */}
       <div className="container mx-auto px-4 relative z-10">

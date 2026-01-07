@@ -1,5 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BackButton from "@/components/BackButton";
+import useScrollToTop from "@/hooks/useScrollToTop";
 import { Mail, Instagram } from "lucide-react";
 
 const XIcon = () => (
@@ -9,6 +11,8 @@ const XIcon = () => (
 );
 
 const Contact = () => {
+  useScrollToTop();
+  
   const contactMethods = [
     {
       icon: Mail,
@@ -31,6 +35,7 @@ const Contact = () => {
       <Navbar />
       <main className="pt-28 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
+          <BackButton />
           <h1 className="text-4xl font-bold text-foreground mb-4">Contact Us</h1>
           <p className="text-muted-foreground mb-12 text-lg">
             Have questions or feedback? We'd love to hear from you.

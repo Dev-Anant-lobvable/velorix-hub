@@ -1,8 +1,15 @@
-import { Download, ChevronDown } from "lucide-react";
+import { Download, ChevronDown, Smartphone, HardDrive } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import phoneMockup from "@/assets/phone-mockup-new.png";
 
 const HeroSection = () => {
+  const scrollToFeatures = () => {
+    const featuresSection = document.getElementById("features");
+    if (featuresSection) {
+      featuresSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       id="home"
@@ -23,11 +30,27 @@ const HeroSection = () => {
               <br />
               <span className="text-foreground">Tournaments</span>
             </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6">
               The ultimate esports tournament platform. Compete in daily
               tournaments, win rewards, and rise through the ranks to prove
               your dominance.
             </p>
+
+            {/* APK Details */}
+            <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start mb-8 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 bg-secondary/50 px-3 py-1.5 rounded-lg">
+                <Smartphone className="w-4 h-4 text-primary" />
+                <span>VeloXyra v1.0.0</span>
+              </div>
+              <div className="flex items-center gap-2 bg-secondary/50 px-3 py-1.5 rounded-lg">
+                <HardDrive className="w-4 h-4 text-primary" />
+                <span>~25 MB</span>
+              </div>
+              <div className="bg-secondary/50 px-3 py-1.5 rounded-lg">
+                Android 7.0+
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button 
                 variant="hero" 
@@ -39,6 +62,7 @@ const HeroSection = () => {
               <Button 
                 variant="heroOutline" 
                 size="xl"
+                onClick={scrollToFeatures}
               >
                 Learn More
               </Button>
