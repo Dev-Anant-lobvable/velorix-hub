@@ -1,8 +1,12 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BackButton from "@/components/BackButton";
+import useScrollToTop from "@/hooks/useScrollToTop";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const HelpCenter = () => {
+  useScrollToTop();
+  
   const helpTopics = [
     {
       question: "How do I join a tournament?",
@@ -31,6 +35,7 @@ const HelpCenter = () => {
       <Navbar />
       <main className="pt-28 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
+          <BackButton />
           <h1 className="text-4xl font-bold text-foreground mb-4">Help Center</h1>
           <p className="text-muted-foreground mb-12 text-lg">
             Find answers to frequently asked questions about VeloXyra Tournaments.

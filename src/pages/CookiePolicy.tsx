@@ -1,12 +1,17 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BackButton from "@/components/BackButton";
+import useScrollToTop from "@/hooks/useScrollToTop";
 
 const CookiePolicy = () => {
+  useScrollToTop();
+  
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-28 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
+          <BackButton />
           <h1 className="text-4xl font-bold text-foreground mb-8">Cookie Policy</h1>
           
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
