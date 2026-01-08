@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import gallery1 from "@/assets/gallery-1.png";
 import gallery2 from "@/assets/gallery-2.png";
 import gallery3 from "@/assets/gallery-3.png";
@@ -8,6 +11,8 @@ import gallery6 from "@/assets/gallery-6.png";
 
 const AppGallerySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const { ref, isInView } = useScrollAnimation(0.1);
   
   const galleryImages = [
     { src: gallery1, alt: "Tournament Events Interface" },
@@ -18,89 +23,197 @@ const AppGallerySection = () => {
     { src: gallery6, alt: "Storage & Features" },
   ];
 
-  // Auto-scroll carousel every 3 seconds
+  // Auto-scroll carousel every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
+      setDirection(1);
       setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(interval);
   }, [galleryImages.length]);
 
-  return (
-    <section className="relative py-16 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+  const nextSlide = () => {
+    setDirection(1);
+    setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
+  };
 
-      {/* Gallery Section with Auto Carousel */}
+  const prevSlide = () => {
+    setDirection(-1);
+    setCurrentSlide((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
+  };
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.8,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.8,
+    }),
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
+  const features = [
+    { title: "Live Tournaments", desc: "Join real-time competitions" },
+    { title: "Leaderboards", desc: "Track your ranking" },
+    { title: "Rewards", desc: "Win exciting prizes" },
+    { title: "Community", desc: "Connect with gamers" },
+  ];
+
+  return (
+    <section className="relative py-24 overflow-hidden" ref={ref}>
+      {/* AMOLED background with subtle gradient */}
+      <div className="absolute inset-0 bg-background" />
+      <div className="absolute inset-0 bg-mesh-gradient opacity-30" />
+
+      {/* Gallery Section */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-10">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="text-foreground">App </span>
-            <span className="text-primary">Gallery</span>
+            <span className="text-gradient text-glow">Gallery</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Explore our stunning interface designs and features
           </p>
-        </div>
+        </motion.div>
 
-        {/* Auto-scrolling Carousel */}
-        <div className="relative overflow-hidden rounded-2xl">
-          {/* Carousel container */}
-          <div 
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        {/* Enhanced Carousel */}
+        <motion.div 
+          className="relative h-[60vh] max-h-[600px] mb-12"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 glass w-12 h-12 rounded-full flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all group"
           >
-            {galleryImages.map((image, index) => (
-              <div
-                key={index}
-                className="min-w-full flex-shrink-0"
+            <ChevronLeft className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 glass w-12 h-12 rounded-full flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all group"
+          >
+            <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+          </button>
+
+          {/* Carousel Container */}
+          <div className="relative h-full flex items-center justify-center overflow-hidden rounded-2xl">
+            {/* Glow background */}
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent" />
+            
+            <AnimatePresence initial={false} custom={direction}>
+              <motion.div
+                key={currentSlide}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.3 },
+                  scale: { duration: 0.3 },
+                }}
+                className="absolute inset-0 flex items-center justify-center"
               >
                 <div className="relative group">
-                  <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-2xl blur-xl opacity-50" />
+                  {/* Glow effect behind image */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-primary/20 to-primary/30 rounded-3xl blur-2xl opacity-50 group-hover:opacity-70 transition-opacity" />
                   <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="relative z-10 w-full h-auto max-h-[70vh] object-contain rounded-xl"
+                    src={galleryImages[currentSlide].src}
+                    alt={galleryImages[currentSlide].alt}
+                    className="relative z-10 max-h-[55vh] w-auto object-contain rounded-xl shadow-2xl"
                   />
                 </div>
-              </div>
-            ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* Slide indicators */}
-          <div className="flex justify-center gap-2 mt-6">
+          {/* Enhanced Slide indicators */}
+          <div className="flex justify-center gap-3 mt-6">
             {galleryImages.map((_, index) => (
-              <button
+              <motion.button
                 key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                onClick={() => {
+                  setDirection(index > currentSlide ? 1 : -1);
+                  setCurrentSlide(index);
+                }}
+                className={`h-2 rounded-full transition-all duration-300 ${
                   currentSlide === index 
-                    ? "bg-primary w-8" 
-                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    ? "bg-primary w-8 shadow-neon" 
+                    : "bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50"
                 }`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* Feature highlights below gallery */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-          {[
-            { title: "Live Tournaments", desc: "Join real-time competitions" },
-            { title: "Leaderboards", desc: "Track your ranking" },
-            { title: "Rewards", desc: "Win exciting prizes" },
-            { title: "Community", desc: "Connect with gamers" },
-          ].map((feature, index) => (
-            <div
+        {/* Feature highlights */}
+        <motion.div 
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {features.map((feature, index) => (
+            <motion.div
               key={index}
-              className="text-center p-4 rounded-xl bg-card/50 border border-border/50 backdrop-blur-sm hover:border-primary/50 transition-colors duration-300"
+              variants={itemVariants}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group"
             >
-              <h3 className="text-foreground font-semibold mb-1">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm">{feature.desc}</p>
-            </div>
+              <div className="text-center p-5 rounded-xl glass hover:border-primary/40 transition-all duration-300 hover:shadow-soft">
+                <h3 className="text-foreground font-semibold mb-1 group-hover:text-primary transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground text-sm">{feature.desc}</p>
+              </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
