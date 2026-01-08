@@ -1,4 +1,6 @@
 import { Shield, Zap, Bell, Award } from "lucide-react";
+import { motion } from "framer-motion";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const features = [
   {
@@ -28,36 +30,90 @@ const features = [
 ];
 
 const FeaturesSection = () => {
+  const { ref, isInView } = useScrollAnimation(0.1);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
   return (
-    <section id="features" className="py-20 bg-secondary">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+    <section id="features" className="py-24 bg-secondary relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-mesh-gradient opacity-50" />
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      
+      <div className="container mx-auto px-4 relative z-10" ref={ref}>
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
-            Why Choose <span className="text-primary">VeloXyra</span>
+            Why Choose <span className="text-gradient text-glow">VeloXyra</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             The premier destination for competitive gamers. Professional-grade tournaments that put your skills to the test.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div 
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {features.map((feature) => (
-            <div
+            <motion.div
               key={feature.title}
-              className="bg-card border border-border rounded-xl p-6 shadow-card hover:shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-primary/30"
+              variants={itemVariants}
+              whileHover={{ 
+                y: -12,
+                transition: { duration: 0.3 }
+              }}
+              className="group"
             >
-              <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4">
-                <feature.icon className="w-6 h-6 text-primary" />
+              <div className="glass-card h-full p-6 hover:border-primary/40 transition-all duration-300 neon-border hover:shadow-glow">
+                {/* Icon container with glow */}
+                <motion.div 
+                  className="w-14 h-14 rounded-xl bg-accent/80 flex items-center justify-center mb-5 relative"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 bg-primary/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <feature.icon className="w-7 h-7 text-primary relative z-10" />
+                </motion.div>
+                
+                <h3 className="font-semibold text-lg text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="font-semibold text-lg text-foreground mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
