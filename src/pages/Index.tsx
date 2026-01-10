@@ -21,19 +21,11 @@ const Index = () => {
       <DownloadCTA />
       <Footer />
       
-      {/* Bottom screen glow effect */}
+      {/* Subtle bottom blur fade */}
       <div 
-        className="fixed bottom-0 left-0 right-0 h-32 pointer-events-none z-50"
+        className="fixed bottom-0 left-0 right-0 h-24 pointer-events-none z-50"
         style={{
-          background: 'linear-gradient(to top, hsl(var(--primary) / 0.4) 0%, hsl(var(--primary) / 0.15) 40%, transparent 100%)',
-          filter: 'blur(20px)',
-        }}
-      />
-      <div 
-        className="fixed bottom-0 left-0 right-0 h-16 pointer-events-none z-50"
-        style={{
-          background: 'linear-gradient(to top, hsl(var(--primary) / 0.6) 0%, transparent 100%)',
-          filter: 'blur(10px)',
+          background: 'linear-gradient(to top, hsl(0 0% 0% / 0.8) 0%, hsl(0 0% 0% / 0.4) 50%, transparent 100%)',
         }}
       />
     </div>
