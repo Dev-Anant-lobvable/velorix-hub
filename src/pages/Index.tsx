@@ -21,11 +21,12 @@ const Index = () => {
       <DownloadCTA />
       <Footer />
       
-      {/* Subtle bottom blur fade */}
+      {/* Subtle bottom blur */}
       <div 
-        className="fixed bottom-0 left-0 right-0 h-24 pointer-events-none z-50"
+        className="fixed bottom-0 left-0 right-0 h-20 pointer-events-none z-50 backdrop-blur-md"
         style={{
-          background: 'linear-gradient(to top, hsl(0 0% 0% / 0.8) 0%, hsl(0 0% 0% / 0.4) 50%, transparent 100%)',
+          maskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
         }}
       />
     </div>
