@@ -1,12 +1,22 @@
 import { Download, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import veloxyraLogo from "@/assets/veloxyra-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { name: "Home", href: "#home" },
@@ -17,7 +27,9 @@ const Navbar = () => {
 
   return (
     <motion.nav 
-      className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/20"
+      className={`fixed top-0 left-0 right-0 z-50 glass transition-all duration-300 ${
+        isScrolled ? "border-b border-border/20" : "border-b border-transparent"
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
