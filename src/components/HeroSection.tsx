@@ -57,32 +57,9 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
       
-      {/* Animated glow orbs */}
-      <motion.div 
-        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[150px]"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.15, 0.25, 0.15],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-      <motion.div 
-        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[120px]"
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.1, 0.2, 0.1],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-      />
+      {/* Static glow orbs - no animation for performance */}
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[150px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/15 rounded-full blur-[120px]" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -175,42 +152,21 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-primary/30 blur-[80px] rounded-full scale-75" />
               <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full scale-100" />
               
-              {/* Floating particles */}
-              <motion.div 
-                className="absolute -top-8 -left-8 w-4 h-4 bg-primary/50 rounded-full blur-sm"
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.5, 1, 0.5],
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-              <motion.div 
-                className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm"
-                animate={{
-                  y: [0, 15, 0],
-                  opacity: [0.4, 0.8, 0.4],
-                }}
-                transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-              />
-              <motion.div 
-                className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm"
-                animate={{
-                  y: [0, -10, 0],
-                  opacity: [0.6, 1, 0.6],
-                }}
-                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-              />
+              {/* Static particles - no animation for performance */}
+              <div className="absolute -top-8 -left-8 w-4 h-4 bg-primary/50 rounded-full blur-sm" />
+              <div className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm" />
+              <div className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm" />
               
               <img
                 src={phoneMockup}
                 alt="VeloXyra Tournaments App"
-                className="relative z-10 w-72 sm:w-80 lg:w-96 animate-float drop-shadow-2xl"
+                className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl"
               />
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - static for performance */}
         <motion.div 
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           initial={{ opacity: 0, y: 20 }}
@@ -218,12 +174,7 @@ const HeroSection = () => {
           transition={{ delay: 1.2, duration: 0.5 }}
         >
           <span className="text-sm text-muted-foreground">Scroll Down</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="w-5 h-5 text-primary" />
-          </motion.div>
+          <ChevronDown className="w-5 h-5 text-primary" />
         </motion.div>
       </div>
     </section>

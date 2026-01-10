@@ -115,8 +115,6 @@
   .text-gradient {
     @apply bg-clip-text text-transparent;
     background-image: var(--gradient-primary);
-    background-size: 200% 200%;
-    animation: gradient-shift 3s ease infinite;
   }
 
   .bg-hero-gradient {
@@ -177,9 +175,9 @@
     box-shadow: var(--shadow-glow);
   }
   
-  /* Pulse glow */
+  /* Pulse glow - static for performance */
   .pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
+    box-shadow: 0 0 30px hsl(350 85% 55% / 0.4);
   }
   
   /* 3D Card effect */
@@ -194,8 +192,9 @@
 }
 
 @layer components {
+  /* Float animation removed for performance */
   .animate-float {
-    animation: float 6s ease-in-out infinite;
+    /* animation removed */
   }
 
   .animate-fade-up {
