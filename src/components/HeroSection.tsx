@@ -160,6 +160,10 @@ const HeroSection = () => {
               <img
                 src={phoneMockup}
                 alt="VeloXyra Tournaments App"
+                width={384}
+                height={768}
+                loading="eager"
+                decoding="async"
                 className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl"
               />
             </motion.div>

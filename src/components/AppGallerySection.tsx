@@ -162,6 +162,10 @@ const AppGallerySection = () => {
                   <img
                     src={galleryImages[currentSlide].src}
                     alt={galleryImages[currentSlide].alt}
+                    width={400}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
                     className="relative z-10 max-h-[55vh] w-auto object-contain rounded-xl shadow-2xl"
                   />
                 </div>

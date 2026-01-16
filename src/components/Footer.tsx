@@ -29,6 +29,10 @@ const Footer = () => {
               <img 
                 src={veloxyraLogo} 
                 alt="VeloXyra" 
+                width={120}
+                height={80}
+                loading="lazy"
+                decoding="async"
                 className="h-20 w-auto"
               />
             </Link>
