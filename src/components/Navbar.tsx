@@ -1,5 +1,5 @@
 import { Download, Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -75,17 +75,12 @@ const Navbar = () => {
           </div>
 
           {/* Download Button */}
-          <motion.div 
-            className="hidden md:block"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4, duration: 0.3 }}
-          >
-            <Button variant="hero" size="default" className="group pulse-glow">
-              <Download className="w-4 h-4 group-hover:animate-bounce" />
+          <div className="hidden md:block">
+            <AnimatedButton variant="hero" size="default" className="pulse-glow">
+              <Download className="w-4 h-4" />
               Download
-            </Button>
-          </motion.div>
+            </AnimatedButton>
+          </div>
 
           {/* Mobile Menu Toggle */}
           <motion.button
@@ -144,16 +139,10 @@ const Navbar = () => {
                     {link.name}
                   </motion.a>
                 ))}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <Button variant="hero" size="default" className="mt-2 w-full pulse-glow">
-                    <Download className="w-4 h-4" />
-                    Download
-                  </Button>
-                </motion.div>
+                <AnimatedButton variant="hero" size="default" className="mt-2 w-full pulse-glow">
+                  <Download className="w-4 h-4" />
+                  Download
+                </AnimatedButton>
               </div>
             </motion.div>
           )}

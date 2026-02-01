@@ -1,5 +1,5 @@
 import { Download, Smartphone } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 
 const DownloadCTA = () => {
@@ -30,19 +30,13 @@ const DownloadCTA = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.div
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
+            <AnimatedButton 
+              size="xl" 
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg"
             >
-              <Button 
-                size="xl" 
-                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg"
-              >
-                <Download className="w-5 h-5" />
-                Download for Android
-              </Button>
-            </motion.div>
+              <Download className="w-5 h-5" />
+              Download for Android
+            </AnimatedButton>
           </div>
 
           <p className="text-sm text-primary-foreground/70 mt-6">
