@@ -5,7 +5,7 @@ import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 relative overflow-hidden",
   {
     variants: {
       variant: {
@@ -33,6 +33,12 @@ const buttonVariants = cva(
   }
 );
 
+interface RippleProps {
+  x: number;
+  y: number;
+  id: number;
+}
+
 export interface AnimatedButtonProps
   extends Omit<HTMLMotionProps<"button">, "children">,
     VariantProps<typeof buttonVariants> {
@@ -41,7 +47,24 @@ export interface AnimatedButtonProps
 }
 
 const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
-  ({ className, variant, size, asChild = false, children, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, children, onClick, ...props }, ref) => {
+    const [ripples, setRipples] = React.useState<RippleProps[]>([]);
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const id = Date.now();
+
+      setRipples((prev) => [...prev, { x, y, id }]);
+
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((ripple) => ripple.id !== id));
+      }, 600);
+
+      onClick?.(e);
+    };
+
     if (asChild) {
       return (
         <Slot className={cn(buttonVariants({ variant, size, className }))}>
@@ -61,9 +84,22 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
           stiffness: 400,
           damping: 17,
         }}
+        onClick={handleClick}
         {...props}
       >
-        {children}
+        {ripples.map((ripple) => (
+          <span
+            key={ripple.id}
+            className="absolute rounded-full bg-white/30 animate-ripple pointer-events-none"
+            style={{
+              left: ripple.x - 50,
+              top: ripple.y - 50,
+              width: 100,
+              height: 100,
+            }}
+          />
+        ))}
+        <span className="relative z-10 flex items-center gap-2">{children}</span>
       </motion.button>
     );
   }
