@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gallery1 from "@/assets/gallery-1.png";
 import gallery2 from "@/assets/gallery-2.png";
@@ -159,7 +160,7 @@ const AppGallerySection = () => {
                 <div className="relative group">
                   {/* Glow effect behind image */}
                   <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-primary/20 to-primary/30 rounded-3xl blur-2xl opacity-50 group-hover:opacity-70 transition-opacity" />
-                  <img
+                  <ImageWithSkeleton
                     src={galleryImages[currentSlide].src}
                     alt={galleryImages[currentSlide].alt}
                     width={400}
@@ -167,6 +168,7 @@ const AppGallerySection = () => {
                     loading="lazy"
                     decoding="async"
                     className="relative z-10 max-h-[55vh] w-auto object-contain rounded-xl shadow-2xl"
+                    skeletonClassName="w-[300px] h-[55vh] rounded-xl"
                   />
                 </div>
               </motion.div>

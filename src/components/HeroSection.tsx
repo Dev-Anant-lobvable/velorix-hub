@@ -1,5 +1,6 @@
 import { Download, ChevronDown, Smartphone, HardDrive } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { motion } from "framer-motion";
 import phoneMockup from "@/assets/phone-mockup-new.png";
 
@@ -110,24 +111,22 @@ const HeroSection = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               variants={itemVariants}
             >
-              <Button 
+              <AnimatedButton 
                 variant="hero" 
                 size="xl"
-                className="group relative overflow-hidden pulse-glow"
+                className="pulse-glow"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  <Download className="w-5 h-5 group-hover:animate-bounce" />
-                  Download App
-                </span>
-              </Button>
-              <Button 
+                <Download className="w-5 h-5" />
+                Download App
+              </AnimatedButton>
+              <AnimatedButton 
                 variant="heroOutline" 
                 size="xl"
                 onClick={scrollToFeatures}
-                className="group glass hover:border-primary/50 transition-all"
+                className="glass hover:border-primary/50 transition-all"
               >
-                <span className="group-hover:text-primary transition-colors">Learn More</span>
-              </Button>
+                Learn More
+              </AnimatedButton>
             </motion.div>
           </motion.div>
 
@@ -157,7 +156,7 @@ const HeroSection = () => {
               <div className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm" />
               <div className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm" />
               
-              <img
+              <ImageWithSkeleton
                 src={phoneMockup}
                 alt="VeloXyra Tournaments App"
                 width={384}
@@ -165,6 +164,7 @@ const HeroSection = () => {
                 loading="eager"
                 decoding="async"
                 className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl"
+                skeletonClassName="w-72 sm:w-80 lg:w-96 aspect-[1/2] rounded-3xl"
               />
             </motion.div>
           </motion.div>
