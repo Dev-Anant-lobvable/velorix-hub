@@ -45,7 +45,7 @@ const Navbar = () => {
               height={80}
               loading="eager"
               decoding="async"
-              className="h-16 sm:h-20 w-auto"
+              className="h-[4.5rem] sm:h-24 w-auto"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             />
