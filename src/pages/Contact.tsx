@@ -26,8 +26,8 @@ const Contact = () => {
       icon: Instagram,
       title: "Instagram",
       description: "Follow us for updates",
-      value: "@veloxyra._.official",
-      href: "https://www.instagram.com/veloxyra._.official"
+      value: "@velorix_tournaments",
+      href: "https://www.instagram.com/velorix_tournaments"
     }
   ];
 

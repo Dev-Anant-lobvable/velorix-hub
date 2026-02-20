@@ -22,7 +22,7 @@ const DownloadCTA = () => {
           </motion.div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-primary-foreground">
-            Download VeloXyra Now
+            Download VeloRix Now
           </h2>
           <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto mb-8">
             Join thousands of competitive gamers. Download the app and start

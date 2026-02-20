@@ -1,6 +1,6 @@
 import { Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import veloxyraLogo from "@/assets/veloxyra-logo.png";
+import velorixLogo from "@/assets/velorix-logo.png";
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
@@ -27,8 +27,8 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="block">
               <img 
-                src={veloxyraLogo} 
-                alt="VeloXyra" 
+                src={velorixLogo} 
+                alt="VeloRix" 
                 width={120}
                 height={80}
                 loading="lazy"
@@ -63,7 +63,7 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground">Connect With Us</h3>
             <div className="flex items-center gap-3">
               <a
-                href="https://www.instagram.com/veloxyra._.official"
+                href="https://www.instagram.com/velorix_tournaments"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center hover:bg-accent transition-all duration-300 group"
@@ -96,7 +96,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} VeloXyra Tournaments. All rights reserved.
+            © {currentYear} VeloRix Tournaments. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
             Made with passion for gamers

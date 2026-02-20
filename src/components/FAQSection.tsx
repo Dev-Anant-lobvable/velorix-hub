@@ -7,9 +7,9 @@ import {
 
 const faqs = [
   {
-    question: "What is VeloXyra Tournaments?",
+    question: "What is VeloRix Tournaments?",
     answer:
-      "VeloXyra Tournaments is a competitive gaming platform that allows players to participate in esports tournaments, compete for prizes, and connect with other gamers. Whether you're a casual player or a pro, there's a tournament for you.",
+      "VeloRix Tournaments is a competitive gaming platform that allows players to participate in esports tournaments, compete for prizes, and connect with other gamers. Whether you're a casual player or a pro, there's a tournament for you.",
   },
   {
     question: "How do I join a tournament?",
@@ -19,7 +19,7 @@ const faqs = [
   {
     question: "Is the app free to download?",
     answer:
-      "Yes! VeloXyra Tournaments is completely free to download and use. Some premium tournaments may have entry fees, but there are plenty of free tournaments available for all skill levels.",
+      "Yes! VeloRix Tournaments is completely free to download and use. Some premium tournaments may have entry fees, but there are plenty of free tournaments available for all skill levels.",
   },
   {
     question: "What games are supported?",
@@ -34,7 +34,7 @@ const faqs = [
   {
     question: "Can I create my own tournament?",
     answer:
-      "Yes! VeloXyra allows users to host their own custom tournaments. You can set the rules, prize pool, and invite players to compete. Perfect for community events and friendly competitions.",
+      "Yes! VeloRix allows users to host their own custom tournaments. You can set the rules, prize pool, and invite players to compete. Perfect for community events and friendly competitions.",
   },
 ];
 
@@ -49,7 +49,7 @@ const FAQSection = () => {
             <span className="text-primary">Questions</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Got questions? We've got answers. Find everything you need to know about VeloXyra Tournaments.
+            Got questions? We've got answers. Find everything you need to know about VeloRix Tournaments.
           </p>
         </div>
 

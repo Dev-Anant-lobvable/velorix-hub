@@ -21,7 +21,7 @@ const steps = [
   {
     icon: Gamepad2,
     title: "Start Playing",
-    description: "Join matches, compete in tournaments, and earn rewards with VeloXyra.",
+    description: "Join matches, compete in tournaments, and earn rewards with VeloRix.",
   },
 ];
 

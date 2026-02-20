@@ -75,7 +75,7 @@ const HeroSection = () => {
               className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6"
               variants={itemVariants}
             >
-              <span className="text-gradient text-glow">VeloXyra</span>
+              <span className="text-gradient text-glow">VeloRix</span>
               <br />
               <span className="text-foreground">Tournaments</span>
             </motion.h1>
@@ -96,7 +96,7 @@ const HeroSection = () => {
             >
               <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
                 <Smartphone className="w-4 h-4 text-primary" />
-                <span>VeloXyra v1.0.0</span>
+                <span>VeloRix v1.0.0</span>
               </div>
               <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
                 <HardDrive className="w-4 h-4 text-primary" />
@@ -158,7 +158,7 @@ const HeroSection = () => {
               
               <ImageWithSkeleton
                 src={phoneMockup}
-                alt="VeloXyra Tournaments App"
+                alt="VeloRix Tournaments App"
                 width={384}
                 height={768}
                 loading="eager"
