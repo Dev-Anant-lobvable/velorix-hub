@@ -3,7 +3,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import veloxyraLogo from "@/assets/veloxyra-logo.png";
+import velorixLogo from "@/assets/velorix-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,8 +39,8 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <motion.img 
-              src={veloxyraLogo} 
-              alt="VeloXyra" 
+              src={velorixLogo} 
+              alt="VeloRix" 
               width={120}
               height={80}
               loading="eager"

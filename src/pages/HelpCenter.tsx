@@ -11,11 +11,11 @@ const HelpCenter = () => {
   const helpTopics = [
     {
       question: "How do I join a tournament?",
-      answer: "Download the VeloXyra app, create an account, and browse available tournaments. Select the tournament you want to join and tap 'Join Now' to register."
+      answer: "Download the VeloRix app, create an account, and browse available tournaments. Select the tournament you want to join and tap 'Join Now' to register."
     },
     {
       question: "How do I receive my rewards?",
-      answer: "Rewards are automatically credited to your VeloXyra wallet after tournament completion. You can withdraw them to your preferred payment method from the app."
+      answer: "Rewards are automatically credited to your VeloRix wallet after tournament completion. You can withdraw them to your preferred payment method from the app."
     },
     {
       question: "What happens if I disconnect during a match?",
@@ -71,7 +71,7 @@ const HelpCenter = () => {
               Help <span className="text-gradient text-glow">Center</span>
             </h1>
             <p className="text-muted-foreground mb-12 text-lg">
-              Find answers to frequently asked questions about VeloXyra Tournaments.
+              Find answers to frequently asked questions about VeloRix Tournaments.
             </p>
           </motion.div>
           

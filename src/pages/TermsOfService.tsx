@@ -22,7 +22,7 @@ const TermsOfService = () => {
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold text-foreground">1. Acceptance of Terms</h2>
               <p>
-                By accessing or using VeloXyra Tournaments, you agree to be bound by these Terms of Service. 
+                By accessing or using VeloRix Tournaments, you agree to be bound by these Terms of Service. 
                 If you do not agree to these terms, please do not use our services.
               </p>
             </section>
@@ -47,7 +47,7 @@ const TermsOfService = () => {
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold text-foreground">4. Rewards & Payments</h2>
               <p>
-                Rewards are distributed according to tournament rules. VeloXyra reserves the right to 
+                Rewards are distributed according to tournament rules. VeloRix reserves the right to 
                 withhold rewards in cases of suspected fraud or rule violations pending investigation.
               </p>
             </section>
