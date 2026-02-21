@@ -52,7 +52,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 sm:pt-36"
     >
       {/* AMOLED black background with mesh gradient */}
       <div className="absolute inset-0 bg-background" />
