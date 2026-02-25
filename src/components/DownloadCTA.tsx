@@ -1,8 +1,22 @@
 import { Download, Smartphone } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const DownloadCTA = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDownload = () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    // TODO: Replace with actual download URL
+    window.open("#", "_blank");
+  };
+
   return (
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -25,17 +39,19 @@ const DownloadCTA = () => {
             Download VeloRix Now
           </h2>
           <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto mb-8">
-            Join thousands of competitive gamers. Download the app and start
-            winning tournaments today!
+            {user
+              ? "You're signed in! Download the app and start winning tournaments today!"
+              : "Sign up to download the app and start winning tournaments today!"}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <AnimatedButton 
               size="xl" 
               className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg"
+              onClick={handleDownload}
             >
               <Download className="w-5 h-5" />
-              Download for Android
+              {user ? "Download for Android" : "Sign Up to Download"}
             </AnimatedButton>
           </div>
 

@@ -2,9 +2,23 @@ import { Download, ChevronDown, Smartphone, HardDrive } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import phoneMockup from "@/assets/phone-mockup-new.png";
 
 const HeroSection = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDownload = () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    // TODO: Replace with actual download URL
+    window.open("#", "_blank");
+  };
+
   const scrollToFeatures = () => {
     const featuresSection = document.getElementById("features");
     if (featuresSection) {
@@ -58,9 +72,9 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
       
-      {/* Static glow orbs - no animation for performance */}
+      {/* Static glow orbs */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[150px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/15 rounded-full blur-[120px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/15 rounded-full blur-[100px]" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -115,9 +129,10 @@ const HeroSection = () => {
                 variant="hero" 
                 size="xl"
                 className="pulse-glow"
+                onClick={handleDownload}
               >
                 <Download className="w-5 h-5" />
-                Download App
+                {user ? "Download App" : "Sign Up to Download"}
               </AnimatedButton>
               <AnimatedButton 
                 variant="heroOutline" 
@@ -130,7 +145,7 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Phone Mockup with 3D effect */}
+          {/* Right Content - Phone Mockup */}
           <motion.div 
             className="relative flex justify-center lg:justify-end"
             variants={phoneVariants}
@@ -147,11 +162,9 @@ const HeroSection = () => {
               }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              {/* Layered glow behind phone */}
               <div className="absolute inset-0 bg-primary/30 blur-[80px] rounded-full scale-75" />
               <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full scale-100" />
               
-              {/* Static particles - no animation for performance */}
               <div className="absolute -top-8 -left-8 w-4 h-4 bg-primary/50 rounded-full blur-sm" />
               <div className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm" />
               <div className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm" />
@@ -170,7 +183,7 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator - static for performance */}
+        {/* Scroll Indicator */}
         <motion.div 
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           initial={{ opacity: 0, y: 20 }}

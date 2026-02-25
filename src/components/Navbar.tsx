@@ -1,13 +1,16 @@
-import { Download, Menu, X } from "lucide-react";
+import { Download, Menu, X, LogIn, LogOut, User } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 import velorixLogo from "@/assets/velorix-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +27,14 @@ const Navbar = () => {
     { name: "How It Works", href: "#how-it-works" },
     { name: "FAQ", href: "#faq" },
   ];
+
+  const handleDownload = () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    window.open("#", "_blank");
+  };
 
   return (
     <motion.nav 
@@ -74,12 +85,34 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Download Button */}
-          <div className="hidden md:block">
-            <AnimatedButton variant="hero" size="default" className="pulse-glow">
-              <Download className="w-4 h-4" />
-              Download
-            </AnimatedButton>
+          {/* Auth + Download Buttons */}
+          <div className="hidden md:flex items-center gap-3">
+            {user ? (
+              <>
+                <span className="text-sm text-muted-foreground flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  {user.email?.split("@")[0]}
+                </span>
+                <AnimatedButton variant="hero" size="default" className="pulse-glow" onClick={handleDownload}>
+                  <Download className="w-4 h-4" />
+                  Download
+                </AnimatedButton>
+                <AnimatedButton variant="ghost" size="default" onClick={signOut}>
+                  <LogOut className="w-4 h-4" />
+                </AnimatedButton>
+              </>
+            ) : (
+              <>
+                <AnimatedButton variant="ghost" size="default" onClick={() => navigate("/auth")}>
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </AnimatedButton>
+                <AnimatedButton variant="hero" size="default" className="pulse-glow" onClick={() => navigate("/auth")}>
+                  <Download className="w-4 h-4" />
+                  Download
+                </AnimatedButton>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -139,10 +172,34 @@ const Navbar = () => {
                     {link.name}
                   </motion.a>
                 ))}
-                <AnimatedButton variant="hero" size="default" className="mt-2 w-full pulse-glow">
-                  <Download className="w-4 h-4" />
-                  Download
-                </AnimatedButton>
+                
+                {user ? (
+                  <>
+                    <div className="text-sm text-muted-foreground flex items-center gap-2 py-2">
+                      <User className="w-4 h-4" />
+                      {user.email?.split("@")[0]}
+                    </div>
+                    <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { handleDownload(); setIsOpen(false); }}>
+                      <Download className="w-4 h-4" />
+                      Download
+                    </AnimatedButton>
+                    <AnimatedButton variant="ghost" size="default" className="w-full" onClick={() => { signOut(); setIsOpen(false); }}>
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </AnimatedButton>
+                  </>
+                ) : (
+                  <>
+                    <AnimatedButton variant="ghost" size="default" className="w-full" onClick={() => { navigate("/auth"); setIsOpen(false); }}>
+                      <LogIn className="w-4 h-4" />
+                      Sign In
+                    </AnimatedButton>
+                    <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { navigate("/auth"); setIsOpen(false); }}>
+                      <Download className="w-4 h-4" />
+                      Download
+                    </AnimatedButton>
+                  </>
+                )}
               </div>
             </motion.div>
           )}
