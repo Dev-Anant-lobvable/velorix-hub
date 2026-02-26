@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
-import { AnimatedButton } from "@/components/ui/animated-button";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
@@ -42,10 +42,12 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        toast({ title: "Welcome back!", description: "You've been signed in successfully." });
-        navigate("/");
+        if (data?.session) {
+          toast({ title: "Welcome back!", description: "You've been signed in successfully." });
+          navigate("/", { replace: true });
+        }
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -68,7 +70,7 @@ const Auth = () => {
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Something went wrong. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -255,15 +257,13 @@ const Auth = () => {
               </div>
             </div>
 
-            <AnimatedButton
+            <button
               type="submit"
-              variant="hero"
-              size="xl"
-              className="w-full"
+              className="w-full h-12 px-8 text-base rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
               {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
-            </AnimatedButton>
+            </button>
           </form>
 
           <div className="mt-6 text-center">
