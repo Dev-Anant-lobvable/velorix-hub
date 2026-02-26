@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,12 +12,22 @@ import { Link } from "react-router-dom";
 import velorixLogo from "@/assets/velorix-logo.png";
 import { useAuth } from "@/contexts/AuthContext";
 
+const GoogleIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>
+    <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/>
+    <path d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332Z" fill="#FBBC05"/>
+    <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.163 6.656 3.58 9 3.58Z" fill="#EA4335"/>
+  </svg>
+);
+
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -65,35 +76,43 @@ const Auth = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      const { error } = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message || "Google sign-in failed",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center relative overflow-hidden px-4">
       {/* Animated background orbs */}
       <div className="absolute inset-0 bg-mesh-gradient" />
       <motion.div
         className="absolute top-[10%] left-[15%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[150px]"
-        animate={{ 
-          x: [0, 50, -30, 0], 
-          y: [0, -40, 20, 0],
-          scale: [1, 1.1, 0.95, 1],
-        }}
+        animate={{ x: [0, 50, -30, 0], y: [0, -40, 20, 0], scale: [1, 1.1, 0.95, 1] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute bottom-[15%] right-[10%] w-[400px] h-[400px] bg-primary/15 rounded-full blur-[120px]"
-        animate={{ 
-          x: [0, -40, 30, 0], 
-          y: [0, 30, -50, 0],
-          scale: [1, 0.9, 1.1, 1],
-        }}
+        animate={{ x: [0, -40, 30, 0], y: [0, 30, -50, 0], scale: [1, 0.9, 1.1, 1] }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute top-[50%] left-[50%] w-[300px] h-[300px] bg-primary/10 rounded-full blur-[100px]"
-        animate={{ 
-          x: [0, 60, -40, 0], 
-          y: [0, -60, 40, 0],
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <motion.div
@@ -102,7 +121,6 @@ const Auth = () => {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        {/* Back to home */}
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6 group"
@@ -113,11 +131,9 @@ const Auth = () => {
 
         {/* Liquid Glass Card */}
         <div className="liquid-glass rounded-2xl p-8 relative overflow-hidden">
-          {/* Inner glass reflections */}
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary-foreground/20 to-transparent" />
           <div className="absolute top-0 left-0 bottom-0 w-[1px] bg-gradient-to-b from-primary-foreground/15 via-transparent to-transparent" />
           
-          {/* Shimmer highlight */}
           <motion.div
             className="absolute -top-[100px] -left-[100px] w-[200px] h-[400px] bg-primary-foreground/5 rotate-45 blur-xl pointer-events-none"
             animate={{ x: [0, 600], y: [0, 300] }}
@@ -144,13 +160,33 @@ const Auth = () => {
               <h1 className="text-2xl font-bold text-center mb-2 text-foreground">
                 {isLogin ? "Welcome Back" : "Create Account"}
               </h1>
-              <p className="text-muted-foreground text-center text-sm mb-8">
-                {isLogin
-                  ? "Sign in to download the app"
-                  : "Sign up to get access to VeloRix"}
+              <p className="text-muted-foreground text-center text-sm mb-6">
+                {isLogin ? "Sign in to download the app" : "Sign up to get access to VeloRix"}
               </p>
             </motion.div>
           </AnimatePresence>
+
+          {/* Google Sign-In Button */}
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={googleLoading}
+            className="w-full flex items-center justify-center gap-3 h-12 rounded-lg bg-white text-gray-800 font-medium text-sm hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+          >
+            {googleLoading ? (
+              <Sparkles className="w-4 h-4 animate-spin" />
+            ) : (
+              <GoogleIcon />
+            )}
+            {googleLoading ? "Connecting..." : "Continue with Google"}
+          </button>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-[1px] bg-border/50" />
+            <span className="text-xs text-muted-foreground uppercase tracking-wider">or</span>
+            <div className="flex-1 h-[1px] bg-border/50" />
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <AnimatePresence>
@@ -223,23 +259,10 @@ const Auth = () => {
               type="submit"
               variant="hero"
               size="xl"
-              className="w-full pulse-glow"
+              className="w-full"
               disabled={loading}
             >
-              {loading ? (
-                <motion.div
-                  className="flex items-center gap-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  <Sparkles className="w-4 h-4 animate-spin" />
-                  Please wait...
-                </motion.div>
-              ) : isLogin ? (
-                "Sign In"
-              ) : (
-                "Create Account"
-              )}
+              {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
             </AnimatedButton>
           </form>
 
@@ -253,9 +276,7 @@ const Auth = () => {
               }}
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              {isLogin
-                ? "Don't have an account? Sign up"
-                : "Already have an account? Sign in"}
+              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
             </button>
           </div>
         </div>
