@@ -4,6 +4,7 @@ import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/hooks/use-toast";
 import phoneMockup from "@/assets/phone-mockup-new.png";
 
 const HeroSection = () => {
@@ -15,6 +16,7 @@ const HeroSection = () => {
       navigate("/auth");
       return;
     }
+    toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
     // TODO: Replace with actual download URL
     window.open("#", "_blank");
   };
