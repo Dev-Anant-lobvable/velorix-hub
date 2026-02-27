@@ -1,10 +1,21 @@
-import { Download, Menu, X, LogIn, LogOut, User } from "lucide-react";
+import { Download, Menu, X, LogIn } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/hooks/use-toast";
 import velorixLogo from "@/assets/velorix-logo.png";
+import ProfileMenu from "@/components/ProfileMenu";
+
+const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
+
+const navLinks = [
+  { name: "Home", href: "#home" },
+  { name: "Features", href: "#features" },
+  { name: "How It Works", href: "#how-it-works" },
+  { name: "FAQ", href: "#faq" },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,31 +24,29 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 100);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Features", href: "#features" },
-    { name: "How It Works", href: "#how-it-works" },
-    { name: "FAQ", href: "#faq" },
-  ];
 
   const handleDownload = () => {
     if (!user) {
       navigate("/auth");
       return;
     }
-    window.open("#", "_blank");
+    toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
+    window.open(DOWNLOAD_URL, "_blank");
+  };
+
+  const handleMobileSignOut = async () => {
+    await signOut();
+    setIsOpen(false);
+    navigate("/");
+    toast({ title: "Signed out", description: "You've been signed out successfully." });
   };
 
   return (
-    <motion.nav 
+    <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 glass transition-all duration-300 ${
         isScrolled ? "border-b border-border/20" : "border-b border-transparent"
       }`}
@@ -49,9 +58,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <motion.img 
-              src={velorixLogo} 
-              alt="VeloRix" 
+            <motion.img
+              src={velorixLogo}
+              alt="VeloRix"
               width={120}
               height={80}
               loading="eager"
@@ -75,7 +84,7 @@ const Navbar = () => {
                 whileHover={{ y: -2 }}
               >
                 {link.name}
-                <motion.span 
+                <motion.span
                   className="absolute -bottom-1 left-0 h-0.5 bg-primary rounded-full"
                   initial={{ width: 0 }}
                   whileHover={{ width: "100%" }}
@@ -85,21 +94,15 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Auth + Download Buttons */}
+          {/* Desktop Auth + Download */}
           <div className="hidden md:flex items-center gap-3">
             {user ? (
               <>
-                <span className="text-sm text-muted-foreground flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  {user.email?.split("@")[0]}
-                </span>
                 <AnimatedButton variant="hero" size="default" className="pulse-glow" onClick={handleDownload}>
                   <Download className="w-4 h-4" />
                   Download
                 </AnimatedButton>
-                <AnimatedButton variant="ghost" size="default" onClick={signOut}>
-                  <LogOut className="w-4 h-4" />
-                </AnimatedButton>
+                <ProfileMenu />
               </>
             ) : (
               <>
@@ -123,23 +126,11 @@ const Navbar = () => {
           >
             <AnimatePresence mode="wait">
               {isOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
                   <X className="w-6 h-6" />
                 </motion.div>
               ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
                   <Menu className="w-6 h-6" />
                 </motion.div>
               )}
@@ -150,7 +141,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
-            <motion.div 
+            <motion.div
               className="md:hidden mt-4 pb-4 border-t border-border/30 pt-4"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
@@ -172,19 +163,29 @@ const Navbar = () => {
                     {link.name}
                   </motion.a>
                 ))}
-                
+
                 {user ? (
                   <>
-                    <div className="text-sm text-muted-foreground flex items-center gap-2 py-2">
-                      <User className="w-4 h-4" />
-                      {user.email?.split("@")[0]}
+                    <div className="border-t border-border/20 pt-3 mt-1">
+                      <div className="flex items-center gap-3 mb-3 px-1">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                          <span className="text-sm font-medium text-primary">
+                            {(user.user_metadata?.display_name || user.email)?.[0]?.toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate">
+                            {user.user_metadata?.display_name || user.email?.split("@")[0]}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                        </div>
+                      </div>
                     </div>
                     <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { handleDownload(); setIsOpen(false); }}>
                       <Download className="w-4 h-4" />
-                      Download
+                      Download APK
                     </AnimatedButton>
-                    <AnimatedButton variant="ghost" size="default" className="w-full" onClick={() => { signOut(); setIsOpen(false); }}>
-                      <LogOut className="w-4 h-4" />
+                    <AnimatedButton variant="ghost" size="default" className="w-full text-destructive" onClick={handleMobileSignOut}>
                       Sign Out
                     </AnimatedButton>
                   </>

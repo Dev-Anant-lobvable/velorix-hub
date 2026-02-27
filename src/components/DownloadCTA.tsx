@@ -3,6 +3,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 const DownloadCTA = () => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const DownloadCTA = () => {
       navigate("/auth");
       return;
     }
+    toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
     // TODO: Replace with actual download URL
     window.open("#", "_blank");
   };
