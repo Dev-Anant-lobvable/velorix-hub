@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -14,40 +13,25 @@ import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
 import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
-import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
 const pageVariants = {
-  initial: {
-    opacity: 0,
-    y: 20,
-  },
+  initial: { opacity: 0, y: 20 },
   enter: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut" as const,
-    },
+    transition: { duration: 0.4, ease: "easeOut" as const },
   },
   exit: {
     opacity: 0,
     y: -20,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut" as const,
-    },
+    transition: { duration: 0.3, ease: "easeOut" as const },
   },
 };
 
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial="initial"
-    animate="enter"
-    exit="exit"
-    variants={pageVariants}
-  >
+  <motion.div initial="initial" animate="enter" exit="exit" variants={pageVariants}>
     {children}
   </motion.div>
 );
@@ -59,7 +43,6 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageWrapper><Index /></PageWrapper>} />
-        <Route path="/auth" element={<PageWrapper><Auth /></PageWrapper>} />
         <Route path="/privacy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
         <Route path="/terms" element={<PageWrapper><TermsOfService /></PageWrapper>} />
         <Route path="/cookies" element={<PageWrapper><CookiePolicy /></PageWrapper>} />
@@ -73,17 +56,15 @@ const AnimatedRoutes = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-        <Analytics />
-        <SpeedInsights />
-      </TooltipProvider>
-    </AuthProvider>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AnimatedRoutes />
+      </BrowserRouter>
+      <Analytics />
+      <SpeedInsights />
+    </TooltipProvider>
   </QueryClientProvider>
 );
 

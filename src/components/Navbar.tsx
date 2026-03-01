@@ -1,12 +1,10 @@
-import { Download, Menu, X, LogIn } from "lucide-react";
+import { Download, Menu, X } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import velorixLogo from "@/assets/velorix-logo.png";
-import ProfileMenu from "@/components/ProfileMenu";
 
 const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
 
@@ -20,8 +18,6 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 100);
@@ -30,19 +26,8 @@ const Navbar = () => {
   }, []);
 
   const handleDownload = () => {
-    if (!user) {
-      navigate("/auth");
-      return;
-    }
     toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
     window.open(DOWNLOAD_URL, "_blank");
-  };
-
-  const handleMobileSignOut = async () => {
-    await signOut();
-    setIsOpen(false);
-    navigate("/");
-    toast({ title: "Signed out", description: "You've been signed out successfully." });
   };
 
   return (
@@ -56,7 +41,6 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <motion.img
               src={velorixLogo}
@@ -71,7 +55,6 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link, index) => (
               <motion.a
@@ -94,31 +77,13 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop Auth + Download */}
           <div className="hidden md:flex items-center gap-3">
-            {user ? (
-              <>
-                <AnimatedButton variant="hero" size="default" className="pulse-glow" onClick={handleDownload}>
-                  <Download className="w-4 h-4" />
-                  Download
-                </AnimatedButton>
-                <ProfileMenu />
-              </>
-            ) : (
-              <>
-                <AnimatedButton variant="ghost" size="default" onClick={() => navigate("/auth")}>
-                  <LogIn className="w-4 h-4" />
-                  Sign In
-                </AnimatedButton>
-                <AnimatedButton variant="hero" size="default" className="pulse-glow" onClick={() => navigate("/auth")}>
-                  <Download className="w-4 h-4" />
-                  Download
-                </AnimatedButton>
-              </>
-            )}
+            <AnimatedButton variant="hero" size="default" className="pulse-glow" onClick={handleDownload}>
+              <Download className="w-4 h-4" />
+              Download
+            </AnimatedButton>
           </div>
 
-          {/* Mobile Menu Toggle */}
           <motion.button
             className="md:hidden text-foreground p-2"
             onClick={() => setIsOpen(!isOpen)}
@@ -138,7 +103,6 @@ const Navbar = () => {
           </motion.button>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -163,44 +127,10 @@ const Navbar = () => {
                     {link.name}
                   </motion.a>
                 ))}
-
-                {user ? (
-                  <>
-                    <div className="border-t border-border/20 pt-3 mt-1">
-                      <div className="flex items-center gap-3 mb-3 px-1">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                          <span className="text-sm font-medium text-primary">
-                            {(user.user_metadata?.display_name || user.email)?.[0]?.toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-foreground truncate">
-                            {user.user_metadata?.display_name || user.email?.split("@")[0]}
-                          </p>
-                          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { handleDownload(); setIsOpen(false); }}>
-                      <Download className="w-4 h-4" />
-                      Download APK
-                    </AnimatedButton>
-                    <AnimatedButton variant="ghost" size="default" className="w-full text-destructive" onClick={handleMobileSignOut}>
-                      Sign Out
-                    </AnimatedButton>
-                  </>
-                ) : (
-                  <>
-                    <AnimatedButton variant="ghost" size="default" className="w-full" onClick={() => { navigate("/auth"); setIsOpen(false); }}>
-                      <LogIn className="w-4 h-4" />
-                      Sign In
-                    </AnimatedButton>
-                    <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { navigate("/auth"); setIsOpen(false); }}>
-                      <Download className="w-4 h-4" />
-                      Download
-                    </AnimatedButton>
-                  </>
-                )}
+                <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { handleDownload(); setIsOpen(false); }}>
+                  <Download className="w-4 h-4" />
+                  Download APK
+                </AnimatedButton>
               </div>
             </motion.div>
           )}

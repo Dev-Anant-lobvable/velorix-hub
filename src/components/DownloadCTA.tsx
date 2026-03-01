@@ -1,22 +1,14 @@
 import { Download, Smartphone } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 
-const DownloadCTA = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
 
+const DownloadCTA = () => {
   const handleDownload = () => {
-    if (!user) {
-      navigate("/auth");
-      return;
-    }
     toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
-    // TODO: Replace with actual download URL
-    window.open("#", "_blank");
+    window.open(DOWNLOAD_URL, "_blank");
   };
 
   return (
@@ -41,9 +33,7 @@ const DownloadCTA = () => {
             Download VeloRix Now
           </h2>
           <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto mb-8">
-            {user
-              ? "You're signed in! Download the app and start winning tournaments today!"
-              : "Sign up to download the app and start winning tournaments today!"}
+            Download the app and start winning tournaments today!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -53,7 +43,7 @@ const DownloadCTA = () => {
               onClick={handleDownload}
             >
               <Download className="w-5 h-5" />
-              {user ? "Download for Android" : "Sign Up to Download"}
+              Download for Android
             </AnimatedButton>
           </div>
 
