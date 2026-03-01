@@ -32,14 +32,14 @@ const DownloadCTA = () => {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-primary-foreground">
             Download VeloRix Now
           </h2>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto mb-8">
+          <p className="text-primary-foreground text-lg max-w-2xl mx-auto mb-8">
             Download the app and start winning tournaments today!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <AnimatedButton 
               size="xl" 
-              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg"
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/95 shadow-lg"
               onClick={handleDownload}
             >
               <Download className="w-5 h-5" />
@@ -47,7 +47,7 @@ const DownloadCTA = () => {
             </AnimatedButton>
           </div>
 
-          <p className="text-sm text-primary-foreground/70 mt-6">
+          <p className="text-sm text-primary-foreground mt-6">
             Available for Android devices. iOS coming soon!
           </p>
         </motion.div>

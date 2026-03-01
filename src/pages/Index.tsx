@@ -12,6 +12,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative">
       <Navbar />
+      <main>
       <HeroSection />
       <AppGallerySection />
       <StatsSection />
@@ -19,6 +20,7 @@ const Index = () => {
       <FeaturesSection />
       <FAQSection />
       <DownloadCTA />
+      </main>
       <Footer />
       
       {/* Subtle bottom blur */}
