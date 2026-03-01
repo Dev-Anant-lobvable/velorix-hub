@@ -2,23 +2,15 @@ import { Download, ChevronDown, Smartphone, HardDrive } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import phoneMockup from "@/assets/phone-mockup-new.png";
 
-const HeroSection = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
 
+const HeroSection = () => {
   const handleDownload = () => {
-    if (!user) {
-      navigate("/auth");
-      return;
-    }
     toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
-    // TODO: Replace with actual download URL
-    window.open("#", "_blank");
+    window.open(DOWNLOAD_URL, "_blank");
   };
 
   const scrollToFeatures = () => {
@@ -70,17 +62,13 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 sm:pt-36"
     >
-      {/* AMOLED black background with mesh gradient */}
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
-      
-      {/* Static glow orbs */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[150px]" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/15 rounded-full blur-[100px]" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
           <motion.div 
             className="text-center lg:text-left"
             variants={containerVariants}
@@ -105,7 +93,6 @@ const HeroSection = () => {
               your dominance.
             </motion.p>
 
-            {/* APK Details */}
             <motion.div 
               className="flex flex-wrap items-center gap-3 justify-center lg:justify-start mb-8"
               variants={itemVariants}
@@ -134,7 +121,7 @@ const HeroSection = () => {
                 onClick={handleDownload}
               >
                 <Download className="w-5 h-5" />
-                {user ? "Download App" : "Sign Up to Download"}
+                Download App
               </AnimatedButton>
               <AnimatedButton 
                 variant="heroOutline" 
@@ -147,7 +134,6 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Phone Mockup */}
           <motion.div 
             className="relative flex justify-center lg:justify-end"
             variants={phoneVariants}
@@ -157,16 +143,11 @@ const HeroSection = () => {
           >
             <motion.div 
               className="relative"
-              whileHover={{ 
-                rotateY: 10, 
-                rotateX: -5,
-                scale: 1.05,
-              }}
+              whileHover={{ rotateY: 10, rotateX: -5, scale: 1.05 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
               <div className="absolute inset-0 bg-primary/30 blur-[80px] rounded-full scale-75" />
               <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full scale-100" />
-              
               <div className="absolute -top-8 -left-8 w-4 h-4 bg-primary/50 rounded-full blur-sm" />
               <div className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm" />
               <div className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm" />
@@ -185,7 +166,6 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
         <motion.div 
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           initial={{ opacity: 0, y: 20 }}
