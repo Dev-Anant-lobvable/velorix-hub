@@ -17,6 +17,9 @@ const Index = () => {
       <HeroSection />
       <AppGallerySection />
       <StatsSection />
+      <div className="flex justify-center py-8">
+        <TrustpilotBadge />
+      </div>
       <HowItWorksSection />
       <FeaturesSection />
       <FAQSection />
