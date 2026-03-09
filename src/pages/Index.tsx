@@ -19,6 +19,7 @@ const Index = () => {
       <AppGallerySection />
       <StatsSection />
       <SocialProofBadges />
+      <PartnersRow />
       <HowItWorksSection />
       <FeaturesSection />
       <FAQSection />
