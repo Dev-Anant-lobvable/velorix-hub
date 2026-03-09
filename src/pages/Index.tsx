@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import AppGallerySection from "@/components/AppGallerySection";
 import StatsSection from "@/components/StatsSection";
 import SocialProofBadges from "@/components/SocialProofBadges";
+import PartnersRow from "@/components/PartnersRow";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import FAQSection from "@/components/FAQSection";
