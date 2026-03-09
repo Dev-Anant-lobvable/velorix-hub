@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AppGallerySection from "@/components/AppGallerySection";
 import StatsSection from "@/components/StatsSection";
+import TrustpilotBadge from "@/components/TrustpilotBadge";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import FAQSection from "@/components/FAQSection";
@@ -16,6 +17,9 @@ const Index = () => {
       <HeroSection />
       <AppGallerySection />
       <StatsSection />
+      <div className="flex justify-center py-8">
+        <TrustpilotBadge />
+      </div>
       <HowItWorksSection />
       <FeaturesSection />
       <FAQSection />
