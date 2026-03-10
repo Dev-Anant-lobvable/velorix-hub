@@ -9,32 +9,32 @@ const faqs = [
   {
     question: "What is VeloRix Tournaments?",
     answer:
-      "VeloRix Tournaments is a competitive gaming platform that allows players to participate in esports tournaments, compete for prizes, and connect with other gamers. Whether you're a casual player or a pro, there's a tournament for you.",
+      "It's a tournament app for mobile gamers. You join matches, play against real people, and win rewards. We run daily tournaments for games like Free Fire, BGMI, and more.",
   },
   {
     question: "How do I join a tournament?",
     answer:
-      "Simply download the app, create your account, browse available tournaments, and register for the ones that interest you. You'll receive notifications about match schedules and results.",
+      "Download the app, make an account, and check the tournament list. Tap on one you like, register, and show up when the match starts. You'll get a notification before it begins.",
   },
   {
-    question: "Is the app free to download?",
+    question: "Is the app free?",
     answer:
-      "Yes! VeloRix Tournaments is completely free to download and use. Some premium tournaments may have entry fees, but there are plenty of free tournaments available for all skill levels.",
+      "Yeah, the app is free. Some tournaments have a small entry fee, but there are always free ones running too.",
   },
   {
-    question: "What games are supported?",
+    question: "Which games can I play?",
     answer:
-      "We support a wide variety of popular esports titles including BGMI, Free Fire, Call of Duty Mobile, Valorant, and many more. New games are added regularly based on community demand.",
+      "Right now we run tournaments for Free Fire, BGMI, Call of Duty Mobile, and a few others. We keep adding more based on what players ask for.",
   },
   {
-    question: "How do I receive my winnings?",
+    question: "How do I get my winnings?",
     answer:
-      "Tournament winnings are credited directly to your in-app wallet. You can withdraw your earnings through various payment methods including UPI, bank transfer, and popular e-wallets.",
+      "Winnings go to your in-app wallet. From there you can withdraw via UPI, bank transfer, or e-wallets like Paytm. It usually takes a few minutes.",
   },
   {
-    question: "Can I create my own tournament?",
+    question: "Can I host my own tournament?",
     answer:
-      "Yes! VeloRix allows users to host their own custom tournaments. You can set the rules, prize pool, and invite players to compete. Perfect for community events and friendly competitions.",
+      "Yep. You can create a custom tournament, set your own rules and prize pool, and invite your friends or open it up to everyone.",
   },
 ];
 
