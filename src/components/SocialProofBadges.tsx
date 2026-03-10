@@ -137,7 +137,7 @@ const SocialProofBadges = () => {
         >
           <Download className="w-4 h-4 text-primary" />
           <span className="text-sm text-muted-foreground">
-            Trusted by <span className="font-bold text-foreground">4,24,000+</span> gamers across India
+            <span className="font-bold text-foreground">4,24,000+</span> players and counting
           </span>
           <Award className="w-4 h-4 text-primary" />
         </motion.div>

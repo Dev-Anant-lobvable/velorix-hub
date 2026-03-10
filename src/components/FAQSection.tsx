@@ -49,7 +49,7 @@ const FAQSection = () => {
             <span className="text-primary">Questions</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Got questions? We've got answers. Find everything you need to know about VeloRix Tournaments.
+            Stuff people usually ask us before downloading.
           </p>
         </div>
 

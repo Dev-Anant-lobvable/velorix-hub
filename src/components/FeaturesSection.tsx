@@ -70,10 +70,10 @@ const FeaturesSection = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
-            Why Choose <span className="text-gradient text-glow">VeloRix</span>
+            Why <span className="text-gradient text-glow">VeloRix</span>?
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            The premier destination for competitive gamers. Professional-grade tournaments that put your skills to the test.
+            Built by gamers who were tired of scammy tournament apps. Here's what makes us different.
           </p>
         </motion.div>
 

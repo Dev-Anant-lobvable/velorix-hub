@@ -6,22 +6,22 @@ const steps = [
   {
     icon: Download,
     title: "Download App",
-    description: "Quick and secure download from our official website in a single tap.",
+    description: "Grab the APK from our site. It's lightweight — around 25 MB.",
   },
   {
     icon: Smartphone,
-    title: "Install App",
-    description: "Easy installation process with seamless onboarding. No technical knowledge required.",
+    title: "Install & Open",
+    description: "Tap install, open the app. That's it — no weird permissions or setup screens.",
   },
   {
     icon: UserPlus,
     title: "Create Account",
-    description: "Simple account creation flow in under 30 seconds. Secure and privacy-focused.",
+    description: "Enter your name, pick a username, and you're good to go.",
   },
   {
     icon: Gamepad2,
-    title: "Start Playing",
-    description: "Join matches, compete in tournaments, and earn rewards with VeloRix.",
+    title: "Join a Match",
+    description: "Browse open tournaments, pick one, and start competing for real rewards.",
   },
 ];
 

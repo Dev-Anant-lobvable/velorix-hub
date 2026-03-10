@@ -47,8 +47,8 @@ const DownloadCTA = () => {
             </AnimatedButton>
           </div>
 
-          <p className="text-sm text-primary-foreground mt-6">
-            Available for Android devices. iOS coming soon!
+          <p className="text-sm text-primary-foreground/80 mt-6">
+            Android only for now. iOS is on the way.
           </p>
         </motion.div>
       </div>
