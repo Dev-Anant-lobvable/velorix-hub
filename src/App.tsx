@@ -49,6 +49,7 @@ const AnimatedRoutes = () => {
         <Route path="/cookies" element={<PageWrapper><CookiePolicy /></PageWrapper>} />
         <Route path="/help" element={<PageWrapper><HelpCenter /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+        <Route path="/download" element={<PageWrapper><DownloadPage /></PageWrapper>} />
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
