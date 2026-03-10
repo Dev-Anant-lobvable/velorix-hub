@@ -13,6 +13,7 @@ import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
 import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
+import DownloadPage from "./pages/Download";
 
 const queryClient = new QueryClient();
 
