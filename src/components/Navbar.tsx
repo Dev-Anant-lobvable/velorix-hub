@@ -1,12 +1,9 @@
 import { Download, Menu, X } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "@/hooks/use-toast";
 import velorixLogo from "@/assets/velorix-logo.png";
-
-const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
 
 const navLinks = [
   { name: "Home", href: "#home" },
