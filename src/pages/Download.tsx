@@ -110,4 +110,4 @@ const DownloadPage = () => {
   );
 };
 
-export default Download;
+export default DownloadPage;
