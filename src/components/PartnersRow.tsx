@@ -14,7 +14,7 @@ const PartnersRow = () => {
     <section className="py-8 border-t border-border/20">
       <div className="container mx-auto px-4">
         <p className="text-center text-xs text-muted-foreground/60 uppercase tracking-widest mb-6">
-          Trusted Partners & Sponsors
+          Games & Partners
         </p>
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
           {partners.map((p, i) => (

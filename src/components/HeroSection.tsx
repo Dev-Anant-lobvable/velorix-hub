@@ -88,9 +88,9 @@ const HeroSection = () => {
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6"
               variants={itemVariants}
             >
-              The ultimate esports tournament platform. Compete in daily
-              tournaments, win rewards, and rise through the ranks to prove
-              your dominance.
+              India's go-to app for Free Fire & BGMI tournaments.
+              Play daily matches, win real rewards, and climb the
+              leaderboard.
             </motion.p>
 
             <motion.div 
