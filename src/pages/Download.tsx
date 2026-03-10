@@ -100,7 +100,7 @@ const Download = () => {
               });
             }}
           >
-            <Download className="w-5 h-5" />
+            <DownloadIcon className="w-5 h-5" />
             Download All Parts
           </AnimatedButton>
         </motion.div>
