@@ -17,7 +17,7 @@ const fileParts = [
   { name: "velorix-app.zip.007", size: "~7 MB" },
 ];
 
-const Download = () => {
+const DownloadPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
