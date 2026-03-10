@@ -2,16 +2,12 @@ import { Download, ChevronDown, Smartphone, HardDrive } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { motion } from "framer-motion";
-import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import phoneMockup from "@/assets/phone-mockup-new.png";
 
-const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
-
 const HeroSection = () => {
-  const handleDownload = () => {
-    toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
-    window.open(DOWNLOAD_URL, "_blank");
-  };
+  const navigate = useNavigate();
+  const handleDownload = () => navigate("/download");
 
   const scrollToFeatures = () => {
     const featuresSection = document.getElementById("features");

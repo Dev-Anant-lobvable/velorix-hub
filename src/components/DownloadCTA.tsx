@@ -1,15 +1,11 @@
 import { Download, Smartphone } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
-import { toast } from "@/hooks/use-toast";
-
-const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
+import { useNavigate } from "react-router-dom";
 
 const DownloadCTA = () => {
-  const handleDownload = () => {
-    toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
-    window.open(DOWNLOAD_URL, "_blank");
-  };
+  const navigate = useNavigate();
+  const handleDownload = () => navigate("/download");
 
   return (
     <section id="contact" className="py-20 bg-background">
