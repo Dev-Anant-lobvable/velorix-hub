@@ -7,25 +7,25 @@ const features = [
     icon: Shield,
     title: "Fair Play",
     description:
-      "All matches are conducted fairly. Everyone gets rewards based on their performance.",
+      "No rigged matches. Your rank, your rewards — all based on how you actually play.",
   },
   {
     icon: Zap,
-    title: "Fast Performance",
+    title: "Runs Smooth",
     description:
-      "Built with the latest technology for lightning-fast gameplay and smooth experience.",
+      "We tested on budget phones too. The app stays quick even on low-end Android devices.",
   },
   {
     icon: Bell,
-    title: "Notifications",
+    title: "Match Alerts",
     description:
-      "Never miss a tournament! Get instant notifications for matches and rewards.",
+      "Get a ping before your tournament starts. No more missing matches because you forgot.",
   },
   {
     icon: Award,
-    title: "Instant Rewards",
+    title: "Quick Payouts",
     description:
-      "Win tournaments and receive your rewards instantly. No waiting, no delays.",
+      "Won a match? Your winnings hit your wallet right after the results are out.",
   },
 ];
 
