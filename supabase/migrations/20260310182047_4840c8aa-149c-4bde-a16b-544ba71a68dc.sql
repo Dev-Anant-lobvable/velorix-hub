@@ -1,0 +1,1 @@
+INSERT INTO storage.buckets (id, name, public) VALUES ('apk-files', 'apk-files', true); CREATE POLICY "Public read access for apk files" ON storage.objects FOR SELECT TO public USING (bucket_id = 'apk-files');

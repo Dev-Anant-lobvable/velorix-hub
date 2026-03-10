@@ -1,12 +1,9 @@
 import { Download, Menu, X } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "@/hooks/use-toast";
 import velorixLogo from "@/assets/velorix-logo.png";
-
-const DOWNLOAD_URL = "#"; // TODO: Replace with actual APK download URL
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -16,6 +13,7 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -25,10 +23,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleDownload = () => {
-    toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
-    window.open(DOWNLOAD_URL, "_blank");
-  };
+  const handleDownload = () => navigate("/download");
 
   return (
     <motion.nav
