@@ -73,7 +73,7 @@ const Download = () => {
                     <span className="text-xs text-muted-foreground ml-2">{part.size}</span>
                   </div>
                 </div>
-                <Download className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                <DownloadIcon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </motion.a>
             ))}
           </div>
