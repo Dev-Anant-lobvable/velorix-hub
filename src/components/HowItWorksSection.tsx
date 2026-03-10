@@ -70,7 +70,7 @@ const HowItWorksSection = () => {
             How <span className="text-gradient text-glow">It Works</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Your gaming journey becomes seamless with smart features that players already use every day.
+            Get started in under a minute. No complicated setup — just download, sign up, and you're in.
           </p>
         </motion.div>
 
