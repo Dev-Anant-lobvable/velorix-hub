@@ -30,10 +30,10 @@ const DownloadCTA = () => {
           </motion.div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-primary-foreground">
-            Download VeloRix Now
+            Ready to Play?
           </h2>
           <p className="text-primary-foreground text-lg max-w-2xl mx-auto mb-8">
-            Download the app and start winning tournaments today!
+            Grab the app, join a tournament, and see how you stack up.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
