@@ -23,10 +23,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleDownload = () => {
-    toast({ title: "Download Started!", description: "Your APK download will begin shortly." });
-    window.open(DOWNLOAD_URL, "_blank");
-  };
+  const handleDownload = () => navigate("/download");
 
   return (
     <motion.nav
