@@ -1,4 +1,4 @@
-import { Download as DownloadIcon, FileArchive, Info } from "lucide-react";
+import { Download as DownloadIcon, FileArchive, Info, ExternalLink } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";
 
 const STORAGE_BASE = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/apk-files`;
+const GOOGLE_DRIVE_LINK = "https://drive.google.com/file/d/1nDBuhioBdBs4SOJ6iJr5ct6bJ6IUZ3J3/view?usp=drivesdk";
 
 const fileParts = [
   { name: "velorix-app.zip.001", size: "10 MB" },
@@ -32,17 +33,51 @@ const DownloadPage = () => {
             Download <span className="text-gradient">VeloRix</span>
           </h1>
           <p className="text-muted-foreground text-lg">
-            The app is split into 7 parts (~67 MB total). Download all parts, then extract using any zip tool.
+            Choose your preferred download method below.
           </p>
         </motion.div>
 
+        {/* Direct Download Option */}
+        <motion.div
+          className="max-w-2xl mx-auto glass rounded-xl p-6 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+        >
+          <h2 className="text-lg font-semibold text-foreground mb-1">Option 1 — Direct Download</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            Single APK file (~120 MB). Fastest way to get started.
+          </p>
+          <a
+            href={GOOGLE_DRIVE_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between p-4 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all group"
+          >
+            <div className="flex items-center gap-3">
+              <DownloadIcon className="w-5 h-5 text-primary" />
+              <div>
+                <span className="text-sm font-medium text-foreground">VeloRix APK</span>
+                <span className="text-xs text-muted-foreground ml-2">~120 MB</span>
+              </div>
+            </div>
+            <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+          </a>
+        </motion.div>
+
+        {/* Split Packages Option */}
         <motion.div
           className="max-w-2xl mx-auto glass rounded-xl p-6 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <div className="flex items-start gap-3 mb-6 p-4 rounded-lg bg-primary/10 border border-primary/20">
+          <h2 className="text-lg font-semibold text-foreground mb-1">Option 2 — Split Packages</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            7 smaller parts (~67 MB total). Use if you have a slow connection.
+          </p>
+
+          <div className="flex items-start gap-3 mb-5 p-4 rounded-lg bg-primary/10 border border-primary/20">
             <Info className="w-5 h-5 text-primary mt-0.5 shrink-0" />
             <div className="text-sm text-muted-foreground">
               <p className="font-medium text-foreground mb-1">How to install:</p>
@@ -77,32 +112,27 @@ const DownloadPage = () => {
               </motion.a>
             ))}
           </div>
-        </motion.div>
 
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <AnimatedButton
-            variant="hero"
-            size="xl"
-            className="pulse-glow"
-            onClick={() => {
-              fileParts.forEach((part, i) => {
-                setTimeout(() => {
-                  const a = document.createElement("a");
-                  a.href = `${STORAGE_BASE}/${part.name}`;
-                  a.download = part.name;
-                  a.click();
-                }, i * 1000);
-              });
-            }}
-          >
-            <DownloadIcon className="w-5 h-5" />
-            Download All Parts
-          </AnimatedButton>
+          <div className="mt-4 text-center">
+            <AnimatedButton
+              variant="hero"
+              size="default"
+              className="pulse-glow"
+              onClick={() => {
+                fileParts.forEach((part, i) => {
+                  setTimeout(() => {
+                    const a = document.createElement("a");
+                    a.href = `${STORAGE_BASE}/${part.name}`;
+                    a.download = part.name;
+                    a.click();
+                  }, i * 1000);
+                });
+              }}
+            >
+              <DownloadIcon className="w-4 h-4" />
+              Download All Parts
+            </AnimatedButton>
+          </div>
         </motion.div>
       </main>
       <Footer />
