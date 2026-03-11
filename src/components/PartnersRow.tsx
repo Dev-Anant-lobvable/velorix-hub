@@ -1,39 +1,33 @@
 import { motion } from "framer-motion";
 
 const partners = [
-  { name: "Google", color: "#4285F4" },
-  { name: "ESL Gaming", color: "#FFB800" },
-  { name: "Riot Games", color: "#D32936" },
-  { name: "Garena", color: "#FF5722" },
-  { name: "Krafton", color: "#00C853" },
-  { name: "Qualcomm", color: "#3253DC" },
+  "Google",
+  "ESL Gaming", 
+  "Riot Games",
+  "Garena",
+  "Krafton",
+  "Qualcomm",
 ];
 
 const PartnersRow = () => {
   return (
-    <section className="py-8 border-t border-border/20">
+    <section className="py-8 border-t border-border/10">
       <div className="container mx-auto px-4">
-        <p className="text-center text-xs text-muted-foreground/60 uppercase tracking-widest mb-6">
+        <p className="text-center text-[11px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-5 font-medium">
           Games & Partners
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-          {partners.map((p, i) => (
-            <motion.div
-              key={p.name}
-              className="opacity-40 hover:opacity-80 transition-opacity duration-300 cursor-default"
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 0.4, y: 0 }}
+        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 md:gap-x-14">
+          {partners.map((name, i) => (
+            <motion.span
+              key={name}
+              className="text-[15px] md:text-base font-semibold text-muted-foreground/30 hover:text-muted-foreground/60 transition-colors duration-300 select-none tracking-wide"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.06, duration: 0.3 }}
-              whileHover={{ opacity: 0.9, scale: 1.08 }}
+              transition={{ delay: i * 0.05, duration: 0.4 }}
             >
-              <span
-                className="text-lg md:text-xl font-bold tracking-tight select-none"
-                style={{ color: p.color, fontFamily: "'Orbitron', sans-serif" }}
-              >
-                {p.name}
-              </span>
-            </motion.div>
+              {name}
+            </motion.span>
           ))}
         </div>
       </div>
