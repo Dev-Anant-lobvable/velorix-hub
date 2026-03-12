@@ -3,16 +3,20 @@ import googleLogo from "@/assets/logos/google.png";
 import eslLogo from "@/assets/logos/esl.png";
 import riotLogo from "@/assets/logos/riot.png";
 import garenaLogo from "@/assets/logos/garena.png";
-import kraftonLogo from "@/assets/logos/krafton.png";
 import qualcommLogo from "@/assets/logos/qualcomm.png";
+import rockstarLogo from "@/assets/logos/rockstar.png";
+import cognosphereLogo from "@/assets/logos/cognosphere.png";
+import kuroGamesLogo from "@/assets/logos/kuro-games.svg";
 
 const partners = [
   { name: "Google", logo: googleLogo },
   { name: "ESL Gaming", logo: eslLogo },
   { name: "Riot Games", logo: riotLogo },
   { name: "Garena", logo: garenaLogo },
-  { name: "Krafton", logo: kraftonLogo },
   { name: "Qualcomm", logo: qualcommLogo },
+  { name: "Rockstar Games", logo: rockstarLogo },
+  { name: "CognoSphere", logo: cognosphereLogo },
+  { name: "Kuro Games", logo: kuroGamesLogo },
 ];
 
 const PartnersRow = () => {
