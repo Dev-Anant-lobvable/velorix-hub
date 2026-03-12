@@ -3,6 +3,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { playDownloadSound } from "@/hooks/useSoundEffect";
 import velorixLogo from "@/assets/velorix-logo.png";
 
 const navLinks = [
@@ -23,7 +24,10 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleDownload = () => navigate("/download");
+  const handleDownload = () => {
+    playDownloadSound();
+    navigate("/download");
+  };
 
   return (
     <motion.nav
