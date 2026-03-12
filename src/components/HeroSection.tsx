@@ -3,11 +3,15 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { playDownloadSound } from "@/hooks/useSoundEffect";
 import phoneMockup from "@/assets/phone-mockup-new.png";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const handleDownload = () => navigate("/download");
+  const handleDownload = () => {
+    playDownloadSound();
+    navigate("/download");
+  };
 
   const scrollToFeatures = () => {
     const featuresSection = document.getElementById("features");
@@ -20,10 +24,7 @@ const HeroSection = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
     },
   };
 
@@ -32,10 +33,7 @@ const HeroSection = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const,
-      },
+      transition: { duration: 0.6, ease: "easeOut" as const },
     },
   };
 
@@ -45,11 +43,7 @@ const HeroSection = () => {
       opacity: 1,
       x: 0,
       rotateY: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut" as const,
-        delay: 0.4,
-      },
+      transition: { duration: 0.8, ease: "easeOut" as const, delay: 0.4 },
     },
   };
 
@@ -60,18 +54,28 @@ const HeroSection = () => {
     >
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[150px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/15 rounded-full blur-[100px]" />
       
+      {/* Animated ambient orbs */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[150px]"
+        animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.25, 0.15] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]"
+        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      />
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
+          <motion.div
             className="text-center lg:text-left"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            <motion.h1 
+            <motion.h1
               className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6"
               variants={itemVariants}
             >
@@ -79,17 +83,16 @@ const HeroSection = () => {
               <br />
               <span className="text-foreground">Tournaments</span>
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6"
               variants={itemVariants}
             >
-              India's go-to app for Free Fire & BGMI tournaments.
-              Play daily matches, win real rewards, and climb the
-              leaderboard.
+              India's go-to app for Free Fire & BGMI tournaments. Play daily
+              matches, win real rewards, and climb the leaderboard.
             </motion.p>
 
-            <motion.div 
+            <motion.div
               className="flex flex-wrap items-center gap-3 justify-center lg:justify-start mb-8"
               variants={itemVariants}
             >
@@ -106,12 +109,12 @@ const HeroSection = () => {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               variants={itemVariants}
             >
-              <AnimatedButton 
-                variant="hero" 
+              <AnimatedButton
+                variant="hero"
                 size="xl"
                 className="pulse-glow"
                 onClick={handleDownload}
@@ -119,8 +122,8 @@ const HeroSection = () => {
                 <Download className="w-5 h-5" />
                 Download App
               </AnimatedButton>
-              <AnimatedButton 
-                variant="heroOutline" 
+              <AnimatedButton
+                variant="heroOutline"
                 size="xl"
                 onClick={scrollToFeatures}
                 className="glass hover:border-primary/50 transition-all"
@@ -130,24 +133,47 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="relative flex justify-center lg:justify-end"
             variants={phoneVariants}
             initial="hidden"
             animate="visible"
             style={{ perspective: "1000px" }}
           >
-            <motion.div 
+            <motion.div
               className="relative"
               whileHover={{ rotateY: 10, rotateX: -5, scale: 1.05 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <div className="absolute inset-0 bg-primary/30 blur-[80px] rounded-full scale-75" />
-              <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full scale-100" />
-              <div className="absolute -top-8 -left-8 w-4 h-4 bg-primary/50 rounded-full blur-sm" />
-              <div className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm" />
-              <div className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm" />
-              
+              {/* Breathing glow behind phone */}
+              <motion.div
+                className="absolute inset-0 bg-primary/25 blur-[80px] rounded-full scale-75"
+                animate={{ scale: [0.75, 0.85, 0.75], opacity: [0.25, 0.4, 0.25] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-primary/15 blur-[120px] rounded-full"
+                animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              />
+
+              {/* Orbiting dots */}
+              <motion.div
+                className="absolute -top-8 -left-8 w-4 h-4 bg-primary/50 rounded-full blur-sm"
+                animate={{ y: [0, -10, 0], x: [0, 8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm"
+                animate={{ y: [0, 12, 0], x: [0, -6, 0] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              />
+              <motion.div
+                className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm"
+                animate={{ y: [0, -8, 0], x: [0, 10, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              />
+
               <ImageWithSkeleton
                 src={phoneMockup}
                 alt="VeloRix Tournaments App"
@@ -162,14 +188,19 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        <motion.div 
+        <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.5 }}
         >
           <span className="text-sm text-muted-foreground">Scroll Down</span>
-          <ChevronDown className="w-5 h-5 text-primary" />
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="w-5 h-5 text-primary" />
+          </motion.div>
         </motion.div>
       </div>
     </section>

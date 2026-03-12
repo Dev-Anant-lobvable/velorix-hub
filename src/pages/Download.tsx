@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";
+import { playDownloadSound } from "@/hooks/useSoundEffect";
+import useExternalLinkSound from "@/hooks/useExternalLinkSound";
 
 const STORAGE_BASE = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/apk-files`;
 const GOOGLE_DRIVE_LINK = "https://drive.google.com/file/d/1nDBuhioBdBs4SOJ6iJr5ct6bJ6IUZ3J3/view?usp=drivesdk";
@@ -19,6 +21,16 @@ const fileParts = [
 ];
 
 const DownloadPage = () => {
+  useExternalLinkSound();
+
+  const handlePartDownload = (partName: string) => {
+    playDownloadSound();
+    const a = document.createElement("a");
+    a.href = `${STORAGE_BASE}/${partName}`;
+    a.download = partName;
+    a.click();
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -52,6 +64,7 @@ const DownloadPage = () => {
             href={GOOGLE_DRIVE_LINK}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => playDownloadSound()}
             className="flex items-center justify-between p-4 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all group"
           >
             <div className="flex items-center gap-3">
@@ -92,11 +105,10 @@ const DownloadPage = () => {
 
           <div className="space-y-3">
             {fileParts.map((part, index) => (
-              <motion.a
+              <motion.button
                 key={part.name}
-                href={`${STORAGE_BASE}/${part.name}`}
-                download
-                className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all group"
+                onClick={() => handlePartDownload(part.name)}
+                className="w-full flex items-center justify-between p-4 rounded-lg border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all group"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.05 * index }}
@@ -109,7 +121,7 @@ const DownloadPage = () => {
                   </div>
                 </div>
                 <DownloadIcon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-              </motion.a>
+              </motion.button>
             ))}
           </div>
 
@@ -119,6 +131,7 @@ const DownloadPage = () => {
               size="default"
               className="pulse-glow"
               onClick={() => {
+                playDownloadSound();
                 fileParts.forEach((part, i) => {
                   setTimeout(() => {
                     const a = document.createElement("a");

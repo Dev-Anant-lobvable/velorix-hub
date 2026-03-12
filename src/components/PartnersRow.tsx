@@ -22,27 +22,35 @@ const partners = [
 ];
 
 const PartnersRow = () => {
+  // Double the array for infinite scroll effect
+  const doubled = [...partners, ...partners];
+
   return (
-    <section className="py-8 border-t border-border/10">
+    <section className="py-8 border-t border-border/10 overflow-hidden">
       <div className="container mx-auto px-4">
         <p className="text-center text-[11px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-5 font-medium">
           Games & Partners
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:gap-x-12">
-          {partners.map((p, i) => (
-            <motion.img
-              key={p.name}
+      </div>
+      {/* Infinite scrolling marquee */}
+      <div className="relative">
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
+        <motion.div
+          className="flex items-center gap-12 w-max"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        >
+          {doubled.map((p, i) => (
+            <img
+              key={`${p.name}-${i}`}
               src={p.logo}
               alt={p.name}
-              className={`h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-70 transition-all duration-300 grayscale hover:grayscale-0 ${p.invert ? 'invert brightness-200' : ''}`}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 0.4 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
+              className={`h-8 md:h-10 w-auto object-contain opacity-30 hover:opacity-70 transition-all duration-300 grayscale hover:grayscale-0 shrink-0 ${p.invert ? "invert brightness-200" : ""}`}
               loading="lazy"
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
