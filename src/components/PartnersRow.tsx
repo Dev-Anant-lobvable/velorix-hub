@@ -7,16 +7,18 @@ import qualcommLogo from "@/assets/logos/qualcomm.png";
 import rockstarLogo from "@/assets/logos/rockstar.png";
 import cognosphereLogo from "@/assets/logos/cognosphere.png";
 import kuroGamesLogo from "@/assets/logos/kuro-games.svg";
+import residentEvilLogo from "@/assets/logos/resident-evil.png";
 
 const partners = [
-  { name: "Google", logo: googleLogo },
-  { name: "ESL Gaming", logo: eslLogo },
-  { name: "Riot Games", logo: riotLogo },
-  { name: "Garena", logo: garenaLogo },
-  { name: "Qualcomm", logo: qualcommLogo },
-  { name: "Rockstar Games", logo: rockstarLogo },
-  { name: "CognoSphere", logo: cognosphereLogo },
-  { name: "Kuro Games", logo: kuroGamesLogo },
+  { name: "Google", logo: googleLogo, invert: false },
+  { name: "ESL Gaming", logo: eslLogo, invert: false },
+  { name: "Riot Games", logo: riotLogo, invert: false },
+  { name: "Garena", logo: garenaLogo, invert: false },
+  { name: "Qualcomm", logo: qualcommLogo, invert: false },
+  { name: "Rockstar Games", logo: rockstarLogo, invert: false },
+  { name: "CognoSphere", logo: cognosphereLogo, invert: false },
+  { name: "Kuro Games", logo: kuroGamesLogo, invert: true },
+  { name: "Resident Evil", logo: residentEvilLogo, invert: true },
 ];
 
 const PartnersRow = () => {
@@ -32,7 +34,7 @@ const PartnersRow = () => {
               key={p.name}
               src={p.logo}
               alt={p.name}
-              className="h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-70 transition-opacity duration-300 grayscale hover:grayscale-0"
+              className={`h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-70 transition-all duration-300 grayscale hover:grayscale-0 ${p.invert ? 'invert brightness-200' : ''}`}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 0.4 }}
               viewport={{ once: true }}
