@@ -34,7 +34,7 @@ const PartnersRow = () => {
               key={p.name}
               src={p.logo}
               alt={p.name}
-              className="h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-70 transition-opacity duration-300 grayscale hover:grayscale-0"
+              className={`h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-70 transition-all duration-300 grayscale hover:grayscale-0 ${p.invert ? 'invert brightness-200' : ''}`}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 0.4 }}
               viewport={{ once: true }}
