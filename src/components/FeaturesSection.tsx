@@ -51,20 +51,10 @@ const FeaturesSection = () => {
 
   return (
     <section id="features" className="py-24 bg-secondary relative overflow-hidden">
-      {/* Animated background line */}
-      <motion.div
-        className="absolute top-0 left-0 w-full h-px"
-        style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.4), transparent)" }}
-        animate={{ opacity: [0.3, 0.7, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Static gradient lines — no animation */}
+      <div className="absolute top-0 left-0 w-full h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent)" }} />
       <div className="absolute inset-0 bg-mesh-gradient opacity-50" />
-      <motion.div
-        className="absolute bottom-0 left-0 w-full h-px"
-        style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.4), transparent)" }}
-        animate={{ opacity: [0.3, 0.7, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
+      <div className="absolute bottom-0 left-0 w-full h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent)" }} />
 
       <div className="container mx-auto px-4 relative z-10" ref={ref}>
         <motion.div
@@ -87,7 +77,7 @@ const FeaturesSection = () => {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {features.map((feature, i) => (
+          {features.map((feature) => (
             <motion.div
               key={feature.title}
               variants={itemVariants}
@@ -101,12 +91,6 @@ const FeaturesSection = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="absolute inset-0 bg-primary/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  {/* Idle pulse on icon */}
-                  <motion.div
-                    className="absolute inset-0 bg-primary/10 rounded-xl"
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0, 0.1] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-                  />
                   <feature.icon className="w-7 h-7 text-primary relative z-10" />
                 </motion.div>
 

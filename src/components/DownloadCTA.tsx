@@ -19,22 +19,14 @@ const DownloadCTA = () => {
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
-          {/* Animated shimmer overlay */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-foreground/5 to-transparent skew-x-12"
-            animate={{ x: ["-200%", "200%"] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
-          />
+          {/* CSS shimmer — no JS animation */}
+          <div className="absolute inset-0 cta-shimmer pointer-events-none" />
 
-          <motion.div
-            className="flex justify-center mb-6 relative z-10"
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          >
+          <div className="flex justify-center mb-6 relative z-10">
             <div className="w-16 h-16 rounded-2xl bg-primary-foreground flex items-center justify-center">
               <Smartphone className="w-8 h-8 text-primary" />
             </div>
-          </motion.div>
+          </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-primary-foreground relative z-10">
             Ready to Play?
