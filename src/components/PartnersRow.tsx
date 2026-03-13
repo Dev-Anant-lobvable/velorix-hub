@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import googleLogo from "@/assets/logos/google.png";
 import eslLogo from "@/assets/logos/esl.png";
 import riotLogo from "@/assets/logos/riot.png";
@@ -22,7 +21,6 @@ const partners = [
 ];
 
 const PartnersRow = () => {
-  // Double the array for infinite scroll effect
   const doubled = [...partners, ...partners];
 
   return (
@@ -32,15 +30,11 @@ const PartnersRow = () => {
           Games & Partners
         </p>
       </div>
-      {/* Infinite scrolling marquee */}
+      {/* CSS-only infinite marquee — no JS animation frames */}
       <div className="relative">
         <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
-        <motion.div
-          className="flex items-center gap-12 w-max"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        >
+        <div className="marquee-track">
           {doubled.map((p, i) => (
             <img
               key={`${p.name}-${i}`}
@@ -50,7 +44,7 @@ const PartnersRow = () => {
               loading="lazy"
             />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

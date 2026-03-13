@@ -54,18 +54,10 @@ const HeroSection = () => {
     >
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
-      
-      {/* Animated ambient orbs */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[150px]"
-        animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.25, 0.15] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]"
-        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
+
+      {/* Static ambient glow - no animation, pure CSS */}
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -79,7 +71,7 @@ const HeroSection = () => {
               className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6"
               variants={itemVariants}
             >
-              <span className="text-gradient text-glow">VeloRix</span>
+              <span className="text-gradient text-glow glitch-text" data-text="VeloRix">VeloRix</span>
               <br />
               <span className="text-foreground">Tournaments</span>
             </motion.h1>
@@ -145,34 +137,8 @@ const HeroSection = () => {
               whileHover={{ rotateY: 10, rotateX: -5, scale: 1.05 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              {/* Breathing glow behind phone */}
-              <motion.div
-                className="absolute inset-0 bg-primary/25 blur-[80px] rounded-full scale-75"
-                animate={{ scale: [0.75, 0.85, 0.75], opacity: [0.25, 0.4, 0.25] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.div
-                className="absolute inset-0 bg-primary/15 blur-[120px] rounded-full"
-                animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              />
-
-              {/* Orbiting dots */}
-              <motion.div
-                className="absolute -top-8 -left-8 w-4 h-4 bg-primary/50 rounded-full blur-sm"
-                animate={{ y: [0, -10, 0], x: [0, 8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.div
-                className="absolute top-1/2 -right-8 w-3 h-3 bg-primary/40 rounded-full blur-sm"
-                animate={{ y: [0, 12, 0], x: [0, -6, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              />
-              <motion.div
-                className="absolute -bottom-8 left-1/4 w-2 h-2 bg-primary/60 rounded-full blur-sm"
-                animate={{ y: [0, -8, 0], x: [0, 10, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              />
+              {/* Static glow behind phone */}
+              <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full scale-75 pointer-events-none" />
 
               <ImageWithSkeleton
                 src={phoneMockup}
@@ -181,7 +147,7 @@ const HeroSection = () => {
                 height={768}
                 loading="eager"
                 decoding="async"
-                className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl"
+                className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl phone-float"
                 skeletonClassName="w-72 sm:w-80 lg:w-96 aspect-[1/2] rounded-3xl"
               />
             </motion.div>
@@ -195,12 +161,9 @@ const HeroSection = () => {
           transition={{ delay: 1.2, duration: 0.5 }}
         >
           <span className="text-sm text-muted-foreground">Scroll Down</span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
+          <div className="chevron-bounce">
             <ChevronDown className="w-5 h-5 text-primary" />
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -54,7 +54,7 @@ const StatsSection = () => {
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-          {stats.map((stat, i) => (
+          {stats.map((stat) => (
             <motion.div
               key={stat.label}
               className="text-center group cursor-default"
@@ -64,19 +64,11 @@ const StatsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <motion.div
-                className="flex justify-center mb-3"
-                whileHover={{ rotate: 10 }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.div
-                  className="w-12 h-12 rounded-full bg-accent flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-glow transition-all duration-300"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-                >
+              <div className="flex justify-center mb-3">
+                <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center group-hover:bg-primary/20 group-hover:shadow-glow transition-all duration-300">
                   <stat.icon className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-300" />
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
               <AnimatedCounter value={stat.value} suffix={stat.suffix} format={stat.format} displayAs={stat.displayAs} />
               <div className="text-sm text-muted-foreground font-medium group-hover:text-foreground transition-colors duration-300">
                 {stat.label}

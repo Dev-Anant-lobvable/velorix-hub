@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { playSound } from "@/hooks/useSoundEffect";
 
 const faqs = [
   {
@@ -39,10 +40,13 @@ const faqs = [
 ];
 
 const FAQSection = () => {
+  const handleToggle = () => {
+    playSound("/sounds/external-link.mp3", 0.25);
+  };
+
   return (
     <section id="faq" className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
             Frequently Asked{" "}
@@ -53,9 +57,8 @@ const FAQSection = () => {
           </p>
         </div>
 
-        {/* FAQ Accordion */}
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-3">
+          <Accordion type="single" collapsible className="space-y-3" onValueChange={handleToggle}>
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}

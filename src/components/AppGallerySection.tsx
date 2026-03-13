@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { playSound } from "@/hooks/useSoundEffect";
 import gallery1 from "@/assets/gallery-1.png";
 import gallery2 from "@/assets/gallery-2.png";
 import gallery3 from "@/assets/gallery-3.png";
@@ -10,98 +11,71 @@ import gallery4 from "@/assets/gallery-4.png";
 import gallery5 from "@/assets/gallery-5.png";
 import gallery6 from "@/assets/gallery-6.png";
 
+const galleryImages = [
+  { src: gallery1, alt: "Tournament Events Interface" },
+  { src: gallery2, alt: "Esports Championship Design" },
+  { src: gallery3, alt: "Mobile App Dashboard" },
+  { src: gallery4, alt: "Chat & Community Features" },
+  { src: gallery5, alt: "Messaging Interface" },
+  { src: gallery6, alt: "Storage & Features" },
+];
+
+const features = [
+  { title: "Live Tournaments", desc: "Join real-time competitions" },
+  { title: "Leaderboards", desc: "Track your ranking" },
+  { title: "Rewards", desc: "Win exciting prizes" },
+  { title: "Community", desc: "Connect with gamers" },
+];
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+    scale: 0.9,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? 300 : -300,
+    opacity: 0,
+    scale: 0.9,
+  }),
+};
+
 const AppGallerySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const { ref, isInView } = useScrollAnimation(0.1);
-  
-  const galleryImages = [
-    { src: gallery1, alt: "Tournament Events Interface" },
-    { src: gallery2, alt: "Esports Championship Design" },
-    { src: gallery3, alt: "Mobile App Dashboard" },
-    { src: gallery4, alt: "Chat & Community Features" },
-    { src: gallery5, alt: "Messaging Interface" },
-    { src: gallery6, alt: "Storage & Features" },
-  ];
 
-  // Auto-scroll carousel every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setDirection(1);
       setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [galleryImages.length]);
+  }, []);
 
-  const nextSlide = () => {
-    setDirection(1);
-    setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
-  };
-
-  const prevSlide = () => {
-    setDirection(-1);
-    setCurrentSlide((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
-  };
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.8,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.8,
-    }),
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut" as const,
-      },
-    },
-  };
-
-  const features = [
-    { title: "Live Tournaments", desc: "Join real-time competitions" },
-    { title: "Leaderboards", desc: "Track your ranking" },
-    { title: "Rewards", desc: "Win exciting prizes" },
-    { title: "Community", desc: "Connect with gamers" },
-  ];
+  const navigate = useCallback((dir: number) => {
+    playSound("/sounds/external-link.mp3", 0.2);
+    setDirection(dir);
+    setCurrentSlide((prev) => {
+      const next = prev + dir;
+      return next < 0 ? galleryImages.length - 1 : next % galleryImages.length;
+    });
+  }, []);
 
   return (
     <section className="relative py-24 overflow-hidden" ref={ref}>
-      {/* AMOLED background with subtle gradient */}
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient opacity-30" />
 
-      {/* Gallery Section */}
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div 
+        <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -116,33 +90,29 @@ const AppGallerySection = () => {
           </p>
         </motion.div>
 
-        {/* Enhanced Carousel */}
-        <motion.div 
+        <motion.div
           className="relative h-[60vh] max-h-[600px] mb-12"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {/* Navigation Arrows */}
           <button
-            onClick={prevSlide}
+            onClick={() => navigate(-1)}
             className="absolute left-4 top-1/2 -translate-y-1/2 z-20 glass w-12 h-12 rounded-full flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all group"
           >
             <ChevronLeft className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
           </button>
           <button
-            onClick={nextSlide}
+            onClick={() => navigate(1)}
             className="absolute right-4 top-1/2 -translate-y-1/2 z-20 glass w-12 h-12 rounded-full flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all group"
           >
             <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
           </button>
 
-          {/* Carousel Container */}
           <div className="relative h-full flex items-center justify-center overflow-hidden rounded-2xl">
-            {/* Glow background */}
             <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent" />
-            
-            <AnimatePresence initial={false} custom={direction}>
+
+            <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div
                 key={currentSlide}
                 custom={direction}
@@ -152,13 +122,12 @@ const AppGallerySection = () => {
                 exit="exit"
                 transition={{
                   x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.3 },
-                  scale: { duration: 0.3 },
+                  opacity: { duration: 0.2 },
+                  scale: { duration: 0.2 },
                 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
                 <div className="relative group">
-                  {/* Glow effect behind image */}
                   <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-primary/20 to-primary/30 rounded-3xl blur-2xl opacity-50 group-hover:opacity-70 transition-opacity" />
                   <ImageWithSkeleton
                     src={galleryImages[currentSlide].src}
@@ -175,39 +144,35 @@ const AppGallerySection = () => {
             </AnimatePresence>
           </div>
 
-          {/* Enhanced Slide indicators */}
           <div className="flex justify-center gap-3 mt-6">
             {galleryImages.map((_, index) => (
-              <motion.button
+              <button
                 key={index}
                 onClick={() => {
+                  playSound("/sounds/external-link.mp3", 0.15);
                   setDirection(index > currentSlide ? 1 : -1);
                   setCurrentSlide(index);
                 }}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  currentSlide === index 
-                    ? "bg-primary w-8 shadow-neon" 
+                  currentSlide === index
+                    ? "bg-primary w-8 shadow-neon"
                     : "bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50"
                 }`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
         </motion.div>
 
-        {/* Feature highlights */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              variants={itemVariants}
               whileHover={{ y: -8, scale: 1.02 }}
               className="group"
             >
