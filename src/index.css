@@ -202,9 +202,15 @@
 }
 
 @layer components {
-  /* Float animation removed for performance */
-  .animate-float {
-    /* animation removed */
+  /* Lightweight CSS phone float — GPU composited */
+  .phone-float {
+    animation: phone-float 6s ease-in-out infinite;
+    will-change: transform;
+  }
+  
+  /* Chevron bounce */
+  .chevron-bounce {
+    animation: chevron-bounce 1.5s ease-in-out infinite;
   }
 
   .animate-fade-up {
@@ -260,7 +266,7 @@
       0 0 80px hsl(350 85% 55% / 0.08);
   }
   
-  /* Loading skeleton with shimmer */
+  /* Skeleton shimmer */
   .skeleton-shimmer {
     background: linear-gradient(
       90deg,
@@ -271,64 +277,125 @@
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
+  
+  /* CSS-only marquee */
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+  
+  /* Scan lines overlay */
+  .scan-lines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(0 0% 100% / 0.015) 2px,
+      hsl(0 0% 100% / 0.015) 4px
+    );
+    mix-blend-mode: overlay;
+  }
+  
+  /* CTA shimmer — pure CSS */
+  .cta-shimmer {
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      hsl(0 0% 100% / 0.06) 50%,
+      transparent 60%
+    );
+    background-size: 200% 100%;
+    animation: cta-shimmer 6s ease-in-out infinite;
+  }
+  
+  /* Glitch text effect on hover */
+  .glitch-text {
+    position: relative;
+  }
+  
+  .glitch-text:hover::before,
+  .glitch-text:hover::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: hsl(var(--background));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  
+  .glitch-text:hover::before {
+    animation: glitch-1 0.3s ease-in-out;
+    color: hsl(350 85% 55%);
+    clip-path: inset(0 0 60% 0);
+  }
+  
+  .glitch-text:hover::after {
+    animation: glitch-2 0.3s ease-in-out;
+    color: hsl(200 85% 55%);
+    clip-path: inset(40% 0 0 0);
+  }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+@keyframes phone-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes chevron-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 
 @keyframes fade-up {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px hsl(350 85% 55% / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px hsl(350 85% 55% / 0.5), 0 0 60px hsl(350 85% 55% / 0.3);
-  }
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes cta-shimmer {
+  0%, 100% { background-position: 200% 0; }
+  50% { background-position: -200% 0; }
+}
+
+@keyframes glitch-1 {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(3px, -2px); }
+  60% { transform: translate(-2px, 1px); }
+  80% { transform: translate(2px, -1px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes glitch-2 {
+  0% { transform: translate(0); }
+  20% { transform: translate(3px, -2px); }
+  40% { transform: translate(-3px, 2px); }
+  60% { transform: translate(2px, -1px); }
+  80% { transform: translate(-2px, 1px); }
+  100% { transform: translate(0); }
 }
 
 @keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
 }
 
 .animate-ripple {
