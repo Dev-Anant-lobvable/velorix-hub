@@ -1,10 +1,8 @@
 import { Download, ChevronDown, Smartphone, HardDrive } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { playDownloadSound } from "@/hooks/useSoundEffect";
-import phoneMockup from "@/assets/phone-mockup-new.png";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -37,16 +35,6 @@ const HeroSection = () => {
     },
   };
 
-  const phoneVariants = {
-    hidden: { opacity: 0, x: 100, rotateY: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      rotateY: 0,
-      transition: { duration: 0.8, ease: "easeOut" as const, delay: 0.4 },
-    },
-  };
-
   return (
     <section
       id="home"
@@ -59,102 +47,73 @@ const HeroSection = () => {
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="hero-bottom-fade absolute inset-x-0 bottom-0 h-36 pointer-events-none" />
-      <div className="hero-bottom-haze absolute left-1/2 bottom-6 h-28 w-[72%] max-w-3xl -translate-x-1/2 pointer-events-none sm:bottom-8" />
+      <div className="hero-bottom-haze absolute left-1/2 bottom-3 h-36 w-[88%] max-w-5xl -translate-x-1/2 pointer-events-none sm:bottom-4 sm:h-44" />
+      <div className="hero-bottom-haze-secondary absolute left-1/2 bottom-0 h-24 w-[70%] max-w-3xl -translate-x-1/2 pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            className="text-center lg:text-left"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+        <motion.div
+          className="mx-auto max-w-4xl text-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.h1
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6"
+            variants={itemVariants}
           >
-            <motion.h1
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6"
-              variants={itemVariants}
-            >
-              <span className="text-gradient text-glow glitch-text" data-text="VeloRix">VeloRix</span>
-              <br />
-              <span className="text-foreground">Tournaments</span>
-            </motion.h1>
+            <span className="text-gradient text-glow glitch-text" data-text="VeloRix">VeloRix</span>
+            <br />
+            <span className="text-foreground">Tournaments</span>
+          </motion.h1>
 
-            <motion.p
-              className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6"
-              variants={itemVariants}
-            >
-              India's go-to app for Free Fire & BGMI tournaments. Play daily
-              matches, win real rewards, and climb the leaderboard.
-            </motion.p>
+          <motion.p
+            className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6"
+            variants={itemVariants}
+          >
+            India's go-to app for Free Fire & BGMI tournaments. Play daily
+            matches, win real rewards, and climb the leaderboard.
+          </motion.p>
 
-            <motion.div
-              className="flex flex-wrap items-center gap-3 justify-center lg:justify-start mb-8"
-              variants={itemVariants}
-            >
-              <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
-                <Smartphone className="w-4 h-4 text-primary" />
-                <span>VeloRix v1.0.0</span>
-              </div>
-              <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
-                <HardDrive className="w-4 h-4 text-primary" />
-                <span>~25 MB</span>
-              </div>
-              <div className="glass px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
-                Android 7.0+
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-              variants={itemVariants}
-            >
-              <AnimatedButton
-                variant="hero"
-                size="xl"
-                className="pulse-glow"
-                onClick={handleDownload}
-              >
-                <Download className="w-5 h-5" />
-                Download App
-              </AnimatedButton>
-              <AnimatedButton
-                variant="heroOutline"
-                size="xl"
-                onClick={scrollToFeatures}
-                className="glass hover:border-primary/50 transition-all"
-              >
-                Learn More
-              </AnimatedButton>
-            </motion.div>
+          <motion.div
+            className="flex flex-wrap items-center gap-3 justify-center mb-8"
+            variants={itemVariants}
+          >
+            <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
+              <Smartphone className="w-4 h-4 text-primary" />
+              <span>VeloRix v1.0.0</span>
+            </div>
+            <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
+              <HardDrive className="w-4 h-4 text-primary" />
+              <span>~25 MB</span>
+            </div>
+            <div className="glass px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
+              Android 7.0+
+            </div>
           </motion.div>
 
           <motion.div
-            className="relative flex justify-center lg:justify-end"
-            variants={phoneVariants}
-            initial="hidden"
-            animate="visible"
-            style={{ perspective: "1000px" }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            variants={itemVariants}
           >
-            <motion.div
-              className="relative"
-              whileHover={{ y: -6, rotateY: 6, rotateX: -3, scale: 1.02 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+            <AnimatedButton
+              variant="hero"
+              size="xl"
+              className="pulse-glow"
+              onClick={handleDownload}
             >
-              {/* Static glow behind phone */}
-              <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full scale-75 pointer-events-none" />
-
-              <ImageWithSkeleton
-                src={phoneMockup}
-                alt="VeloRix Tournaments App"
-                width={384}
-                height={768}
-                loading="eager"
-                decoding="async"
-                className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl transition-transform duration-500 will-change-transform"
-                skeletonClassName="w-72 sm:w-80 lg:w-96 aspect-[1/2] rounded-3xl"
-              />
-            </motion.div>
+              <Download className="w-5 h-5" />
+              Download App
+            </AnimatedButton>
+            <AnimatedButton
+              variant="heroOutline"
+              size="xl"
+              onClick={scrollToFeatures}
+              className="glass hover:border-primary/50 transition-all"
+            >
+              Learn More
+            </AnimatedButton>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
       <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 sm:bottom-8">
