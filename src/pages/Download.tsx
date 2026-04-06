@@ -32,9 +32,14 @@ const DownloadPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      <div className="absolute inset-0 bg-dark-gradient pointer-events-none" />
+      <div className="absolute inset-0 bg-mesh-gradient opacity-60 pointer-events-none" />
+      <div className="download-page-glow absolute inset-x-0 top-20 h-80 pointer-events-none" />
+      <div className="download-page-grid absolute inset-0 pointer-events-none" />
+
       <Navbar />
-      <main className="container mx-auto px-4 pt-32 pb-20">
+      <main className="container relative z-10 mx-auto px-4 pt-32 pb-20">
         <BackButton />
         <motion.div
           className="max-w-2xl mx-auto text-center mb-12"
