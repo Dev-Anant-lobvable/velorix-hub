@@ -50,7 +50,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 sm:pt-36"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden pt-32 pb-24 sm:pt-36 sm:pb-28"
     >
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
@@ -58,6 +58,8 @@ const HeroSection = () => {
       {/* Static ambient glow - no animation, pure CSS */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="hero-bottom-fade absolute inset-x-0 bottom-0 h-36 pointer-events-none" />
+      <div className="hero-bottom-haze absolute left-1/2 bottom-6 h-28 w-[72%] max-w-3xl -translate-x-1/2 pointer-events-none sm:bottom-8" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -134,7 +136,7 @@ const HeroSection = () => {
           >
             <motion.div
               className="relative"
-              whileHover={{ rotateY: 10, rotateX: -5, scale: 1.05 }}
+              whileHover={{ y: -6, rotateY: 6, rotateX: -3, scale: 1.02 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
               {/* Static glow behind phone */}
@@ -147,24 +149,32 @@ const HeroSection = () => {
                 height={768}
                 loading="eager"
                 decoding="async"
-                className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl phone-float"
+                className="relative z-10 w-72 sm:w-80 lg:w-96 drop-shadow-2xl transition-transform duration-500 will-change-transform"
                 skeletonClassName="w-72 sm:w-80 lg:w-96 aspect-[1/2] rounded-3xl"
               />
             </motion.div>
           </motion.div>
         </div>
+      </div>
 
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 sm:bottom-8">
+        <motion.button
+          type="button"
+          onClick={scrollToFeatures}
+          className="hero-scroll-cue"
+          aria-label="Scroll to features"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.5 }}
+          transition={{ delay: 1.1, duration: 0.5 }}
+          whileHover={{ y: -2, scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
-          <span className="text-sm text-muted-foreground">Scroll Down</span>
+          <span className="hero-scroll-label">Scroll down</span>
+          <span className="hero-scroll-dot" />
           <div className="chevron-bounce">
             <ChevronDown className="w-5 h-5 text-primary" />
           </div>
-        </motion.div>
+        </motion.button>
       </div>
     </section>
   );

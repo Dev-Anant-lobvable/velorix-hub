@@ -1,3 +1,4 @@
+import { ReactNode, useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Toaster } from "@/components/ui/toaster";
@@ -6,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import LoadingSplash from "@/components/LoadingSplash";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -16,6 +18,7 @@ import Contact from "./pages/Contact";
 import DownloadPage from "./pages/Download";
 
 const queryClient = new QueryClient();
+const SPLASH_STORAGE_KEY = "velorix-splash-shown";
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -31,7 +34,7 @@ const pageVariants = {
   },
 };
 
-const PageWrapper = ({ children }: { children: React.ReactNode }) => (
+const PageWrapper = ({ children }: { children: ReactNode }) => (
   <motion.div initial="initial" animate="enter" exit="exit" variants={pageVariants}>
     {children}
   </motion.div>
@@ -56,18 +59,35 @@ const AnimatedRoutes = () => {
   );
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AnimatedRoutes />
-      </BrowserRouter>
-      <Analytics />
-      <SpeedInsights />
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [showSplash, setShowSplash] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.sessionStorage.getItem(SPLASH_STORAGE_KEY) !== "1";
+  });
+
+  useEffect(() => {
+    if (!showSplash || typeof window === "undefined") return;
+
+    window.sessionStorage.setItem(SPLASH_STORAGE_KEY, "1");
+    const timer = window.setTimeout(() => setShowSplash(false), 1700);
+
+    return () => window.clearTimeout(timer);
+  }, [showSplash]);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AnimatedRoutes />
+        </BrowserRouter>
+        <AnimatePresence>{showSplash ? <LoadingSplash /> : null}</AnimatePresence>
+        <Analytics />
+        <SpeedInsights />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
