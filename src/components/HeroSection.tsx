@@ -46,9 +46,10 @@ const HeroSection = () => {
       {/* Static ambient glow - no animation, pure CSS */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="hero-bottom-fade absolute inset-x-0 bottom-0 h-36 pointer-events-none" />
-      <div className="hero-bottom-haze absolute left-1/2 bottom-3 h-36 w-[88%] max-w-5xl -translate-x-1/2 pointer-events-none sm:bottom-4 sm:h-44" />
-      <div className="hero-bottom-haze-secondary absolute left-1/2 bottom-0 h-24 w-[70%] max-w-3xl -translate-x-1/2 pointer-events-none" />
+      <div className="hero-bottom-fade absolute inset-x-0 bottom-0 h-48 pointer-events-none sm:h-56" />
+      <div className="hero-bottom-edge absolute inset-x-0 bottom-0 h-20 pointer-events-none sm:h-24" />
+      <div className="hero-bottom-haze absolute left-1/2 bottom-[-2.25rem] h-48 w-[120%] max-w-6xl -translate-x-1/2 pointer-events-none sm:bottom-[-2.5rem] sm:h-56" />
+      <div className="hero-bottom-haze-secondary absolute left-1/2 bottom-[-1rem] h-28 w-[92%] max-w-4xl -translate-x-1/2 pointer-events-none sm:h-36" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import trustpilotIcon from "@/assets/logos/google.png";
+import { useEffect, useRef } from "react";
 import googlePlayIcon from "@/assets/logos/google-play.png";
 import appStoreIcon from "@/assets/logos/app-store.png";
 
@@ -47,6 +47,39 @@ const Stars = ({ count, color }: { count: number; color: string }) => (
 );
 
 const SocialProofBadges = () => {
+  const trustpilotWidgetRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let attempts = 0;
+
+    const loadTrustpilotWidget = () => {
+      const trustpilot = (window as Window & {
+        Trustpilot?: {
+          loadFromElement?: (element: Element, forceReload?: boolean) => void;
+        };
+      }).Trustpilot;
+
+      if (trustpilot?.loadFromElement && trustpilotWidgetRef.current) {
+        trustpilot.loadFromElement(trustpilotWidgetRef.current, true);
+        return true;
+      }
+
+      return false;
+    };
+
+    if (loadTrustpilotWidget()) return;
+
+    const interval = window.setInterval(() => {
+      attempts += 1;
+
+      if (loadTrustpilotWidget() || attempts >= 20) {
+        window.clearInterval(interval);
+      }
+    }, 500);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
   return (
     <section className="py-8">
       <div className="container mx-auto px-4">
@@ -80,6 +113,38 @@ const SocialProofBadges = () => {
             );
           })}
         </div>
+
+        <motion.div
+          className="mx-auto mt-5 max-w-md"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.18, duration: 0.45 }}
+        >
+          <div className="glass-strong rounded-2xl border border-border/60 px-4 py-4 text-center shadow-card">
+            <p className="mb-3 text-sm text-muted-foreground">
+              Enjoying VeloRix? <span className="text-foreground">Drop a quick review on Trustpilot.</span>
+            </p>
+            <div
+              ref={trustpilotWidgetRef}
+              className="trustpilot-widget"
+              data-locale="en-US"
+              data-template-id="56278e9abfbbba0bdcd568bc"
+              data-businessunit-id="69ab097b6d848fc9d60bf128"
+              data-style-height="52px"
+              data-style-width="100%"
+              data-token="a7c54dba-c0d0-4d6f-8444-56d348f63941"
+            >
+              <a
+                href="https://www.trustpilot.com/review/velorix-hub.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Trustpilot
+              </a>
+            </div>
+          </div>
+        </motion.div>
 
         <motion.p
           className="text-center text-[13px] text-muted-foreground mt-4"
