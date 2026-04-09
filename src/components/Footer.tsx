@@ -15,6 +15,7 @@ const Footer = () => {
   const legalLinks = [
     { name: "Help Center", href: "/help" },
     { name: "Contact Us", href: "/contact" },
+    { name: "Status", href: "/status" },
     { name: "Terms of Service", href: "/terms" },
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Cookie Policy", href: "/cookies" },

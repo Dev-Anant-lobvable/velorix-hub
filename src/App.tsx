@@ -16,6 +16,7 @@ import CookiePolicy from "./pages/CookiePolicy";
 import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 import DownloadPage from "./pages/Download";
+import StatusPage from "./pages/Status";
 
 const queryClient = new QueryClient();
 const SPLASH_STORAGE_KEY = "velorix-splash-shown";
@@ -53,6 +54,7 @@ const AnimatedRoutes = () => {
         <Route path="/help" element={<PageWrapper><HelpCenter /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
         <Route path="/download" element={<PageWrapper><DownloadPage /></PageWrapper>} />
+        <Route path="/status" element={<PageWrapper><StatusPage /></PageWrapper>} />
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
       </Routes>
     </AnimatePresence>

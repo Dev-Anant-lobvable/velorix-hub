@@ -38,7 +38,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden pt-32 pb-24 sm:pt-36 sm:pb-28"
+      className="relative z-10 flex min-h-screen items-center justify-center overflow-x-hidden overflow-y-visible pt-32 pb-24 sm:pt-36 sm:pb-28"
     >
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
@@ -46,10 +46,11 @@ const HeroSection = () => {
       {/* Static ambient glow - no animation, pure CSS */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="hero-bottom-fade absolute inset-x-0 bottom-0 h-48 pointer-events-none sm:h-56" />
-      <div className="hero-bottom-edge absolute inset-x-0 bottom-0 h-20 pointer-events-none sm:h-24" />
-      <div className="hero-bottom-haze absolute left-1/2 bottom-[-2.25rem] h-48 w-[120%] max-w-6xl -translate-x-1/2 pointer-events-none sm:bottom-[-2.5rem] sm:h-56" />
-      <div className="hero-bottom-haze-secondary absolute left-1/2 bottom-[-1rem] h-28 w-[92%] max-w-4xl -translate-x-1/2 pointer-events-none sm:h-36" />
+      <div className="hero-bottom-fade absolute inset-x-0 bottom-0 h-56 pointer-events-none sm:h-64" aria-hidden="true" />
+      <div className="hero-bottom-edge absolute inset-x-0 bottom-0 h-28 pointer-events-none sm:h-32" aria-hidden="true" />
+      <div className="hero-bottom-haze absolute left-1/2 bottom-[-3.5rem] h-56 w-[128%] max-w-7xl -translate-x-1/2 pointer-events-none sm:bottom-[-4.5rem] sm:h-72" aria-hidden="true" />
+      <div className="hero-bottom-haze-secondary absolute left-1/2 bottom-[-1.25rem] h-32 w-[96%] max-w-5xl -translate-x-1/2 pointer-events-none sm:h-40" aria-hidden="true" />
+      <div className="hero-bottom-seam absolute inset-x-0 bottom-[-4rem] h-24 pointer-events-none sm:bottom-[-4.5rem] sm:h-32" aria-hidden="true" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
