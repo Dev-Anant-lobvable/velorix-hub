@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -27,38 +27,72 @@ const features = [
   { title: "Community", desc: "Connect with gamers" },
 ];
 
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 300 : -300,
-    opacity: 0,
-    scale: 0.9,
-  }),
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-    scale: 1,
-  },
-  exit: (direction: number) => ({
-    zIndex: 0,
-    x: direction < 0 ? 300 : -300,
-    opacity: 0,
-    scale: 0.9,
-  }),
-};
-
 const AppGallerySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [allowAutoplay, setAllowAutoplay] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
   const { ref, isInView } = useScrollAnimation(0.1);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const syncAutoplay = () => {
+      setAllowAutoplay(mediaQuery.matches && !document.hidden);
+    };
+
+    syncAutoplay();
+    document.addEventListener("visibilitychange", syncAutoplay);
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", syncAutoplay);
+    } else {
+      mediaQuery.addListener(syncAutoplay);
+    }
+
+    return () => {
+      document.removeEventListener("visibilitychange", syncAutoplay);
+
+      if (typeof mediaQuery.removeEventListener === "function") {
+        mediaQuery.removeEventListener("change", syncAutoplay);
+      } else {
+        mediaQuery.removeListener(syncAutoplay);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!allowAutoplay || shouldReduceMotion || !isInView) return;
+
+    const interval = window.setInterval(() => {
       setDirection(1);
       setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+    }, 5500);
+
+    return () => window.clearInterval(interval);
+  }, [allowAutoplay, isInView, shouldReduceMotion]);
+
+  const slideVariants = {
+    enter: (slideDirection: number) => ({
+      x: shouldReduceMotion ? 0 : slideDirection > 0 ? 180 : -180,
+      opacity: 0,
+      scale: shouldReduceMotion ? 1 : 0.97,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (slideDirection: number) => ({
+      zIndex: 0,
+      x: shouldReduceMotion ? 0 : slideDirection < 0 ? 180 : -180,
+      opacity: 0,
+      scale: shouldReduceMotion ? 1 : 0.97,
+    }),
+  };
 
   const navigate = useCallback((dir: number) => {
     playSound("/sounds/external-link.mp3", 0.2);
@@ -70,9 +104,10 @@ const AppGallerySection = () => {
   }, []);
 
   return (
-    <section className="relative py-24 overflow-hidden" ref={ref}>
+    <section className="relative py-24 overflow-x-hidden overflow-y-visible" ref={ref}>
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient opacity-30" />
+      <div className="section-top-blur absolute inset-x-0 -top-20 h-40 pointer-events-none sm:-top-24 sm:h-48" aria-hidden="true" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -112,7 +147,7 @@ const AppGallerySection = () => {
           <div className="relative h-full flex items-center justify-center overflow-hidden rounded-2xl">
             <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent" />
 
-            <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={currentSlide}
                 custom={direction}
@@ -120,11 +155,15 @@ const AppGallerySection = () => {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 },
-                  scale: { duration: 0.2 },
-                }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0.18 }
+                    : {
+                        x: { type: "spring", stiffness: 220, damping: 30 },
+                        opacity: { duration: 0.18 },
+                        scale: { duration: 0.18 },
+                      }
+                }
                 className="absolute inset-0 flex items-center justify-center"
               >
                 <div className="relative group">
@@ -173,7 +212,7 @@ const AppGallerySection = () => {
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              whileHover={{ y: -8, scale: 1.02 }}
+              whileHover={shouldReduceMotion ? undefined : { y: -6, scale: 1.01 }}
               className="group"
             >
               <div className="text-center p-5 rounded-xl glass hover:border-primary/40 transition-all duration-300 hover:shadow-soft">

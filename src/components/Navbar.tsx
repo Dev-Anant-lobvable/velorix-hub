@@ -1,6 +1,6 @@
 import { Download, Menu, X } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { playDownloadSound } from "@/hooks/useSoundEffect";
@@ -17,11 +17,30 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const scrollFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 100);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const updateScrollState = () => {
+      scrollFrameRef.current = null;
+      const nextValue = window.scrollY > 100;
+      setIsScrolled((prev) => (prev === nextValue ? prev : nextValue));
+    };
+
+    const handleScroll = () => {
+      if (scrollFrameRef.current !== null) return;
+      scrollFrameRef.current = window.requestAnimationFrame(updateScrollState);
+    };
+
+    updateScrollState();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+      }
+
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleDownload = () => {
