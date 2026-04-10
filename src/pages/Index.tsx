@@ -18,6 +18,9 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-x-hidden relative">
       {/* Lightweight scan lines overlay for techy vibe */}
       <div className="scan-lines" />
+      
+      {/* Global fixed reddish blur at bottom edge */}
+      <div className="global-bottom-glow" aria-hidden="true" />
 
       <Navbar />
       <main>
