@@ -591,6 +591,33 @@
     font-size: 0.76rem;
   }
   
+  /* Global fixed bottom glow — always visible */
+  .global-bottom-glow {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    height: 220px;
+    z-index: 40;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 120% 100% at 50% 100%,
+        hsl(350 85% 45% / 0.28) 0%,
+        hsl(350 85% 50% / 0.16) 30%,
+        hsl(350 70% 40% / 0.06) 55%,
+        transparent 80%
+      ),
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        hsl(350 85% 50% / 0.1) 40%,
+        hsl(350 85% 45% / 0.22) 100%
+      );
+    filter: blur(40px);
+    mask-image: linear-gradient(180deg, transparent 0%, black 30%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 30%);
+  }
+
   /* Glitch text effect on hover */
   .glitch-text {
     position: relative;
