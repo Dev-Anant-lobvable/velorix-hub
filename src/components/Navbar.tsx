@@ -38,7 +38,6 @@ const Navbar = () => {
       if (scrollFrameRef.current !== null) {
         window.cancelAnimationFrame(scrollFrameRef.current);
       }
-
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
@@ -126,11 +125,11 @@ const Navbar = () => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="md:hidden mt-4 pb-4 border-t border-border/30 pt-4"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
+              className="md:hidden mt-4 pb-4 pt-4 mobile-menu-glass rounded-2xl px-4 -mx-2"
+              initial={{ opacity: 0, height: 0, y: -10 }}
+              animate={{ opacity: 1, height: "auto", y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <div className="flex flex-col gap-4">
                 {navLinks.map((link, index) => (

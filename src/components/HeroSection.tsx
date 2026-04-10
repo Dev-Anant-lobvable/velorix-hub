@@ -31,19 +31,19 @@ const HeroSection = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" as const },
+      transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
   return (
     <section
       id="home"
-      className="relative z-10 flex min-h-screen items-center justify-center overflow-x-hidden overflow-y-visible pt-32 pb-24 sm:pt-36 sm:pb-28"
+      className="relative z-10 flex min-h-screen items-center justify-center overflow-hidden pt-32 pb-24 sm:pt-36 sm:pb-28"
     >
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
 
-      {/* Static ambient glow - no animation, pure CSS */}
+      {/* Static ambient glow */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="hero-bottom-fade absolute inset-x-0 bottom-0 h-56 pointer-events-none sm:h-64" aria-hidden="true" />
@@ -80,16 +80,16 @@ const HeroSection = () => {
             className="flex flex-wrap items-center gap-3 justify-center mb-8"
             variants={itemVariants}
           >
-            <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
-              <Smartphone className="w-4 h-4 text-primary" />
-              <span>VeloRix v1.0.0</span>
+            <div className="liquid-glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
+              <Smartphone className="w-4 h-4 text-primary relative z-10" />
+              <span className="relative z-10">VeloRix v1.0.0</span>
             </div>
-            <div className="glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
-              <HardDrive className="w-4 h-4 text-primary" />
-              <span>~25 MB</span>
+            <div className="liquid-glass flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
+              <HardDrive className="w-4 h-4 text-primary relative z-10" />
+              <span className="relative z-10">~25 MB</span>
             </div>
-            <div className="glass px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
-              Android 7.0+
+            <div className="liquid-glass px-4 py-2 rounded-full text-sm text-muted-foreground hover:border-primary/30 transition-colors">
+              <span className="relative z-10">Android 7.0+</span>
             </div>
           </motion.div>
 
@@ -110,9 +110,9 @@ const HeroSection = () => {
               variant="heroOutline"
               size="xl"
               onClick={scrollToFeatures}
-              className="glass hover:border-primary/50 transition-all"
+              className="liquid-glass hover:border-primary/50 transition-all rounded-xl"
             >
-              Learn More
+              <span className="relative z-10">Learn More</span>
             </AnimatedButton>
           </motion.div>
         </motion.div>
