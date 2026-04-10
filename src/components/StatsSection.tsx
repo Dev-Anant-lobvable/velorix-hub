@@ -51,7 +51,9 @@ const AnimatedCounter = ({ value, suffix, format, displayAs }: { value: number; 
 
 const StatsSection = () => {
   return (
-    <section className="py-16 bg-background">
+    <section className="py-16 bg-background relative">
+      {/* Subtle top separator line */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {stats.map((stat) => (
