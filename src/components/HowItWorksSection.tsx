@@ -40,13 +40,14 @@ const HowItWorksSection = () => {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 40, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
-        duration: 0.5,
-        ease: "easeOut" as const,
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94],
       },
     },
   };
@@ -64,7 +65,7 @@ const HowItWorksSection = () => {
           className="text-center mb-16"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
             How <span className="text-gradient text-glow">It Works</span>
@@ -86,7 +87,7 @@ const HowItWorksSection = () => {
               variants={itemVariants}
               className="relative group"
             >
-              {/* Animated Connector Line */}
+              {/* Connector Line */}
               {index < steps.length - 1 && (
                 <motion.div 
                   className="hidden lg:block absolute top-10 left-[60%] w-full h-0.5 overflow-hidden"
@@ -100,23 +101,23 @@ const HowItWorksSection = () => {
               )}
 
               <motion.div 
-                className="glass-card p-6 h-full neon-border"
+                className="liquid-glass p-6 h-full rounded-xl"
                 whileHover={{ 
                   y: -10,
-                  transition: { duration: 0.3 }
+                  transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
                 }}
               >
                 {/* Step Number with glow */}
                 <motion.div 
-                  className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center font-bold text-sm text-primary-foreground shadow-neon"
+                  className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center font-bold text-sm text-primary-foreground shadow-neon z-10"
                   whileHover={{ scale: 1.1 }}
                 >
                   {index + 1}
                 </motion.div>
 
-                {/* Icon with animation */}
+                {/* Icon */}
                 <motion.div 
-                  className="w-16 h-16 rounded-xl bg-accent/80 flex items-center justify-center mb-5 relative"
+                  className="w-16 h-16 rounded-xl bg-accent/80 flex items-center justify-center mb-5 relative z-10"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -124,10 +125,10 @@ const HowItWorksSection = () => {
                   <step.icon className="w-8 h-8 text-primary relative z-10" />
                 </motion.div>
 
-                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300 relative z-10">
                   {step.title}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed relative z-10">
                   {step.description}
                 </p>
               </motion.div>

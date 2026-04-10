@@ -36,16 +36,17 @@ const FeaturesSection = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 40, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" as const },
+      scale: 1,
+      transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
     },
   };
 
@@ -61,7 +62,7 @@ const FeaturesSection = () => {
           className="text-center mb-16"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
             Why <span className="text-gradient text-glow">VeloRix</span>?
@@ -81,10 +82,10 @@ const FeaturesSection = () => {
             <motion.div
               key={feature.title}
               variants={itemVariants}
-              whileHover={{ y: -12, transition: { duration: 0.3 } }}
+              whileHover={{ y: -12, transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] } }}
               className="group"
             >
-              <div className="glass-card h-full p-6 hover:border-primary/40 transition-all duration-300 neon-border hover:shadow-glow">
+              <div className="liquid-glass h-full p-6 rounded-xl transition-all duration-300 hover:border-primary/30 hover:shadow-glow">
                 <motion.div
                   className="w-14 h-14 rounded-xl bg-accent/80 flex items-center justify-center mb-5 relative"
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -94,10 +95,10 @@ const FeaturesSection = () => {
                   <feature.icon className="w-7 h-7 text-primary relative z-10" />
                 </motion.div>
 
-                <h3 className="font-semibold text-lg text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                <h3 className="font-semibold text-lg text-foreground mb-3 group-hover:text-primary transition-colors duration-300 relative z-10">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed relative z-10">
                   {feature.description}
                 </p>
               </div>
