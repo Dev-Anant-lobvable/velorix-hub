@@ -17,6 +17,8 @@ import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 import DownloadPage from "./pages/Download";
 import StatusPage from "./pages/Status";
+import Changelog from "./pages/Changelog";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 const SPLASH_STORAGE_KEY = "velorix-splash-shown";
