@@ -76,26 +76,26 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link, index) => {
-              const Component = (link as any).isRoute ? Link : "a";
-              const props = (link as any).isRoute ? { to: link.href } : { href: link.href };
-              return (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index, duration: 0.3 }}
-                >
-                  <Component
-                    {...props}
-                    className="relative text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium group"
-                  >
+            {navLinks.map((link, index) => (
+              <motion.div
+                key={link.name}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.3 }}
+              >
+                {link.isRoute ? (
+                  <Link to={link.href} className="relative text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium group">
                     {link.name}
                     <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary rounded-full group-hover:w-full transition-all duration-300" />
-                  </Component>
-                </motion.div>
-              );
-            })}
+                  </Link>
+                ) : (
+                  <a href={link.href} className="relative text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium group">
+                    {link.name}
+                    <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary rounded-full group-hover:w-full transition-all duration-300" />
+                  </a>
+                )}
+              </motion.div>
+            ))}
           </div>
 
           <div className="hidden md:flex items-center gap-3">
@@ -134,26 +134,24 @@ const Navbar = () => {
               transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <div className="flex flex-col gap-4">
-                {navLinks.map((link, index) => {
-                  const Component = (link as any).isRoute ? Link : "a";
-                  const props = (link as any).isRoute ? { to: link.href } : { href: link.href };
-                  return (
-                    <motion.div
-                      key={link.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.05 * index }}
-                    >
-                      <Component
-                        {...props}
-                        className="block text-muted-foreground hover:text-primary transition-colors text-sm py-2 hover:translate-x-2 transition-transform duration-200"
-                        onClick={() => setIsOpen(false)}
-                      >
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 * index }}
+                  >
+                    {link.isRoute ? (
+                      <Link to={link.href} className="block text-muted-foreground hover:text-primary transition-all text-sm py-2 hover:translate-x-2 duration-200" onClick={() => setIsOpen(false)}>
                         {link.name}
-                      </Component>
-                    </motion.div>
-                  );
-                })}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="block text-muted-foreground hover:text-primary transition-all text-sm py-2 hover:translate-x-2 duration-200" onClick={() => setIsOpen(false)}>
+                        {link.name}
+                      </a>
+                    )}
+                  </motion.div>
+                ))}
                 <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { handleDownload(); setIsOpen(false); }}>
                   <Download className="w-4 h-4" />
                   Download APK
