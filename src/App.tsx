@@ -57,6 +57,8 @@ const AnimatedRoutes = () => {
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
         <Route path="/download" element={<PageWrapper><DownloadPage /></PageWrapper>} />
         <Route path="/status" element={<PageWrapper><StatusPage /></PageWrapper>} />
+        <Route path="/changelog" element={<PageWrapper><Changelog /></PageWrapper>} />
+        <Route path="/blog" element={<PageWrapper><Blog /></PageWrapper>} />
         <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
