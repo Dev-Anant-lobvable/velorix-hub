@@ -7,11 +7,11 @@ import { playDownloadSound } from "@/hooks/useSoundEffect";
 import velorixLogo from "@/assets/velorix-logo.png";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "Features", href: "#features" },
-  { name: "How It Works", href: "#how-it-works" },
+  { name: "Home", href: "#home", isRoute: false },
+  { name: "Features", href: "#features", isRoute: false },
+  { name: "How It Works", href: "#how-it-works", isRoute: false },
   { name: "Blog", href: "/blog", isRoute: true },
-  { name: "FAQ", href: "#faq" },
+  { name: "FAQ", href: "#faq", isRoute: false },
 ];
 
 const Navbar = () => {
