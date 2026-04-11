@@ -7,10 +7,11 @@ import { playDownloadSound } from "@/hooks/useSoundEffect";
 import velorixLogo from "@/assets/velorix-logo.png";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "Features", href: "#features" },
-  { name: "How It Works", href: "#how-it-works" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Home", href: "#home", isRoute: false },
+  { name: "Features", href: "#features", isRoute: false },
+  { name: "How It Works", href: "#how-it-works", isRoute: false },
+  { name: "Blog", href: "/blog", isRoute: true },
+  { name: "FAQ", href: "#faq", isRoute: false },
 ];
 
 const Navbar = () => {
@@ -76,23 +77,24 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link, index) => (
-              <motion.a
+              <motion.div
                 key={link.name}
-                href={link.href}
-                className="relative text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index, duration: 0.3 }}
-                whileHover={{ y: -2 }}
               >
-                {link.name}
-                <motion.span
-                  className="absolute -bottom-1 left-0 h-0.5 bg-primary rounded-full"
-                  initial={{ width: 0 }}
-                  whileHover={{ width: "100%" }}
-                  transition={{ duration: 0.2 }}
-                />
-              </motion.a>
+                {link.isRoute ? (
+                  <Link to={link.href} className="relative text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium group">
+                    {link.name}
+                    <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary rounded-full group-hover:w-full transition-all duration-300" />
+                  </Link>
+                ) : (
+                  <a href={link.href} className="relative text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium group">
+                    {link.name}
+                    <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary rounded-full group-hover:w-full transition-all duration-300" />
+                  </a>
+                )}
+              </motion.div>
             ))}
           </div>
 
@@ -133,18 +135,22 @@ const Navbar = () => {
             >
               <div className="flex flex-col gap-4">
                 {navLinks.map((link, index) => (
-                  <motion.a
+                  <motion.div
                     key={link.name}
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary transition-colors text-sm py-2"
-                    onClick={() => setIsOpen(false)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.05 * index }}
-                    whileHover={{ x: 8 }}
                   >
-                    {link.name}
-                  </motion.a>
+                    {link.isRoute ? (
+                      <Link to={link.href} className="block text-muted-foreground hover:text-primary transition-all text-sm py-2 hover:translate-x-2 duration-200" onClick={() => setIsOpen(false)}>
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="block text-muted-foreground hover:text-primary transition-all text-sm py-2 hover:translate-x-2 duration-200" onClick={() => setIsOpen(false)}>
+                        {link.name}
+                      </a>
+                    )}
+                  </motion.div>
                 ))}
                 <AnimatedButton variant="hero" size="default" className="w-full pulse-glow" onClick={() => { handleDownload(); setIsOpen(false); }}>
                   <Download className="w-4 h-4" />
