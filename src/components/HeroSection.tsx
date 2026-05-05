@@ -59,14 +59,37 @@ const HeroSection = () => {
           initial="hidden"
           animate="visible"
         >
-          <motion.h1
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6"
-            variants={itemVariants}
-          >
-            <span className="text-gradient text-glow glitch-text" data-text="VeloRix">VeloRix</span>
-            <br />
-            <span className="text-foreground">Tournaments</span>
-          </motion.h1>
+          <motion.div variants={itemVariants} className="mb-8">
+            <div className="brand-emblem mx-auto">
+              {/* Eyebrow tag */}
+              <div className="brand-eyebrow">
+                <span className="brand-eyebrow-dot" />
+                <span>EST · 2025 — INDIA</span>
+                <span className="brand-eyebrow-dot" />
+              </div>
+
+              {/* Main wordmark */}
+              <h1 className="brand-wordmark">
+                <span className="brand-wordmark-bracket left">[</span>
+                <span className="text-gradient text-glow glitch-text" data-text="VeloRix">
+                  VeloRix
+                </span>
+                <span className="brand-wordmark-bracket right">]</span>
+              </h1>
+
+              {/* Decorative divider */}
+              <div className="brand-divider" aria-hidden="true">
+                <span className="brand-divider-line" />
+                <span className="brand-divider-diamond" />
+                <span className="brand-divider-line" />
+              </div>
+
+              {/* Subtitle */}
+              <h2 className="brand-subtitle">
+                <span className="brand-subtitle-text">Tournaments</span>
+              </h2>
+            </div>
+          </motion.div>
 
           <motion.p
             className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6"
