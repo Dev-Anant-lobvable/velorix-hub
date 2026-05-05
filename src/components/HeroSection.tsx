@@ -71,7 +71,7 @@ const HeroSection = () => {
               {/* Main wordmark */}
               <h1 className="brand-wordmark">
                 <span className="brand-wordmark-bracket left">[</span>
-                <span className="text-gradient text-glow glitch-text" data-text="VeloRix">
+                <span className="text-gradient text-glow brand-wordmark-text">
                   VeloRix
                 </span>
                 <span className="brand-wordmark-bracket right">]</span>
