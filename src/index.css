@@ -795,3 +795,163 @@
     animation: none !important;
   }
 }
+
+/* ============================================ */
+/* Brand Emblem — Hero Wordmark Lockup           */
+/* ============================================ */
+.brand-emblem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem 2rem;
+  max-width: min(960px, 100%);
+}
+
+.brand-emblem::before,
+.brand-emblem::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 1px solid hsl(350 85% 55% / 0.5);
+  pointer-events: none;
+  opacity: 0.7;
+}
+.brand-emblem::before {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+.brand-emblem::after {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+.brand-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  font-weight: 500;
+  color: hsl(0 0% 60%);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  padding: 0.4rem 1rem;
+  border: 1px solid hsl(0 0% 14%);
+  border-radius: 999px;
+  background: hsl(0 0% 4% / 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.brand-eyebrow-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: hsl(350 85% 55%);
+  box-shadow: 0 0 8px hsl(350 85% 55% / 0.8);
+}
+
+.brand-wordmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  position: relative;
+}
+
+.brand-wordmark-bracket {
+  font-family: 'Orbitron', sans-serif;
+  color: hsl(350 85% 55% / 0.55);
+  font-weight: 300;
+  font-size: 0.7em;
+  text-shadow: 0 0 12px hsl(350 85% 55% / 0.4);
+  transform: translateY(-0.08em);
+  animation: bracket-pulse 3s ease-in-out infinite;
+}
+.brand-wordmark-bracket.right {
+  animation-delay: 1.5s;
+}
+
+@keyframes bracket-pulse {
+  0%, 100% { opacity: 0.55; transform: translateY(-0.08em) scale(1); }
+  50% { opacity: 1; transform: translateY(-0.08em) scale(1.05); }
+}
+
+.brand-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 320px;
+  margin: 1.25rem 0;
+}
+
+.brand-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(350 85% 55% / 0.6), transparent);
+}
+
+.brand-divider-diamond {
+  width: 8px;
+  height: 8px;
+  background: hsl(350 85% 55%);
+  transform: rotate(45deg);
+  box-shadow: 0 0 12px hsl(350 85% 55% / 0.7);
+}
+
+.brand-subtitle {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 3.2vw, 1.5rem);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  text-transform: uppercase;
+  color: hsl(0 0% 92%);
+  position: relative;
+}
+
+.brand-subtitle-text {
+  background: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 70%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .brand-emblem {
+    padding: 1rem 0.5rem 1.5rem;
+  }
+  .brand-emblem::before,
+  .brand-emblem::after {
+    width: 20px;
+    height: 20px;
+  }
+  .brand-eyebrow {
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    padding: 0.35rem 0.75rem;
+  }
+  .brand-subtitle {
+    letter-spacing: 0.35em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-wordmark-bracket {
+    animation: none !important;
+  }
+}
