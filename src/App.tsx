@@ -8,6 +8,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import LoadingSplash from "@/components/LoadingSplash";
+import CookieConsent from "@/components/CookieConsent";
+import RouteProgress from "@/components/RouteProgress";
+import LiveWinnerToast from "@/components/LiveWinnerToast";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -86,7 +89,10 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <RouteProgress />
           <AnimatedRoutes />
+          <CookieConsent />
+          <LiveWinnerToast />
         </BrowserRouter>
         <AnimatePresence>{showSplash ? <LoadingSplash /> : null}</AnimatePresence>
         <Analytics />
