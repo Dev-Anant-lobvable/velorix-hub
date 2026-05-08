@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Offline · VeloRix</title>
+<link rel="icon" href="/velorix-favicon.png" />
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: Inter, system-ui, sans-serif;
+    background: #000;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 1.5rem;
+    background-image: radial-gradient(600px circle at 50% 50%, rgba(230,40,70,.18), transparent 60%);
+  }
+  .wrap { max-width: 32rem; }
+  .badge {
+    display: inline-flex; gap: .5rem; align-items: center;
+    border: 1px solid rgba(230,40,70,.4);
+    background: rgba(230,40,70,.06);
+    padding: .35rem 1rem; border-radius: 999px;
+    font-size: .7rem; letter-spacing: .3em; text-transform: uppercase;
+    color: hsl(350 85% 65%); margin-bottom: 2rem;
+  }
+  h1 {
+    font-size: clamp(5rem, 18vw, 9rem);
+    margin: 0; line-height: 1; font-weight: 900;
+    background: linear-gradient(180deg, hsl(350 85% 65%), hsl(350 85% 45%));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 60px rgba(230,40,70,.4);
+    letter-spacing: -.05em;
+  }
+  h2 { font-size: 1.5rem; margin: .5rem 0 1rem; }
+  p { color: #999; margin: 0 0 2rem; }
+  button {
+    background: hsl(350 85% 55%); color: #fff; border: none;
+    padding: .9rem 1.8rem; border-radius: .6rem;
+    font-weight: 600; cursor: pointer; font-size: .95rem;
+    box-shadow: 0 0 30px rgba(230,40,70,.4);
+  }
+  button:hover { background: hsl(350 85% 50%); }
+  .tag { margin-top: 2.5rem; font-size: .7rem; color: #555; font-family: ui-monospace, monospace; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">⚡ No Connection</div>
+    <h1>OFF</h1>
+    <h2>You're offline</h2>
+    <p>We can't reach the VeloRix servers. Check your internet connection and try again.</p>
+    <button onclick="location.reload()">Retry</button>
+    <div class="tag">STATUS: NETWORK_OFFLINE</div>
+  </div>
+  <script>
+    window.addEventListener('online', () => location.reload());
+  </script>
+</body>
+</html>
