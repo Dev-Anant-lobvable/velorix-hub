@@ -11,6 +11,7 @@ import LoadingSplash from "@/components/LoadingSplash";
 import CookieConsent from "@/components/CookieConsent";
 import RouteProgress from "@/components/RouteProgress";
 import LiveWinnerToast from "@/components/LiveWinnerToast";
+import ConnectivityWatcher from "@/components/ConnectivityWatcher";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -112,9 +113,11 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <RouteProgress />
-          <AnimatedRoutes />
-          <CookieConsent />
-          <LiveWinnerToast />
+          <ConnectivityWatcher>
+            <AnimatedRoutes />
+            <CookieConsent />
+            <LiveWinnerToast />
+          </ConnectivityWatcher>
         </BrowserRouter>
         <AnimatePresence>{showSplash ? <LoadingSplash /> : null}</AnimatePresence>
         <Analytics />
