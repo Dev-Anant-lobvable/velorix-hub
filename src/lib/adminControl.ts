@@ -35,8 +35,4 @@ export const adminControl = async <T,>(body: Record<string, unknown>) => {
   return payload;
 };
 
-export const publicDb = supabase as unknown as {
-  from: (table: string) => any;
-  channel: typeof supabase.channel;
-  removeChannel: typeof supabase.removeChannel;
-};
+export const publicDb = supabase as any;
