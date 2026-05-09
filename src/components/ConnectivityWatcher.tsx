@@ -48,8 +48,8 @@ const ConnectivityWatcher = ({ children }: { children: React.ReactNode }) => {
     const id = window.setInterval(check, MAINTENANCE_POLL_MS);
     const channel = publicDb
       .channel("vx-maintenance-watch")
-      .on("postgres_changes", { event: "*", schema: "public", table: "site_config", filter: "key=eq.maintenance" }, (payload: any) => {
-        applyMaintenance(normalizeMaintenance(payload.new?.value).enabled);
+      .on("postgres_changes", { event: "*", schema: "public", table: "site_config", filter: "key=eq.maintenance" }, (payload) => {
+        applyMaintenance(normalizeMaintenance((payload.new as { value?: unknown } | null)?.value).enabled);
       })
       .subscribe();
 
