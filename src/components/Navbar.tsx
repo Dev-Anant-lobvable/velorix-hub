@@ -1,4 +1,4 @@
-import { Download, Menu, X } from "lucide-react";
+import { Download, Menu, MoreHorizontal, X } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -99,6 +99,14 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <button
+              type="button"
+              aria-label="Crew"
+              onClick={() => navigate("/crew")}
+              className="grid h-10 w-10 place-items-center rounded-md border border-border/40 text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+            >
+              <MoreHorizontal className="h-5 w-5" />
+            </button>
             <AnimatedButton variant="hero" size="default" className="pulse-glow" onClick={handleDownload}>
               <Download className="w-4 h-4" />
               Download
@@ -156,6 +164,13 @@ const Navbar = () => {
                   <Download className="w-4 h-4" />
                   Download APK
                 </AnimatedButton>
+                <button
+                  type="button"
+                  onClick={() => { navigate("/crew"); setIsOpen(false); }}
+                  className="flex items-center justify-center gap-2 rounded-md border border-border/40 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </button>
               </div>
             </motion.div>
           )}
