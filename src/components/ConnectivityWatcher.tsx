@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Offline from "@/pages/errors/Offline";
+import { normalizeMaintenance, publicDb } from "@/lib/adminControl";
 
 const MAINTENANCE_POLL_MS = 60_000;
 
@@ -23,34 +24,39 @@ const ConnectivityWatcher = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  // Maintenance flag polling
+  // Maintenance flag from live backend
   useEffect(() => {
     let cancelled = false;
 
-    const check = async () => {
-      try {
-        const res = await fetch(`/maintenance.json?t=${Date.now()}`, {
-          cache: "no-store",
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (cancelled) return;
-        const onMaintenancePage = location.pathname === "/maintenance";
-        if (data.enabled && !onMaintenancePage) {
-          navigate("/maintenance", { replace: true });
-        } else if (!data.enabled && onMaintenancePage) {
-          navigate("/", { replace: true });
-        }
-      } catch {
-        // Network errors handled by online/offline watcher
+    const applyMaintenance = (enabled: boolean) => {
+      if (cancelled) return;
+      const onMaintenancePage = location.pathname === "/maintenance";
+      const isAdminArea = location.pathname === "/crew" || location.pathname === "/vx-control";
+      if (enabled && !onMaintenancePage && !isAdminArea) {
+        navigate("/maintenance", { replace: true });
+      } else if (!enabled && onMaintenancePage) {
+        navigate("/", { replace: true });
       }
+    };
+
+    const check = async () => {
+      const { data } = await publicDb.from("site_config").select("value").eq("key", "maintenance").maybeSingle();
+      applyMaintenance(normalizeMaintenance(data?.value).enabled);
     };
 
     check();
     const id = window.setInterval(check, MAINTENANCE_POLL_MS);
+    const channel = publicDb
+      .channel("vx-maintenance-watch")
+      .on("postgres_changes", { event: "*", schema: "public", table: "site_config", filter: "key=eq.maintenance" }, (payload) => {
+        applyMaintenance(normalizeMaintenance((payload.new as { value?: unknown } | null)?.value).enabled);
+      })
+      .subscribe();
+
     return () => {
       cancelled = true;
       window.clearInterval(id);
+      publicDb.removeChannel(channel);
     };
   }, [location.pathname, navigate]);
 
