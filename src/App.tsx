@@ -23,6 +23,9 @@ import DownloadPage from "./pages/Download";
 import StatusPage from "./pages/Status";
 import Changelog from "./pages/Changelog";
 import Blog from "./pages/Blog";
+import Crew from "./pages/Crew";
+import AdminPanel from "./pages/AdminPanel";
+import CustomPageView from "./pages/CustomPageView";
 import Error400 from "./pages/errors/Error400";
 import Error401 from "./pages/errors/Error401";
 import Error403 from "./pages/errors/Error403";
@@ -74,6 +77,9 @@ const AnimatedRoutes = () => {
         <Route path="/status" element={<PageWrapper><StatusPage /></PageWrapper>} />
         <Route path="/changelog" element={<PageWrapper><Changelog /></PageWrapper>} />
         <Route path="/blog" element={<PageWrapper><Blog /></PageWrapper>} />
+        <Route path="/crew" element={<PageWrapper><Crew /></PageWrapper>} />
+        <Route path="/vx-control" element={<PageWrapper><AdminPanel /></PageWrapper>} />
+        <Route path="/p/:slug" element={<PageWrapper><CustomPageView /></PageWrapper>} />
         <Route path="/error/400" element={<PageWrapper><Error400 /></PageWrapper>} />
         <Route path="/error/401" element={<PageWrapper><Error401 /></PageWrapper>} />
         <Route path="/error/403" element={<PageWrapper><Error403 /></PageWrapper>} />
