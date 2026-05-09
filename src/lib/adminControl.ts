@@ -1,15 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
 
-export type CustomPage = {
-  id?: string;
-  slug: string;
-  title: string;
-  subtitle?: string | null;
-  content: string;
-  published: boolean;
-  created_at?: string;
-  updated_at?: string;
-};
+export type CustomPage = Tables<"custom_pages">;
 
 export type MaintenanceConfig = {
   enabled: boolean;
@@ -35,4 +27,4 @@ export const adminControl = async <T,>(body: Record<string, unknown>) => {
   return payload;
 };
 
-export const publicDb = supabase as any;
+export const publicDb = supabase;
