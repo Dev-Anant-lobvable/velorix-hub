@@ -10,6 +10,11 @@ import { Input } from "@/components/ui/input";
 import { adminControl } from "@/lib/adminControl";
 
 const SESSION_KEY = "vx-admin-session";
+const crewRoles = [
+  { Icon: Crown, title: "Owner", copy: "Brand, launches, aur final calls." },
+  { Icon: Swords, title: "Admins", copy: "Events, notices, aur page updates." },
+  { Icon: Terminal, title: "Ops", copy: "Maintenance mode aur emergency switches." },
+];
 
 const Crew = () => {
   const navigate = useNavigate();
@@ -56,15 +61,11 @@ const Crew = () => {
           </p>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {[
-              [Crown, "Owner", "Brand, launches, aur final calls."],
-              [Swords, "Admins", "Events, notices, aur page updates."],
-              [Terminal, "Ops", "Maintenance mode aur emergency switches."],
-            ].map(([Icon, title, copy]) => (
-              <article key={String(title)} className="glass-card p-5">
+            {crewRoles.map(({ Icon, title, copy }) => (
+              <article key={title} className="glass-card p-5">
                 <Icon className="mb-4 h-7 w-7 text-primary" />
-                <h2 className="text-xl font-semibold text-foreground">{String(title)}</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{String(copy)}</p>
+                <h2 className="text-xl font-semibold text-foreground">{title}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p>
               </article>
             ))}
           </div>
