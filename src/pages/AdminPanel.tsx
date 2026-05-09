@@ -76,8 +76,8 @@ const AdminPanel = () => {
 
     const configChannel = publicDb
       .channel("vx-admin-config")
-      .on("postgres_changes", { event: "*", schema: "public", table: "site_config", filter: "key=eq.maintenance" }, (payload: any) => {
-        setMaintenance(normalizeMaintenance(payload.new?.value));
+      .on("postgres_changes", { event: "*", schema: "public", table: "site_config", filter: "key=eq.maintenance" }, (payload) => {
+        setMaintenance(normalizeMaintenance((payload.new as { value?: unknown } | null)?.value));
       })
       .subscribe();
 
