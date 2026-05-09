@@ -1,7 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
-export type CustomPage = Tables<"custom_pages">;
+export type CustomPage = Omit<Tables<"custom_pages">, "id" | "created_at" | "updated_at"> & {
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+};
 
 export type MaintenanceConfig = {
   enabled: boolean;
