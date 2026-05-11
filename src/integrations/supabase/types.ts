@@ -14,6 +14,117 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor_ip: string | null
+          created_at: string
+          id: string
+          payload: Json
+        }
+        Insert: {
+          action: string
+          actor_ip?: string | null
+          created_at?: string
+          id?: string
+          payload?: Json
+        }
+        Update: {
+          action?: string
+          actor_ip?: string | null
+          created_at?: string
+          id?: string
+          payload?: Json
+        }
+        Relationships: []
+      }
+      admin_login_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          ip: string
+          success: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip: string
+          success?: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip?: string
+          success?: boolean
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          country: string | null
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json
+          path: string | null
+          session_id: string | null
+          ua: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json
+          path?: string | null
+          session_id?: string | null
+          ua?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json
+          path?: string | null
+          session_id?: string | null
+          ua?: string | null
+        }
+        Relationships: []
+      }
+      apk_versions: {
+        Row: {
+          changelog: string
+          created_at: string
+          file_path: string
+          file_size: number
+          id: string
+          is_active: boolean
+          released_at: string
+          version: string
+        }
+        Insert: {
+          changelog?: string
+          created_at?: string
+          file_path: string
+          file_size?: number
+          id?: string
+          is_active?: boolean
+          released_at?: string
+          version: string
+        }
+        Update: {
+          changelog?: string
+          created_at?: string
+          file_path?: string
+          file_size?: number
+          id?: string
+          is_active?: boolean
+          released_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       custom_pages: {
         Row: {
           content: string
@@ -92,6 +203,51 @@ export type Database = {
           key?: string
           updated_at?: string
           value?: Json
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
+      translations: {
+        Row: {
+          id: string
+          key: string
+          lang: string
+          namespace: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          id?: string
+          key: string
+          lang: string
+          namespace: string
+          updated_at?: string
+          value?: string
+        }
+        Update: {
+          id?: string
+          key?: string
+          lang?: string
+          namespace?: string
+          updated_at?: string
+          value?: string
         }
         Relationships: []
       }
