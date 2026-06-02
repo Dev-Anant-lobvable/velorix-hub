@@ -4,7 +4,7 @@ import { ArrowLeft, FileText } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { CustomPage, publicDb } from "@/lib/adminControl";
+import { CustomPage, publicDb, withTimeout } from "@/lib/adminControl";
 import NotFound from "@/pages/NotFound";
 
 const CustomPageView = () => {
@@ -17,7 +17,10 @@ const CustomPageView = () => {
     let active = true;
 
     const load = async () => {
-      const { data } = await publicDb.from("custom_pages").select("*").eq("slug", slug).eq("published", true).maybeSingle();
+      const { data } = await withTimeout(
+        publicDb.from("custom_pages").select("*").eq("slug", slug).eq("published", true).maybeSingle(),
+        "Page took too long to load."
+      ).catch(() => ({ data: null }));
       if (!active) return;
       setPage(data ?? null);
       setLoading(false);
