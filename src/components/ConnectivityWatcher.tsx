@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Offline from "@/pages/errors/Offline";
-import { normalizeMaintenance, publicDb } from "@/lib/adminControl";
+import { normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl";
 
 const MAINTENANCE_POLL_MS = 60_000;
 
@@ -40,7 +40,10 @@ const ConnectivityWatcher = ({ children }: { children: React.ReactNode }) => {
     };
 
     const check = async () => {
-      const { data } = await publicDb.from("site_config").select("value").eq("key", "maintenance").maybeSingle();
+      const { data } = await withTimeout(
+        publicDb.from("site_config").select("value").eq("key", "maintenance").maybeSingle(),
+        "Maintenance check timed out."
+      ).catch(() => ({ data: null }));
       applyMaintenance(normalizeMaintenance(data?.value).enabled);
     };
 
