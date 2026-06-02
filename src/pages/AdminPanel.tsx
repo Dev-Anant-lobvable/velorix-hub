@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { adminControl, CustomPage, DEFAULT_MAINTENANCE_MESSAGE, normalizeMaintenance, publicDb } from "@/lib/adminControl";
+import { adminControl, CustomPage, DEFAULT_MAINTENANCE_MESSAGE, normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl";
 import { useToast } from "@/hooks/use-toast";
 
 const SESSION_KEY = "vx-admin-session";
@@ -28,6 +28,7 @@ const AdminPanel = () => {
   const [current, setCurrent] = useState<CustomPage>(blankPage);
   const [maintenance, setMaintenance] = useState({ enabled: false, message: DEFAULT_MAINTENANCE_MESSAGE });
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [saving, setSaving] = useState(false);
 
   const sortedPages = useMemo(() => [...pages].sort((a, b) => a.slug.localeCompare(b.slug)), [pages]);
@@ -46,17 +47,18 @@ const AdminPanel = () => {
 
     const load = async () => {
       setLoading(true);
+      setLoadError("");
       try {
-        const [{ pages: adminPages }, config] = await Promise.all([
-          adminControl<{ pages: CustomPage[] }>({ action: "list_pages", token }),
-          publicDb.from("site_config").select("value").eq("key", "maintenance").maybeSingle(),
-        ]);
+        const { pages: adminPages } = await adminControl<{ pages: CustomPage[] }>({ action: "list_pages", token });
         setPages(adminPages ?? []);
-        setMaintenance(normalizeMaintenance(config.data?.value));
+        const config = await withTimeout(
+          publicDb.from("site_config").select("value").eq("key", "maintenance").maybeSingle(),
+          "Maintenance status took too long, using safe default."
+        ).catch(() => null);
+        setMaintenance(normalizeMaintenance(config?.data?.value));
       } catch (err) {
-        toast({ title: "Admin session expired", description: err instanceof Error ? err.message : "Login again", variant: "destructive" });
-        sessionStorage.removeItem(SESSION_KEY);
-        navigate("/crew", { replace: true });
+        setLoadError(err instanceof Error ? err.message : "Backend did not respond. Try again.");
+        toast({ title: "Control room not ready", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
       } finally {
         setLoading(false);
       }
@@ -143,6 +145,22 @@ const AdminPanel = () => {
 
   if (loading) {
     return <div className="grid min-h-screen place-items-center bg-background text-foreground">Loading control room...</div>;
+  }
+
+  if (loadError) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-background px-4 text-center text-foreground">
+        <div className="glass-card max-w-md p-6">
+          <p className="text-sm uppercase tracking-[0.28em] text-primary">Control room offline</p>
+          <h1 className="mt-3 text-3xl font-bold">Backend abhi wake up ho raha hai</h1>
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">{loadError}</p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <Button onClick={() => window.location.reload()}>Retry</Button>
+            <Button variant="outline" onClick={logout}>Back to login</Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
