@@ -1,4 +1,4 @@
-import { Instagram, Mail } from "lucide-react";
+import { Instagram, Mail } from "@/lib/icons";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import velorixLogo from "@/assets/velorix-logo.png";

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, Clock, Calendar } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Clock, Calendar } from "@/lib/icons";
 import useScrollToTop from "@/hooks/useScrollToTop";
 
 const posts = [

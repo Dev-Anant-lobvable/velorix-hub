@@ -1,4 +1,4 @@
-import { ServerCrash } from "lucide-react";
+import { ServerCrash } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error500 = () => (

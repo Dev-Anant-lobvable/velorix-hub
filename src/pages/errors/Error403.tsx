@@ -1,4 +1,4 @@
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error403 = () => (

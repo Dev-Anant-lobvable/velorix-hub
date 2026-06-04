@@ -1,4 +1,4 @@
-import { Cable } from "lucide-react";
+import { Cable } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error502 = () => (

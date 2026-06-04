@@ -1,4 +1,4 @@
-import { Zap } from "lucide-react";
+import { Zap } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error429 = () => (

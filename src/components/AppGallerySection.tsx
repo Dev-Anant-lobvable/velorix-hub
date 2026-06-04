@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "@/lib/icons";
 import { playSound } from "@/hooks/useSoundEffect";
 import gallery1 from "@/assets/gallery-1.png";
 import gallery2 from "@/assets/gallery-2.png";

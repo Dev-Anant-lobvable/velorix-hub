@@ -6,7 +6,7 @@ import {
   Globe,
   ShieldCheck,
   Trophy,
-} from "lucide-react";
+} from "@/lib/icons";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";

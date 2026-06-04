@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Clock } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error408 = () => (

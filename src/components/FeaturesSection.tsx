@@ -1,4 +1,4 @@
-import { Shield, Zap, Bell, Award } from "lucide-react";
+import { Shield, Zap, Bell, Award } from "@/lib/icons";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 

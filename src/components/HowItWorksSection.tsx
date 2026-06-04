@@ -1,4 +1,4 @@
-import { Download, Smartphone, UserPlus, Gamepad2 } from "lucide-react";
+import { Download, Smartphone, UserPlus, Gamepad2 } from "@/lib/icons";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 

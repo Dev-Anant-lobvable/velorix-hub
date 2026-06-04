@@ -1,4 +1,4 @@
-import { Download, Menu, MoreHorizontal, X } from "lucide-react";
+import { Download, Menu, MoreHorizontal, X } from "@/lib/icons";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";

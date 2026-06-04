@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";
 import useScrollToTop from "@/hooks/useScrollToTop";
-import { Mail, Instagram } from "lucide-react";
+import { Mail, Instagram } from "@/lib/icons";
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" aria-hidden="true">

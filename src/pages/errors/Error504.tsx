@@ -1,4 +1,4 @@
-import { Hourglass } from "lucide-react";
+import { Hourglass } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error504 = () => (

@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { Crosshair } from "lucide-react";
+import { Crosshair } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const NotFound = () => {

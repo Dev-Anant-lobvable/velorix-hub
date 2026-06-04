@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, Bug, Zap, Shield, Package } from "lucide-react";
+import { ArrowLeft, Sparkles, Bug, Zap, Shield, Package } from "@/lib/icons";
 import useScrollToTop from "@/hooks/useScrollToTop";
 
 const tagConfig: Record<string, { label: string; icon: typeof Sparkles; color: string }> = {

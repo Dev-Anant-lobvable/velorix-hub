@@ -1,4 +1,4 @@
-import { CloudOff } from "lucide-react";
+import { CloudOff } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Offline = () => (

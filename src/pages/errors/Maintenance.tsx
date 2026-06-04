@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Wrench, ShieldCheck } from "lucide-react";
+import { Wrench, ShieldCheck } from "@/lib/icons";
 import { Link } from "react-router-dom";
 import ErrorTemplate from "@/components/ErrorTemplate";
 import { DEFAULT_MAINTENANCE_MESSAGE, normalizeMaintenance, publicDb } from "@/lib/adminControl";
