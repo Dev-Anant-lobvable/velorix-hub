@@ -29,7 +29,7 @@ const wrap =
     <Ic variant="Linear" color={color} size={size} className={className} {...rest} />;
 
 // Permissive type so both iconsax wrappers and original lucide icons satisfy it.
-export type LucideIcon = React.ComponentType<IconProps>;
+export type LucideIcon = React.ComponentType<any>;
 
 // Direct iconsax mappings
 export const Activity = wrap(Iconsax.Activity);
