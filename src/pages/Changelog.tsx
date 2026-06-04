@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, Bug, Zap, Shield, Package } from "@/lib/icons";
+import { ArrowLeft, Sparkles, Bug, Zap, Shield, Package, type LucideIcon } from "@/lib/icons";
 import useScrollToTop from "@/hooks/useScrollToTop";
 
-const tagConfig: Record<string, { label: string; icon: typeof Sparkles; color: string }> = {
+const tagConfig: Record<string, { label: string; icon: LucideIcon; color: string }> = {
   feature: { label: "Feature", icon: Sparkles, color: "text-emerald-400 border-emerald-400/20 bg-emerald-400/10" },
   fix: { label: "Fix", icon: Bug, color: "text-amber-400 border-amber-400/20 bg-amber-400/10" },
   improvement: { label: "Improvement", icon: Zap, color: "text-sky-400 border-sky-400/20 bg-sky-400/10" },
