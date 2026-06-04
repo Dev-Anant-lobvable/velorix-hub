@@ -9,7 +9,6 @@ import {
   Dot as LDot,
   PanelLeft as LPanelLeft,
   Circle as LCircle,
-  type LucideIcon as LucideIconType,
 } from "lucide-react";
 
 // Lovable design system bridge: render Iconsax (Linear variant) icons under
@@ -29,7 +28,8 @@ const wrap =
   ({ color = "currentColor", strokeWidth: _sw, size, className, ...rest }) =>
     <Ic variant="Linear" color={color} size={size} className={className} {...rest} />;
 
-export type LucideIcon = LucideIconType;
+// Permissive type so both iconsax wrappers and original lucide icons satisfy it.
+export type LucideIcon = React.ComponentType<IconProps>;
 
 // Direct iconsax mappings
 export const Activity = wrap(Iconsax.Activity);
