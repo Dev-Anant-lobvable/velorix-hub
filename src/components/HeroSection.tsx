@@ -1,4 +1,4 @@
-import { Download, ChevronDown, Smartphone, HardDrive } from "lucide-react";
+import { Download, ChevronDown, Smartphone, HardDrive } from "@/lib/icons";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";

@@ -1,4 +1,4 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error400 = () => (

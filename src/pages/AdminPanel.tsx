@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FileText, LogOut, Plus, RadioTower, Save, Trash2, Wrench } from "lucide-react";
+import { FileText, LogOut, Plus, RadioTower, Save, Trash2, Wrench } from "@/lib/icons";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";

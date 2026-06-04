@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy } from "lucide-react";
+import { Trophy } from "@/lib/icons";
 
 type WinnerEvent = {
   player: string;

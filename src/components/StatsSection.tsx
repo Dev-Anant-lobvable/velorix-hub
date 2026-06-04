@@ -1,4 +1,4 @@
-import { Users, Trophy, Star, Headphones } from "lucide-react";
+import { Users, Trophy, Star, Headphones } from "@/lib/icons";
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 

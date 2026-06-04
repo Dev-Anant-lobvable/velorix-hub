@@ -1,4 +1,4 @@
-import { WifiOff } from "lucide-react";
+import { WifiOff } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error503 = () => (

@@ -1,4 +1,4 @@
-import { Download as DownloadIcon, FileArchive, Info, ExternalLink } from "lucide-react";
+import { Download as DownloadIcon, FileArchive, Info, ExternalLink } from "@/lib/icons";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";

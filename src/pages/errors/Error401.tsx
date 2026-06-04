@@ -1,4 +1,4 @@
-import { Lock } from "lucide-react";
+import { Lock } from "@/lib/icons";
 import ErrorTemplate from "@/components/ErrorTemplate";
 
 const Error401 = () => (
