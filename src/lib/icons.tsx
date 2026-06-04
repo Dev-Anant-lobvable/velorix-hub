@@ -10,7 +10,7 @@ import {
   PanelLeft as LPanelLeft,
   Circle as LCircle,
   type LucideIcon as LucideIconType,
-} from "@/lib/icons";
+} from "lucide-react";
 
 // Lovable design system bridge: render Iconsax (Linear variant) icons under
 // the lucide-compatible names already used across the codebase.
