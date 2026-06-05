@@ -8,54 +8,107 @@ import {
   Trophy,
 } from "@/lib/icons";
 import { motion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";
 
-type ServiceState = "operational" | "minor";
+type ServiceState = "operational" | "minor" | "down" | "checking";
 
-const buildBars = (minorIndex?: number) =>
-  Array.from({ length: 40 }, (_, index) =>
-    minorIndex === index ? "minor" : "operational"
-  ) as ServiceState[];
+type ServiceKey = "frontend" | "database" | "downloads" | "edge";
 
-const services = [
+type ServiceResult = {
+  state: ServiceState;
+  latencyMs: number | null;
+  detail: string;
+};
+
+type ServiceDef = {
+  key: ServiceKey;
+  name: string;
+  description: string;
+  icon: typeof Globe;
+  run: () => Promise<ServiceResult>;
+};
+
+const SUPABASE_URL = "https://pvzoeafqfkwfgiiflaol.supabase.co";
+const SUPABASE_ANON =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2em9lYWZxZmt3ZmdpaWZsYW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MzMxMzYsImV4cCI6MjA4NzUwOTEzNn0.fE4wau0tHvOlkiJw3qiLqz-TVAnVccrKLCS_3zZ5jGQ";
+
+const ping = async (url: string, init?: RequestInit): Promise<ServiceResult> => {
+  const start = performance.now();
+  try {
+    const res = await fetch(url, { cache: "no-store", ...init });
+    const latencyMs = Math.round(performance.now() - start);
+    // Any HTTP response (even 4xx) means the service is reachable.
+    const state: ServiceState =
+      res.ok || (res.status >= 400 && res.status < 500)
+        ? latencyMs > 1500
+          ? "minor"
+          : "operational"
+        : "down";
+    return { state, latencyMs, detail: `HTTP ${res.status} · ${latencyMs}ms` };
+  } catch (err) {
+    return { state: "down", latencyMs: null, detail: "Unreachable" };
+  }
+};
+
+const services: ServiceDef[] = [
   {
-    name: "General Availability",
-    description: "Homepage, routing, and public pages",
-    uptime: "99.98% uptime",
+    key: "frontend",
+    name: "Website & Routing",
+    description: "Homepage, public pages, and CDN delivery",
     icon: Globe,
-    bars: buildBars(31),
+    run: () => ping(window.location.origin + "/", { method: "HEAD" }),
   },
   {
-    name: "Downloads",
-    description: "APK delivery and package links",
-    uptime: "100% uptime",
-    icon: DownloadCloud,
-    bars: buildBars(),
-  },
-  {
-    name: "Tournament Services",
-    description: "Competitive flows and leaderboard surfaces",
-    uptime: "100% uptime",
-    icon: Trophy,
-    bars: buildBars(),
-  },
-  {
-    name: "Support & Contact",
-    description: "Help center, contact forms, and policy pages",
-    uptime: "100% uptime",
+    key: "database",
+    name: "Database",
+    description: "Live config, custom pages, and content reads",
     icon: ShieldCheck,
-    bars: buildBars(),
+    run: async () => {
+      const start = performance.now();
+      const { error } = await supabase
+        .from("site_config")
+        .select("key")
+        .limit(1);
+      const latencyMs = Math.round(performance.now() - start);
+      if (error) return { state: "down", latencyMs, detail: error.message };
+      return {
+        state: latencyMs > 1500 ? "minor" : "operational",
+        latencyMs,
+        detail: `${latencyMs}ms`,
+      };
+    },
   },
-];
-
-const incidents = [
-  { date: "Apr 9, 2026", summary: "No incidents reported today." },
-  { date: "Apr 8, 2026", summary: "No incidents reported." },
-  { date: "Apr 7, 2026", summary: "No incidents reported." },
-  { date: "Apr 6, 2026", summary: "No incidents reported." },
-  { date: "Apr 5, 2026", summary: "No incidents reported." },
+  {
+    key: "downloads",
+    name: "Downloads",
+    description: "APK delivery from storage bucket",
+    icon: DownloadCloud,
+    run: () =>
+      ping(`${SUPABASE_URL}/storage/v1/bucket/apk-files`, {
+        method: "GET",
+        headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
+      }),
+  },
+  {
+    key: "edge",
+    name: "Admin & Control",
+    description: "Edge functions powering admin and tournament flows",
+    icon: Trophy,
+    run: () =>
+      ping(`${SUPABASE_URL}/functions/v1/admin-control`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          apikey: SUPABASE_ANON,
+          Authorization: `Bearer ${SUPABASE_ANON}`,
+        },
+        body: JSON.stringify({ action: "ping" }),
+      }),
+  },
 ];
 
 const StatusPage = () => {
