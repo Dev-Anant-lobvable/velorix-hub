@@ -3,6 +3,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { playDownloadSound } from "@/hooks/useSoundEffect";
+import ShinyText from "@/components/reactbits/ShinyText";
 
 const DownloadCTA = () => {
   const navigate = useNavigate();
@@ -29,7 +30,12 @@ const DownloadCTA = () => {
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-primary-foreground relative z-10">
-            Ready to Play?
+            <ShinyText
+              text="Ready to Play?"
+              color="hsl(var(--primary-foreground))"
+              shineColor="#ffffff"
+              speed={3}
+            />
           </h2>
           <p className="text-primary-foreground text-lg max-w-2xl mx-auto mb-8 relative z-10">
             Grab the app, join a tournament, and see how you stack up.

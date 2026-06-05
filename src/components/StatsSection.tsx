@@ -1,6 +1,6 @@
 import { Users, Trophy, Star, Headphones } from "@/lib/icons";
-import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import CountUp from "@/components/reactbits/CountUp";
 
 const stats = [
   { icon: Users, value: 424865, label: "Happy Gamers", suffix: "+", format: true },
@@ -9,42 +9,25 @@ const stats = [
   { icon: Headphones, value: 24, label: "Support", suffix: "/7", format: false, displayAs: "24" },
 ];
 
-const AnimatedCounter = ({ value, suffix, format, displayAs }: { value: number; suffix: string; format: boolean; displayAs?: string }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!isInView) return;
-    if (displayAs) { setCount(value); return; }
-
-    const duration = 2000;
-    const steps = 60;
-    const increment = value / steps;
-    let current = 0;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= value) {
-        setCount(value);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [isInView, value, displayAs]);
-
-  const display = displayAs
-    ? displayAs
-    : format
-    ? count.toLocaleString("en-IN")
-    : Number.isInteger(value)
-    ? count.toString()
-    : count.toFixed(1);
-
+const AnimatedCounter = ({
+  value,
+  suffix,
+  format,
+  displayAs,
+}: {
+  value: number;
+  suffix: string;
+  format: boolean;
+  displayAs?: string;
+}) => {
   return (
-    <div ref={ref} className="text-2xl sm:text-3xl font-bold text-primary mb-1 group-hover:text-glow transition-all duration-300">
-      {display}{suffix}
+    <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 group-hover:text-glow transition-all duration-300">
+      {displayAs ? (
+        <>{displayAs}</>
+      ) : (
+        <CountUp to={value} duration={2} separator={format ? "," : ""} />
+      )}
+      {suffix}
     </div>
   );
 };
