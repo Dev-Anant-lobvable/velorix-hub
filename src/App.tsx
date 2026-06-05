@@ -12,6 +12,7 @@ import CookieConsent from "@/components/CookieConsent";
 import RouteProgress from "@/components/RouteProgress";
 import LiveWinnerToast from "@/components/LiveWinnerToast";
 import ConnectivityWatcher from "@/components/ConnectivityWatcher";
+import ClickSpark from "@/components/reactbits/ClickSpark";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -119,11 +120,19 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <RouteProgress />
-          <ConnectivityWatcher>
-            <AnimatedRoutes />
-            <CookieConsent />
-            <LiveWinnerToast />
-          </ConnectivityWatcher>
+          <ClickSpark
+            sparkColor="hsl(350 85% 65%)"
+            sparkCount={10}
+            sparkRadius={18}
+            sparkSize={12}
+            duration={500}
+          >
+            <ConnectivityWatcher>
+              <AnimatedRoutes />
+              <CookieConsent />
+              <LiveWinnerToast />
+            </ConnectivityWatcher>
+          </ClickSpark>
         </BrowserRouter>
         <AnimatePresence>{showSplash ? <LoadingSplash /> : null}</AnimatePresence>
         <Analytics />
