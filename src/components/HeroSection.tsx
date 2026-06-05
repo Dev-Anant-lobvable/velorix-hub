@@ -3,6 +3,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { playDownloadSound } from "@/hooks/useSoundEffect";
+import GradientText from "@/components/reactbits/GradientText";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -86,7 +87,13 @@ const HeroSection = () => {
 
               {/* Subtitle */}
               <h2 className="brand-subtitle">
-                <span className="brand-subtitle-text">Tournaments</span>
+                <GradientText
+                  colors={["#ff2d55", "#ffffff", "#ff5577", "#ff2d55"]}
+                  animationSpeed={6}
+                  className="brand-subtitle-text"
+                >
+                  Tournaments
+                </GradientText>
               </h2>
             </div>
           </motion.div>
