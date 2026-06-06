@@ -5,7 +5,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const PASSWORD_HASH = "b8c1492b155ef5625aaae2fbb34aa4fbac223b766feffafc17383a79026bfa94";
+// Admin password hash. Prefer the ADMIN_PASSWORD_HASH secret in the format
+//   pbkdf2$<iterations>$<saltBase64>$<hashBase64>
+// (use any standard PBKDF2-SHA256 generator to produce one and rotate the password).
+// If the env var is missing we fall back to the legacy SHA-256 digest below so
+// the panel keeps working — set the secret to a pbkdf2 string to disable the fallback.
+const LEGACY_SHA256_HASH = "b8c1492b155ef5625aaae2fbb34aa4fbac223b766feffafc17383a79026bfa94";
 const TOKEN_TTL_MS = 20 * 60 * 1000;
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_WINDOW_MS = 10 * 60 * 1000;
@@ -22,6 +27,41 @@ const json = (body: unknown, status = 200) =>
 const sha256 = async (value: string) => {
   const digest = await crypto.subtle.digest("SHA-256", encoder.encode(value));
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
+};
+
+const b64ToBytes = (b64: string) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+const bytesToB64 = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes));
+
+const verifyPbkdf2 = async (password: string, stored: string): Promise<boolean> => {
+  // Format: pbkdf2$<iterations>$<saltB64>$<hashB64>
+  const parts = stored.split("$");
+  if (parts.length !== 4 || parts[0] !== "pbkdf2") return false;
+  const iterations = Number(parts[1]);
+  if (!Number.isFinite(iterations) || iterations < 1000) return false;
+  let salt: Uint8Array; let expected: Uint8Array;
+  try { salt = b64ToBytes(parts[2]); expected = b64ToBytes(parts[3]); } catch { return false; }
+  const key = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"]);
+  const derived = new Uint8Array(
+    await crypto.subtle.deriveBits(
+      { name: "PBKDF2", hash: "SHA-256", salt, iterations },
+      key,
+      expected.length * 8,
+    ),
+  );
+  if (derived.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < derived.length; i++) diff |= derived[i] ^ expected[i];
+  return diff === 0;
+};
+
+const verifyAdminPassword = async (password: string): Promise<boolean> => {
+  const envHash = Deno.env.get("ADMIN_PASSWORD_HASH")?.trim();
+  if (envHash) {
+    if (envHash.startsWith("pbkdf2$")) return verifyPbkdf2(password, envHash);
+    // Allow raw SHA-256 hex via env so the password can be rotated without code changes.
+    return (await sha256(password)) === envHash.toLowerCase();
+  }
+  return (await sha256(password)) === LEGACY_SHA256_HASH;
 };
 
 const sign = async (payload: string, secret: string) => {
@@ -116,7 +156,7 @@ Deno.serve(async (req) => {
       return json({ error: "Too many tries. Wait 10 minutes." }, 429);
     }
     const password = String(body.password ?? "");
-    const ok = (await sha256(password)) === PASSWORD_HASH;
+    const ok = await verifyAdminPassword(password);
     await admin.from("admin_login_attempts").insert({ ip, success: ok });
     if (!ok) {
       const left = MAX_ATTEMPTS - recentFails - 1;
