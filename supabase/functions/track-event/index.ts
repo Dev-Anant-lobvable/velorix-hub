@@ -41,9 +41,26 @@ Deno.serve(async (req) => {
   const event_type = String(body.event_type ?? "").slice(0, 64);
   if (!event_type) return json({ error: "event_type required" }, 400);
 
+  const ALLOWED_EVENTS = new Set([
+    "page_view","download_click","download_complete","cta_click",
+    "outbound_click","video_play","faq_open","ping",
+  ]);
+  if (!ALLOWED_EVENTS.has(event_type)) {
+    return json({ error: "unknown event_type" }, 400);
+  }
+
   const path = body.path ? String(body.path).slice(0, 256) : null;
   const session_id = body.session_id ? String(body.session_id).slice(0, 64) : null;
   const metadata = (body.metadata && typeof body.metadata === "object") ? body.metadata : {};
+
+  // Cap metadata payload to 4KB to prevent storage exhaustion.
+  try {
+    if (JSON.stringify(metadata).length > 4096) {
+      return json({ error: "metadata too large" }, 413);
+    }
+  } catch {
+    return json({ error: "invalid metadata" }, 400);
+  }
 
   const ip = (req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     req.headers.get("cf-connecting-ip") || "unknown");
