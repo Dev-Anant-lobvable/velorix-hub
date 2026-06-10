@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import googleLogo from "@/assets/logos/google.png";
 import eslLogo from "@/assets/logos/esl.png";
 import riotLogo from "@/assets/logos/riot.png";
@@ -24,11 +25,23 @@ const PartnersRow = () => {
   const doubled = [...partners, ...partners];
 
   return (
-    <section className="py-8 border-t border-border/10 overflow-hidden">
+    <motion.section
+      className="py-8 border-t border-border/10 overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="container mx-auto px-4">
-        <p className="text-center text-[11px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-5 font-medium">
+        <motion.p
+          className="text-center text-[11px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-5 font-medium"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+        >
           Games & Partners
-        </p>
+        </motion.p>
       </div>
       {/* CSS-only infinite marquee — no JS animation frames */}
       <div className="relative">
@@ -46,7 +59,7 @@ const PartnersRow = () => {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
