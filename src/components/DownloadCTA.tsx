@@ -17,8 +17,11 @@ const DownloadCTA = () => {
       <div className="container mx-auto px-4">
         <motion.div
           className="bg-primary rounded-2xl p-8 md:p-12 lg:p-16 text-center max-w-4xl mx-auto shadow-glow relative overflow-hidden"
+          initial={{ opacity: 0, y: 40, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const }}
           whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
         >
           {/* CSS shimmer — no JS animation */}
           <div className="absolute inset-0 cta-shimmer pointer-events-none" />
