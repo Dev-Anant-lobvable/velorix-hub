@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { playDownloadSound } from "@/hooks/useSoundEffect";
 import GradientText from "@/components/reactbits/GradientText";
+import Aurora from "@/components/reactbits/Aurora";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -43,6 +44,16 @@ const HeroSection = () => {
     >
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 bg-mesh-gradient" />
+
+      {/* Aurora background effect */}
+      <div className="absolute inset-0 pointer-events-none opacity-70">
+        <Aurora
+          colorStops={["#ff1288", "#de4a63", "#e92042"]}
+          blend={1.0}
+          amplitude={1.0}
+          speed={1.5}
+        />
+      </div>
 
       {/* Static ambient glow */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
