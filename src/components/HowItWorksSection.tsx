@@ -1,6 +1,8 @@
 import { Download, Smartphone, UserPlus, Gamepad2 } from "@/lib/icons";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import SimpleCarousel from "@/components/reactbits/SimpleCarousel";
+import GradualBlur from "@/components/reactbits/GradualBlur";
 
 const steps = [
   {
@@ -28,29 +30,13 @@ const steps = [
 const HowItWorksSection = () => {
   const { ref, isInView } = useScrollAnimation(0.1);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
-    },
-  };
+  const carouselItems = steps.map((s, i) => ({
+    id: i + 1,
+    title: `${String(i + 1).padStart(2, "0")}. ${s.title}`,
+    description: s.description,
+    badge: `Step ${i + 1}`,
+    icon: <s.icon className="w-7 h-7 text-primary" />,
+  }));
 
   return (
     <section id="how-it-works" className="py-24 bg-background relative overflow-hidden" ref={ref}>
@@ -75,67 +61,17 @@ const HowItWorksSection = () => {
           </p>
         </motion.div>
 
-        <motion.div 
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.title}
-              variants={itemVariants}
-              className="relative group"
-            >
-              {/* Connector Line */}
-              {index < steps.length - 1 && (
-                <motion.div 
-                  className="hidden lg:block absolute top-10 left-[60%] w-full h-0.5 overflow-hidden"
-                  initial={{ scaleX: 0 }}
-                  animate={isInView ? { scaleX: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.3 + index * 0.2 }}
-                  style={{ originX: 0 }}
-                >
-                  <div className="h-full bg-gradient-to-r from-primary/50 via-primary/30 to-transparent" />
-                </motion.div>
-              )}
-
-              <motion.div 
-                className="liquid-glass p-6 h-full rounded-xl"
-                whileHover={{ 
-                  y: -10,
-                  transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
-                }}
-              >
-                {/* Step Number with glow */}
-                <motion.div 
-                  className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center font-bold text-sm text-primary-foreground shadow-neon z-10"
-                  whileHover={{ scale: 1.1 }}
-                >
-                  {index + 1}
-                </motion.div>
-
-                {/* Icon */}
-                <motion.div 
-                  className="w-16 h-16 rounded-xl bg-accent/80 flex items-center justify-center mb-5 relative z-10"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="absolute inset-0 bg-primary/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <step.icon className="w-8 h-8 text-primary relative z-10" />
-                </motion.div>
-
-                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300 relative z-10">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed relative z-10">
-                  {step.description}
-                </p>
-              </motion.div>
-            </motion.div>
-          ))}
+          <SimpleCarousel items={carouselItems} autoplay autoplayDelay={4500} />
         </motion.div>
       </div>
+
+      {/* Soft gradual blur fade into next section */}
+      <GradualBlur target="parent" position="bottom" height="5rem" strength={1.5} divCount={4} opacity={0.85} />
     </section>
   );
 };
