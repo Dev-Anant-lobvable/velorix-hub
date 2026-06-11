@@ -1,6 +1,8 @@
 import { Shield, Zap, Bell, Award } from "@/lib/icons";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import StarBorder from "@/components/reactbits/StarBorder";
+import GradualBlur from "@/components/reactbits/GradualBlur";
 
 const features = [
   {
@@ -85,7 +87,8 @@ const FeaturesSection = () => {
               whileHover={{ y: -12, transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] } }}
               className="group"
             >
-              <div className="liquid-glass h-full p-6 rounded-xl transition-all duration-300 hover:border-primary/30 hover:shadow-glow">
+              <StarBorder as="div" color="hsl(350 85% 55%)" speed="6s" thickness={1} className="block h-full w-full rounded-xl">
+                <div className="liquid-glass h-full p-6 rounded-xl transition-all duration-300 hover:border-primary/30 hover:shadow-glow">
                 <motion.div
                   className="w-14 h-14 rounded-xl bg-accent/80 flex items-center justify-center mb-5 relative"
                   whileHover={{ scale: 1.1, rotate: 5 }}
@@ -101,11 +104,13 @@ const FeaturesSection = () => {
                 <p className="text-sm text-muted-foreground leading-relaxed relative z-10">
                   {feature.description}
                 </p>
-              </div>
+                </div>
+              </StarBorder>
             </motion.div>
           ))}
         </motion.div>
       </div>
+      <GradualBlur target="parent" position="bottom" height="5rem" strength={1.5} divCount={4} opacity={0.8} />
     </section>
   );
 };
