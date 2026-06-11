@@ -7,6 +7,7 @@ import {
 import { playSound } from "@/hooks/useSoundEffect";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import GradualBlur from "@/components/reactbits/GradualBlur";
 
 const faqs = [
   {
@@ -113,6 +114,7 @@ const FAQSection = () => {
           </Accordion>
         </div>
       </div>
+      <GradualBlur target="parent" position="bottom" height="5rem" strength={1.5} divCount={4} opacity={0.85} />
     </section>
   );
 };

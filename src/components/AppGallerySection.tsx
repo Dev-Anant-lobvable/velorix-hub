@@ -4,6 +4,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { ChevronLeft, ChevronRight } from "@/lib/icons";
 import { playSound } from "@/hooks/useSoundEffect";
+import GradualBlur from "@/components/reactbits/GradualBlur";
 import gallery1 from "@/assets/gallery-1.png";
 import gallery2 from "@/assets/gallery-2.png";
 import gallery3 from "@/assets/gallery-3.png";
@@ -225,6 +226,7 @@ const AppGallerySection = () => {
           ))}
         </motion.div>
       </div>
+      <GradualBlur target="parent" position="bottom" height="5rem" strength={1.5} divCount={4} opacity={0.85} />
     </section>
   );
 };
