@@ -10,6 +10,7 @@ import FAQSection from "@/components/FAQSection";
 import DownloadCTA from "@/components/DownloadCTA";
 import Footer from "@/components/Footer";
 import useExternalLinkSound from "@/hooks/useExternalLinkSound";
+import GradualBlur from "@/components/reactbits/GradualBlur";
 
 const Index = () => {
   useExternalLinkSound();
@@ -35,6 +36,17 @@ const Index = () => {
         <DownloadCTA />
       </main>
       <Footer />
+
+      {/* Global page-level gradual blur at the bottom viewport edge */}
+      <GradualBlur
+        target="page"
+        position="bottom"
+        height="4.5rem"
+        strength={1.8}
+        divCount={5}
+        curve="ease-out"
+        opacity={0.9}
+      />
     </div>
   );
 };
