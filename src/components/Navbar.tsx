@@ -52,7 +52,7 @@ const Navbar = () => {
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "glass border-b border-border/20 shadow-lg"
+          ? "glass-surface border-b border-primary/10 shadow-[0_8px_32px_-12px_hsl(350_85%_55%/0.25)] backdrop-blur-xl backdrop-saturate-150"
           : "bg-transparent border-b border-transparent"
       }`}
       initial={{ y: -100 }}
