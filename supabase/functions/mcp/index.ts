@@ -8,11 +8,12 @@ import { defineMcp } from "npm:@lovable.dev/mcp-js@0.23.0";
 // src/lib/mcp/tools/list-published-pages.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.105.3";
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.23.0";
-var supabase = () => createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_PUBLISHABLE_KEY,
-  { auth: { persistSession: false, autoRefreshToken: false } }
-);
+var env = globalThis.process?.env ?? {};
+var SUPABASE_URL = env.SUPABASE_URL ?? "https://pvzoeafqfkwfgiiflaol.supabase.co";
+var SUPABASE_PUBLISHABLE_KEY = env.SUPABASE_PUBLISHABLE_KEY ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2em9lYWZxZmt3ZmdpaWZsYW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MzMxMzYsImV4cCI6MjA4NzUwOTEzNn0.fE4wau0tHvOlkiJw3qiLqz-TVAnVccrKLCS_3zZ5jGQ";
+var supabase = () => createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: false, autoRefreshToken: false }
+});
 var list_published_pages_default = defineTool({
   name: "list_published_pages",
   title: "List VeloRix pages",
