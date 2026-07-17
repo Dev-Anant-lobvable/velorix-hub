@@ -1,6 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import { defineTool } from "@lovable.dev/mcp-js";
 
+declare const process: { env: Record<string, string | undefined> };
+
 const supabase = () =>
   createClient(
     process.env.SUPABASE_URL!,
