@@ -13,7 +13,7 @@ export type MaintenanceConfig = {
 };
 
 export const DEFAULT_MAINTENANCE_MESSAGE =
-  "Arena upgrade chal raha hai. Thoda ruk jao, squad soon back hogi.";
+  "Arena upgrade in progress. Hold tight — the squad will be back shortly.";
 
 export const normalizeMaintenance = (value: unknown): MaintenanceConfig => {
   const data = (value ?? {}) as Partial<MaintenanceConfig>;

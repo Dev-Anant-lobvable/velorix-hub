@@ -11,9 +11,9 @@ import { adminControl } from "@/lib/adminControl";
 
 const SESSION_KEY = "vx-admin-session";
 const crewRoles = [
-  { Icon: Crown, title: "Owner", copy: "Brand, launches, aur final calls." },
-  { Icon: Swords, title: "Admins", copy: "Events, notices, aur page updates." },
-  { Icon: Terminal, title: "Ops", copy: "Maintenance mode aur emergency switches." },
+  { Icon: Crown, title: "Owner", copy: "Brand, launches and final calls." },
+  { Icon: Swords, title: "Admins", copy: "Events, notices and page updates." },
+  { Icon: Terminal, title: "Ops", copy: "Maintenance mode and emergency switches." },
 ];
 
 const Crew = () => {
@@ -55,9 +55,9 @@ const Crew = () => {
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-xs uppercase tracking-[0.28em] text-primary">
             <Shield className="h-4 w-4" /> VeloRix Crew
           </div>
-          <h1 className="text-4xl font-bold leading-tight text-foreground sm:text-6xl">Admins aur owners ka command room.</h1>
+          <h1 className="text-4xl font-bold leading-tight text-foreground sm:text-6xl">The command room for admins and owners.</h1>
           <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
-            Ye jagah sirf trusted squad ke naam, zimmedari aur site updates ke liye hai. Real control panel public menu me nahi dikhta.
+            This space is reserved for the trusted squad — roles, responsibilities and site updates. The real control panel never appears in the public menu.
           </p>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -85,7 +85,7 @@ const Crew = () => {
         <DialogContent className="border-primary/20 bg-background/95">
           <DialogHeader>
             <DialogTitle>Private crew verification</DialogTitle>
-            <DialogDescription>Password har baar fresh poocha jayega. Browser me permanent save nahi hoga.</DialogDescription>
+            <DialogDescription>You'll be asked for the password every time. It is never saved permanently in the browser.</DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
             <Input

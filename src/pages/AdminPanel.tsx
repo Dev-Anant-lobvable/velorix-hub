@@ -152,7 +152,7 @@ const AdminPanel = () => {
       <div className="grid min-h-screen place-items-center bg-background px-4 text-center text-foreground">
         <div className="glass-card max-w-md p-6">
           <p className="text-sm uppercase tracking-[0.28em] text-primary">Control room offline</p>
-          <h1 className="mt-3 text-3xl font-bold">Backend abhi wake up ho raha hai</h1>
+          <h1 className="mt-3 text-3xl font-bold">Backend is waking up</h1>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">{loadError}</p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Button onClick={() => window.location.reload()}>Retry</Button>
