@@ -1,0 +1,20 @@
+.scroll-stack {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-stack__item {
+  position: sticky;
+  width: 100%;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-stack__item {
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+  }
+}
