@@ -9,7 +9,7 @@ type WinnerEvent = {
 };
 
 const SAMPLE_EVENTS: WinnerEvent[] = [
-  { player: "Arjun_OP", prize: "₹500", game: "Free Fire" },
+  { player: "Arjun_OP", prize: "₹5000", game: "Free Fire" },
   { player: "GhostRider", prize: "₹1,200", game: "BGMI" },
   { player: "NoobMaster69", prize: "₹250", game: "Free Fire" },
   { player: "Veer_Yodha", prize: "₹2,000", game: "BGMI" },
