@@ -15,4 +15,4 @@ Allow: /
 Disallow: /vx-control
 Disallow: /crew
 
-Sitemap: https://velorix-hub.vercel.app/sitemap.xml
+Sitemap: https://velorix-hub.lovable.app/sitemap.xml
