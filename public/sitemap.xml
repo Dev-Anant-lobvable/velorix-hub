@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://velorix-hub.vercel.app/</loc>
+    <loc>https://velorix-hub.lovable.app/</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/contact</loc>
+    <loc>https://velorix-hub.lovable.app/contact</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/help-center</loc>
+    <loc>https://velorix-hub.lovable.app/help-center</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/download</loc>
+    <loc>https://velorix-hub.lovable.app/download</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/status</loc>
+    <loc>https://velorix-hub.lovable.app/status</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/blog</loc>
+    <loc>https://velorix-hub.lovable.app/blog</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/changelog</loc>
+    <loc>https://velorix-hub.lovable.app/changelog</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/privacy-policy</loc>
+    <loc>https://velorix-hub.lovable.app/privacy-policy</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/terms-of-service</loc>
+    <loc>https://velorix-hub.lovable.app/terms-of-service</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/cookie-policy</loc>
+    <loc>https://velorix-hub.lovable.app/cookie-policy</loc>
     <lastmod>2026-02-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
