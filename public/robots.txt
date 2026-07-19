@@ -12,3 +12,7 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /vx-control
+Disallow: /crew
+
+Sitemap: https://velorix-hub.vercel.app/sitemap.xml
