@@ -11,6 +11,7 @@ const navLinks = [
   { name: "Features", href: "#features", isRoute: false },
   { name: "How It Works", href: "#how-it-works", isRoute: false },
   { name: "Blog", href: "/blog", isRoute: true },
+  { name: "About", href: "/about", isRoute: true },
   { name: "FAQ", href: "#faq", isRoute: false },
 ];
 
