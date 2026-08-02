@@ -2,62 +2,122 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://velorix-hub.vercel.app/</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/contact</loc>
-    <lastmod>2026-02-23</lastmod>
+    <loc>https://velorix-hub.vercel.app/about</loc>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/help-center</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://velorix-hub.vercel.app/download</loc>
-    <lastmod>2026-02-23</lastmod>
+    <loc>https://velorix-hub.vercel.app/blog</loc>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/status</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
+    <loc>https://velorix-hub.vercel.app/download</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/blog</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://velorix-hub.vercel.app/help</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/contact</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://velorix-hub.vercel.app/changelog</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/crew</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/privacy-policy</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>yearly</changefreq>
+    <loc>https://velorix-hub.vercel.app/status</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://velorix-hub.vercel.app/terms-of-service</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://velorix-hub.vercel.app/cookie-policy</loc>
-    <lastmod>2026-02-23</lastmod>
+    <loc>https://velorix-hub.vercel.app/terms</loc>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/privacy</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/cookies</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/free-fire-sensitivity-settings-guide</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/bgmi-tournament-strategy-rotations</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/how-anti-cheat-works-in-velorix</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/beginners-guide-to-mobile-esports-tournaments</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/optimising-android-for-competitive-gaming</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/esports-tournament-formats-explained</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/avoiding-tournament-scams</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://velorix-hub.vercel.app/blog/building-a-competitive-squad</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
