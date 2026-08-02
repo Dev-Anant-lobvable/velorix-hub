@@ -13,6 +13,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const legalLinks = [
+    { name: "About Us", href: "/about" },
     { name: "Help Center", href: "/help" },
     { name: "Contact Us", href: "/contact" },
     { name: "Status", href: "/status" },

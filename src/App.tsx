@@ -24,6 +24,8 @@ import DownloadPage from "./pages/Download";
 import StatusPage from "./pages/Status";
 import Changelog from "./pages/Changelog";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import About from "./pages/About";
 import Crew from "./pages/Crew";
 import AdminPanel from "./pages/AdminPanel";
 import CustomPageView from "./pages/CustomPageView";
@@ -78,6 +80,8 @@ const AnimatedRoutes = () => {
         <Route path="/status" element={<PageWrapper><StatusPage /></PageWrapper>} />
         <Route path="/changelog" element={<PageWrapper><Changelog /></PageWrapper>} />
         <Route path="/blog" element={<PageWrapper><Blog /></PageWrapper>} />
+        <Route path="/blog/:slug" element={<PageWrapper><BlogPost /></PageWrapper>} />
+        <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
         <Route path="/crew" element={<PageWrapper><Crew /></PageWrapper>} />
         <Route path="/vx-control" element={<PageWrapper><AdminPanel /></PageWrapper>} />
         <Route path="/p/:slug" element={<PageWrapper><CustomPageView /></PageWrapper>} />
