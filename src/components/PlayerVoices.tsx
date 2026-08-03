@@ -65,6 +65,8 @@ const PlayerVoices = () => {
     );
   }
 
+  if (!data) return null;
+
   const stats = [
     { label: "Tournaments hosted", value: data.tournamentsHosted, Icon: Trophy },
     { label: "Payouts sent", value: data.payoutsSent, Icon: ShieldCheck },
