@@ -9,6 +9,7 @@ import {
 } from "@/lib/icons";
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
