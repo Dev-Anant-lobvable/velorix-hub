@@ -41,14 +41,24 @@ export const withTimeout = async <T,>(
   }
 };
 
+export const ADMIN_SESSION_KEY = "vx-admin-session";
+export const isSessionExpired = (err: unknown) =>
+  err instanceof Error && /session expired/i.test(err.message);
+
 export const adminControl = async <T,>(body: Record<string, unknown>) => {
   const { data, error } = await withTimeout(
     supabase.functions.invoke("admin-control", { body }),
     "Admin backend is still starting. Wait 1 minute and try again."
   );
+  const payload = data as (T & { error?: string }) | null;
+  if (payload?.error) {
+    if (/session expired/i.test(payload.error)) {
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    }
+    throw new Error(payload.error);
+  }
   if (error) throw new Error(error.message || "Admin request failed");
-  const payload = data as T & { error?: string };
-  if (payload?.error) throw new Error(payload.error);
+  if (!payload) throw new Error("Admin request failed");
   return payload;
 };
 

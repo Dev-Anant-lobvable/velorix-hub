@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { adminControl, CustomPage, DEFAULT_MAINTENANCE_MESSAGE, normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl";
+import { adminControl, CustomPage, DEFAULT_MAINTENANCE_MESSAGE, isSessionExpired, normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl";
 import { useToast } from "@/hooks/use-toast";
 import {
   DEFAULT_SOCIAL_PROOF,
@@ -66,6 +66,12 @@ const AdminPanel = () => {
         setMaintenance(normalizeMaintenance(config?.data?.value));
         setSocialProof(await fetchSocialProof());
       } catch (err) {
+        if (isSessionExpired(err)) {
+          sessionStorage.removeItem(SESSION_KEY);
+          toast({ title: "Session expired", description: "Please sign in again.", variant: "destructive" });
+          navigate("/crew", { replace: true });
+          return;
+        }
         setLoadError(err instanceof Error ? err.message : "Backend did not respond. Try again.");
         toast({ title: "Control room not ready", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
       } finally {
