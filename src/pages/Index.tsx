@@ -18,7 +18,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative">
-      <a href="#features" className="skip-link">
+      <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
 
