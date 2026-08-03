@@ -292,10 +292,17 @@ const StatusPage = () => {
                   </div>
 
                   <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
-                    <span className="font-mono">{r.detail}</span>
-                    <span>
-                      {r.latencyMs !== null ? `${r.latencyMs}ms response` : "—"}
-                    </span>
+                    {r.state === "checking" ? (
+                      <>
+                        <Skeleton className="h-3 w-40" />
+                        <Skeleton className="h-3 w-24" />
+                      </>
+                    ) : (
+                      <>
+                        <span className="font-mono">{r.detail}</span>
+                        <span>{r.latencyMs !== null ? `${r.latencyMs}ms response` : "—"}</span>
+                      </>
+                    )}
                   </div>
                 </article>
               );
