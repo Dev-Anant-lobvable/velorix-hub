@@ -142,7 +142,6 @@ Deno.serve(async (req) => {
   const admin = createClient(url, serviceKey, { auth: { persistSession: false } });
 
   if (action === "login") {
-    // handled below
     // Rate limit: count failed attempts from this IP in window
     const since = new Date(Date.now() - LOCKOUT_WINDOW_MS).toISOString();
     const { data: attempts } = await admin
