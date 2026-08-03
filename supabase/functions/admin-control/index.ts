@@ -166,6 +166,11 @@ Deno.serve(async (req) => {
     return json({ token: await createToken(serviceKey) });
   }
 
+  // Public, unauthenticated health probe used by the status page
+  if (action === "ping") {
+    return json({ ok: true, ts: Date.now() });
+  }
+
   if (!(await verifyToken(String(body.token ?? ""), serviceKey))) {
     return json({ error: "Admin session expired" }, 401);
   }
