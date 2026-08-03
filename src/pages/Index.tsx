@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import useExternalLinkSound from "@/hooks/useExternalLinkSound";
 import GradualBlur from "@/components/reactbits/GradualBlur";
 import BackToTop from "@/components/BackToTop";
+import Reveal from "@/components/Reveal";
 
 const Index = () => {
   useExternalLinkSound();
@@ -31,14 +32,14 @@ const Index = () => {
       <Navbar />
       <main id="main-content">
         <HeroSection />
-        <AppGallerySection />
-        <StatsSection />
-        <SocialProofBadges />
-        <PartnersRow />
-        <HowItWorksSection />
-        <FeaturesSection />
-        <FAQSection />
-        <DownloadCTA />
+        <Reveal><AppGallerySection /></Reveal>
+        <Reveal><StatsSection /></Reveal>
+        <Reveal><SocialProofBadges /></Reveal>
+        <Reveal><PartnersRow /></Reveal>
+        <Reveal><HowItWorksSection /></Reveal>
+        <Reveal><FeaturesSection /></Reveal>
+        <Reveal><FAQSection /></Reveal>
+        <Reveal><DownloadCTA /></Reveal>
       </main>
       <Footer />
 
