@@ -58,6 +58,7 @@ export const adminControl = async <T,>(body: Record<string, unknown>) => {
     throw new Error(payload.error);
   }
   if (error) throw new Error(error.message || "Admin request failed");
+  if (!payload) throw new Error("Admin request failed");
   return payload;
 };
 
