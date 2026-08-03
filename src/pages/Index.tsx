@@ -11,12 +11,17 @@ import DownloadCTA from "@/components/DownloadCTA";
 import Footer from "@/components/Footer";
 import useExternalLinkSound from "@/hooks/useExternalLinkSound";
 import GradualBlur from "@/components/reactbits/GradualBlur";
+import BackToTop from "@/components/BackToTop";
 
 const Index = () => {
   useExternalLinkSound();
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       {/* Lightweight scan lines overlay for techy vibe */}
       <div className="scan-lines" />
       
@@ -24,7 +29,7 @@ const Index = () => {
       <div className="global-bottom-glow" aria-hidden="true" />
 
       <Navbar />
-      <main>
+      <main id="main-content">
         <HeroSection />
         <AppGallerySection />
         <StatsSection />
@@ -36,6 +41,8 @@ const Index = () => {
         <DownloadCTA />
       </main>
       <Footer />
+
+      <BackToTop />
 
       {/* Global page-level gradual blur at the bottom viewport edge */}
       <GradualBlur
