@@ -4,6 +4,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import CountUp from "@/components/reactbits/CountUp";
 import { fetchSocialProof, SocialProofConfig } from "@/lib/socialProof";
 
+const CACHE_KEY = "vx-social-proof";
+
+const readCache = (): SocialProofConfig | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(CACHE_KEY);
+    return raw ? (JSON.parse(raw) as SocialProofConfig) : null;
+  } catch {
+    return null;
+  }
+};
+
 const Stars = ({ rating }: { rating: number }) => (
   <div className="flex items-center gap-1" aria-hidden="true">
     {[1, 2, 3, 4, 5].map((i) => (
@@ -16,20 +28,28 @@ const Stars = ({ rating }: { rating: number }) => (
 );
 
 const PlayerVoices = () => {
-  const [data, setData] = useState<SocialProofConfig | null>(null);
+  // Seed from the last known values so returning visitors never see a blank flash.
+  const [data, setData] = useState<SocialProofConfig | null>(readCache);
+  const [cached] = useState<SocialProofConfig | null>(readCache);
 
   useEffect(() => {
     let active = true;
     fetchSocialProof().then((config) => {
-      if (active) setData(config);
+      if (!active) return;
+      setData(config);
+      try {
+        window.localStorage.setItem(CACHE_KEY, JSON.stringify(config));
+      } catch {
+        /* storage unavailable — non-fatal */
+      }
     });
     return () => {
       active = false;
     };
   }, []);
 
-  // Loading: reserve space with shimmer so the page does not jump.
-  if (!data) {
+  // Only shimmer when we know there is content coming (avoids a block that vanishes).
+  if (!data && cached) {
     return (
       <section className="py-20" aria-busy="true">
         <div className="container mx-auto px-4">
