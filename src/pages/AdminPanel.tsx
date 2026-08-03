@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FileText, LogOut, Plus, RadioTower, Save, Trash2, Wrench } from "@/lib/icons";
+import { FileText, LogOut, Plus, RadioTower, Save, Star, Trash2, Wrench } from "@/lib/icons";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +9,13 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { adminControl, CustomPage, DEFAULT_MAINTENANCE_MESSAGE, normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DEFAULT_SOCIAL_PROOF,
+  fetchSocialProof,
+  normalizeSocialProof,
+  SOCIAL_PROOF_KEY,
+  SocialProofConfig,
+} from "@/lib/socialProof";
 
 const SESSION_KEY = "vx-admin-session";
 
@@ -27,6 +34,7 @@ const AdminPanel = () => {
   const [pages, setPages] = useState<CustomPage[]>([]);
   const [current, setCurrent] = useState<CustomPage>(blankPage);
   const [maintenance, setMaintenance] = useState({ enabled: false, message: DEFAULT_MAINTENANCE_MESSAGE });
+  const [socialProof, setSocialProof] = useState<SocialProofConfig>(DEFAULT_SOCIAL_PROOF);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -56,6 +64,7 @@ const AdminPanel = () => {
           "Maintenance status took too long, using safe default."
         ).catch(() => null);
         setMaintenance(normalizeMaintenance(config?.data?.value));
+        setSocialProof(await fetchSocialProof());
       } catch (err) {
         setLoadError(err instanceof Error ? err.message : "Backend did not respond. Try again.");
         toast({ title: "Control room not ready", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
@@ -103,6 +112,25 @@ const AdminPanel = () => {
       toast({ title: enabled ? "Maintenance ON" : "Maintenance OFF", description: "Visitors will see the latest state live." });
     } catch (err) {
       toast({ title: "Could not update", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const savePage = async () => {
+    if (!token) return;
+    setSaving(true);
+    try {
+      const data = await adminControl<{ setting: { value: unknown } }>({
+        action: "save_settings",
+        token,
+        key: SOCIAL_PROOF_KEY,
+        value: socialProof,
+      });
+      setSocialProof(normalizeSocialProof(data.setting.value));
+      toast({ title: "Social proof saved", description: "Homepage updates for visitors right away." });
+    } catch (err) {
+      toast({ title: "Could not save", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
     } finally {
       setSaving(false);
     }
