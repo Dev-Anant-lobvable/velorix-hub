@@ -142,6 +142,7 @@ Deno.serve(async (req) => {
   const admin = createClient(url, serviceKey, { auth: { persistSession: false } });
 
   if (action === "login") {
+    // handled below
     // Rate limit: count failed attempts from this IP in window
     const since = new Date(Date.now() - LOCKOUT_WINDOW_MS).toISOString();
     const { data: attempts } = await admin
@@ -164,6 +165,11 @@ Deno.serve(async (req) => {
     }
     await audit(admin, "login", {}, ip);
     return json({ token: await createToken(serviceKey) });
+  }
+
+  // Public, unauthenticated health probe used by the status page
+  if (action === "ping") {
+    return json({ ok: true, ts: Date.now() });
   }
 
   if (!(await verifyToken(String(body.token ?? ""), serviceKey))) {
