@@ -48,7 +48,7 @@ const CookieConsent = () => {
                 <Cookie className="w-4 h-4 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-foreground">We use cookies 🍪</h3>
+                <h3 className="text-sm font-semibold text-foreground">We use cookies</h3>
                 <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                   We use essential cookies to run the site and analytics to improve your experience. As per India's DPDP Act 2023, we ask for your consent. Read our{" "}
                   <Link to="/cookies" className="text-primary hover:underline">Cookie Policy</Link>.
