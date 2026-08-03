@@ -13,6 +13,7 @@ import useExternalLinkSound from "@/hooks/useExternalLinkSound";
 import GradualBlur from "@/components/reactbits/GradualBlur";
 import BackToTop from "@/components/BackToTop";
 import Reveal from "@/components/Reveal";
+import PlayerVoices from "@/components/PlayerVoices";
 
 const Index = () => {
   useExternalLinkSound();
@@ -35,6 +36,7 @@ const Index = () => {
         <Reveal><AppGallerySection /></Reveal>
         <Reveal><StatsSection /></Reveal>
         <Reveal><SocialProofBadges /></Reveal>
+        <Reveal><PlayerVoices /></Reveal>
         <Reveal><PartnersRow /></Reveal>
         <Reveal><HowItWorksSection /></Reveal>
         <Reveal><FeaturesSection /></Reveal>

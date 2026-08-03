@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FileText, LogOut, Plus, RadioTower, Save, Trash2, Wrench } from "@/lib/icons";
+import { FileText, LogOut, Plus, RadioTower, Save, Star, Trash2, Wrench } from "@/lib/icons";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +9,13 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { adminControl, CustomPage, DEFAULT_MAINTENANCE_MESSAGE, normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DEFAULT_SOCIAL_PROOF,
+  fetchSocialProof,
+  normalizeSocialProof,
+  SOCIAL_PROOF_KEY,
+  SocialProofConfig,
+} from "@/lib/socialProof";
 
 const SESSION_KEY = "vx-admin-session";
 
@@ -27,6 +34,7 @@ const AdminPanel = () => {
   const [pages, setPages] = useState<CustomPage[]>([]);
   const [current, setCurrent] = useState<CustomPage>(blankPage);
   const [maintenance, setMaintenance] = useState({ enabled: false, message: DEFAULT_MAINTENANCE_MESSAGE });
+  const [socialProof, setSocialProof] = useState<SocialProofConfig>(DEFAULT_SOCIAL_PROOF);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -56,6 +64,7 @@ const AdminPanel = () => {
           "Maintenance status took too long, using safe default."
         ).catch(() => null);
         setMaintenance(normalizeMaintenance(config?.data?.value));
+        setSocialProof(await fetchSocialProof());
       } catch (err) {
         setLoadError(err instanceof Error ? err.message : "Backend did not respond. Try again.");
         toast({ title: "Control room not ready", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
@@ -103,6 +112,25 @@ const AdminPanel = () => {
       toast({ title: enabled ? "Maintenance ON" : "Maintenance OFF", description: "Visitors will see the latest state live." });
     } catch (err) {
       toast({ title: "Could not update", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const saveSocialProof = async () => {
+    if (!token) return;
+    setSaving(true);
+    try {
+      const data = await adminControl<{ setting: { value: unknown } }>({
+        action: "save_settings",
+        token,
+        key: SOCIAL_PROOF_KEY,
+        value: socialProof,
+      });
+      setSocialProof(normalizeSocialProof(data.setting.value));
+      toast({ title: "Social proof saved", description: "Homepage updates for visitors right away." });
+    } catch (err) {
+      toast({ title: "Could not save", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
     } finally {
       setSaving(false);
     }
@@ -215,6 +243,135 @@ const AdminPanel = () => {
         </section>
 
         <section className="mt-6 grid gap-3">
+          <article className="glass-card p-5">
+            <div className="mb-5 flex items-center gap-3">
+              <Star className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-semibold text-foreground">Social proof</h2>
+            </div>
+            <p className="mb-4 text-sm text-muted-foreground">
+              Only real numbers, please. Leave a field at 0 and that stat stays hidden on the homepage.
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <label className="text-sm text-muted-foreground">
+                Rating (0-5)
+                <Input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  value={socialProof.rating}
+                  onChange={(event) => setSocialProof({ ...socialProof, rating: Number(event.target.value) })}
+                />
+              </label>
+              <label className="text-sm text-muted-foreground">
+                Review count
+                <Input
+                  type="number"
+                  min="0"
+                  value={socialProof.reviews}
+                  onChange={(event) => setSocialProof({ ...socialProof, reviews: Number(event.target.value) })}
+                />
+              </label>
+              <label className="text-sm text-muted-foreground">
+                Tournaments hosted
+                <Input
+                  type="number"
+                  min="0"
+                  value={socialProof.tournamentsHosted}
+                  onChange={(event) =>
+                    setSocialProof({ ...socialProof, tournamentsHosted: Number(event.target.value) })
+                  }
+                />
+              </label>
+              <label className="text-sm text-muted-foreground">
+                Payouts sent
+                <Input
+                  type="number"
+                  min="0"
+                  value={socialProof.payoutsSent}
+                  onChange={(event) => setSocialProof({ ...socialProof, payoutsSent: Number(event.target.value) })}
+                />
+              </label>
+            </div>
+
+            <div className="mt-5 grid gap-4">
+              {socialProof.testimonials.map((item, index) => (
+                <div key={index} className="rounded-xl border border-border/60 p-4">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <Input
+                      placeholder="Player name"
+                      value={item.name}
+                      onChange={(event) =>
+                        setSocialProof({
+                          ...socialProof,
+                          testimonials: socialProof.testimonials.map((entry, i) =>
+                            i === index ? { ...entry, name: event.target.value } : entry
+                          ),
+                        })
+                      }
+                    />
+                    <Input
+                      placeholder="In-game name / handle"
+                      value={item.handle}
+                      onChange={(event) =>
+                        setSocialProof({
+                          ...socialProof,
+                          testimonials: socialProof.testimonials.map((entry, i) =>
+                            i === index ? { ...entry, handle: event.target.value } : entry
+                          ),
+                        })
+                      }
+                    />
+                  </div>
+                  <Textarea
+                    className="mt-3 min-h-20"
+                    placeholder="What did they say?"
+                    value={item.quote}
+                    onChange={(event) =>
+                      setSocialProof({
+                        ...socialProof,
+                        testimonials: socialProof.testimonials.map((entry, i) =>
+                          i === index ? { ...entry, quote: event.target.value } : entry
+                        ),
+                      })
+                    }
+                  />
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="mt-3"
+                    onClick={() =>
+                      setSocialProof({
+                        ...socialProof,
+                        testimonials: socialProof.testimonials.filter((_, i) => i !== index),
+                      })
+                    }
+                  >
+                    <Trash2 className="h-4 w-4" /> Remove
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-between">
+              <Button
+                variant="outline"
+                disabled={socialProof.testimonials.length >= 6}
+                onClick={() =>
+                  setSocialProof({
+                    ...socialProof,
+                    testimonials: [...socialProof.testimonials, { name: "", handle: "", quote: "" }],
+                  })
+                }
+              >
+                <Plus className="h-4 w-4" /> Add testimonial
+              </Button>
+              <Button onClick={saveSocialProof} disabled={saving}>
+                <Save className="h-4 w-4" /> Save social proof
+              </Button>
+            </div>
+          </article>
+
           {sortedPages.map((page) => (
             <article key={page.slug} className="glass-card flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
