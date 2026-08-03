@@ -117,7 +117,7 @@ const AdminPanel = () => {
     }
   };
 
-  const savePage = async () => {
+  const saveSocialProof = async () => {
     if (!token) return;
     setSaving(true);
     try {
