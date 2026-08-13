@@ -73,6 +73,12 @@ const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = slug ? getPostBySlug(slug) : undefined;
 
+  const plainText = post
+    ? post.body
+        .map((b) => ("text" in b ? b.text : b.items.join(" ")))
+        .join(" ")
+    : "";
+
   useSeo({
     title: post ? `${post.title} | VeloRix Blog` : "Article not found | VeloRix",
     description: post?.excerpt ?? "VeloRix esports guides and tournament coverage.",
@@ -80,13 +86,43 @@ const BlogPost = () => {
     jsonLd: post
       ? {
           "@context": "https://schema.org",
-          "@type": "Article",
-          headline: post.title,
-          description: post.excerpt,
-          datePublished: post.isoDate,
-          author: { "@type": "Organization", name: post.author },
-          publisher: { "@type": "Organization", name: "VeloRix Tournaments" },
-          mainEntityOfPage: `https://velorix-hub.vercel.app/blog/${post.slug}`,
+          "@graph": [
+            {
+              "@type": "Article",
+              "@id": `https://velorix-hub.vercel.app/blog/${post.slug}#article`,
+              headline: post.title,
+              description: post.excerpt,
+              articleSection: post.tag,
+              datePublished: post.isoDate,
+              dateModified: post.isoDate,
+              wordCount: plainText.split(/\s+/).length,
+              inLanguage: "en-IN",
+              keywords: ["free fire tournament", "BGMI tournament", "mobile esports", post.tag.toLowerCase()],
+              author: { "@type": "Organization", name: post.author, url: "https://velorix-hub.vercel.app/about" },
+              publisher: {
+                "@type": "Organization",
+                name: "VeloRix Tournaments",
+                url: "https://velorix-hub.vercel.app",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://velorix-hub.vercel.app/velorix-favicon.png",
+                },
+              },
+              mainEntityOfPage: `https://velorix-hub.vercel.app/blog/${post.slug}`,
+              speakable: {
+                "@type": "SpeakableSpecification",
+                cssSelector: ["h1", "article p"],
+              },
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: "https://velorix-hub.vercel.app/" },
+                { "@type": "ListItem", position: 2, name: "Blog", item: "https://velorix-hub.vercel.app/blog" },
+                { "@type": "ListItem", position: 3, name: post.title },
+              ],
+            },
+          ],
         }
       : undefined,
   });
