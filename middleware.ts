@@ -1,15 +1,9 @@
 import { next } from "@vercel/edge";
 
 export const config = {
-  matcher: [
-    "/",
-    "/about",
-    "/contact",
-    "/privacy",
-    "/terms",
-    "/download",
-    "/developers",
-  ],
+  // Every path except static assets and the API/MCP proxies. Known routes fall
+  // through untouched; unknown ones get a real 404 with an agent-readable body.
+  matcher: ["/((?!api/|mcp|md/|assets/|fonts/|sounds/|.well-known/|_vercel).*)"],
 };
 
 /** Route -> markdown mirror served via Accept negotiation (acceptmarkdown.com). */
@@ -22,6 +16,28 @@ const MARKDOWN_MIRRORS: Record<string, string> = {
   "/download": "/md/download.md",
   "/developers": "/md/developers.md",
 };
+
+/** Every path the SPA (or a static document) actually serves. */
+const KNOWN_PATHS = new Set([
+  "/",
+  "/about",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/cookies",
+  "/help",
+  "/download",
+  "/status",
+  "/changelog",
+  "/blog",
+  "/crew",
+  "/vx-control",
+  "/maintenance",
+  "/offline",
+  "/developers",
+]);
+
+const KNOWN_PREFIXES = ["/blog/", "/p/", "/error/"];
 
 const VARY = "Accept, Accept-Encoding";
 
@@ -42,6 +58,31 @@ function wantsMarkdown(request: Request, url: URL): boolean {
   return q("text/markdown") >= q("text/html");
 }
 
+function isKnown(path: string): boolean {
+  if (KNOWN_PATHS.has(path)) return true;
+  if (KNOWN_PREFIXES.some((prefix) => path.startsWith(prefix) && path.length > prefix.length)) return true;
+  // Static files (anything with an extension) are served by Vercel directly.
+  return /\.[a-z0-9]+$/i.test(path);
+}
+
+const NOT_FOUND_MARKDOWN = `# 404 Not Found
+
+The requested path does not exist on VeloRix Tournaments.
+
+## Where to look instead
+
+- Site index for agents: /llms.txt
+- Full text export: /llms-full.txt
+- Developer resources: /developers
+- OpenAPI specification: /openapi.json
+- JSON API index: /api/v1
+- MCP server handshake: /.well-known/mcp
+- Sitemap: /sitemap.xml
+- Home: /
+
+Contact: service.veloxyra@gmail.com
+`;
+
 export default async function middleware(request: Request) {
   const url = new URL(request.url);
   const path = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, "") : "/";
@@ -59,6 +100,23 @@ export default async function middleware(request: Request) {
           vary: VARY,
           "cache-control": "public, max-age=300, s-maxage=600",
           link: `<${url.origin}${mirror}>; rel="alternate"; type="text/markdown"`,
+        },
+      });
+    }
+  }
+
+  if (!isKnown(path)) {
+    const accept = request.headers.get("accept") ?? "";
+    // Browsers ask for text/html and get the styled 404 document; agents and
+    // plain clients get a markdown body they can act on.
+    if (!/text\/html/i.test(accept)) {
+      return new Response(NOT_FOUND_MARKDOWN, {
+        status: 404,
+        headers: {
+          "content-type": "text/markdown; charset=utf-8",
+          vary: VARY,
+          "x-robots-tag": "noindex, follow",
+          link: `<${url.origin}/llms.txt>; rel="help"`,
         },
       });
     }
