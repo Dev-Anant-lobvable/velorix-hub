@@ -116,6 +116,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt (AI content index)" />
     <link rel="alternate" type="text/plain" href="/llms-full.txt" title="llms-full.txt (full text for AI)" />
+    <link rel="alternate" type="text/markdown" href="/md/index.md" title="Markdown version of this page" />
 
     <script type="application/ld+json">
     {
@@ -125,17 +126,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       "name": "VeloRix Tournaments",
       "alternateName": "VeloRix",
       "url": "https://velorix-hub.vercel.app",
-      "logo": "https://velorix-hub.vercel.app/velorix-favicon.png",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://velorix-hub.vercel.app/velorix-favicon.png",
+        "width": 512,
+        "height": 512
+      },
+      "image": "https://velorix-hub.vercel.app/og-image.png",
       "description": "India-focused mobile esports tournament platform for Free Fire, BGMI and Call of Duty Mobile. Skill-based tournaments with real cash prizes.",
       "email": "service.veloxyra@gmail.com",
+      "foundingDate": "2026",
       "areaServed": { "@type": "Country", "name": "India" },
+      "sameAs": [
+        "https://www.instagram.com/velorix_tournaments",
+        "https://x.com/VeloRix"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kolkata",
+        "addressRegion": "West Bengal",
+        "postalCode": "700001",
+        "addressCountry": "IN"
+      },
       "knowsAbout": ["Free Fire tournaments", "BGMI tournaments", "mobile esports", "anti-cheat", "clash squad", "esports tournament formats"],
-      "contactPoint": {
+      "contactPoint": [{
         "@type": "ContactPoint",
         "contactType": "customer support",
         "email": "service.veloxyra@gmail.com",
+        "url": "https://velorix-hub.vercel.app/contact",
+        "areaServed": "IN",
         "availableLanguage": ["en", "hi"]
-      }
+      }, {
+        "@type": "ContactPoint",
+        "contactType": "technical support",
+        "email": "service.veloxyra@gmail.com",
+        "url": "https://velorix-hub.vercel.app/developers",
+        "availableLanguage": ["en"]
+      }]
     }
     </script>
 
@@ -150,6 +177,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       "publisher": { "@id": "https://velorix-hub.vercel.app/#organization" }
     }
     </script>
+
     
   
   
