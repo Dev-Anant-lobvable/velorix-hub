@@ -39,6 +39,9 @@ How an agent should call VeloRix: use the MCP server described at https://velori
 - [VeloRix OpenAPI specification](https://velorix-hub.vercel.app/openapi.json): OpenAPI 3.1 document for the public read-only JSON API (operations listPages, getPage, getActiveApk, getSiteStatus).
 - [VeloRix JSON API index](https://velorix-hub.vercel.app/api/v1): read-only REST API; structured application/problem+json errors with code, message and hint.
 - [VeloRix API rate limits, versioning & deprecation policy](https://velorix-hub.vercel.app/md/versioning.md): 120 req/60s per IP, RFC 9331 RateLimit headers, Retry-After on 429, URL path versioning with 180-day Deprecation/Sunset window.
+- [VeloRix rate limit, error and deprecation policy](https://velorix-hub.vercel.app/md/versioning.md): 120 req/60s per IP on /api/v1 plus a "static";q=600;w=60 policy on documents; RFC 9457 errors; 180 day sunset window.
+- [VeloRix developer resources (Markdown)](https://velorix-hub.vercel.app/developers.md): same index as /developers, plain markdown.
+- VeloRix aliases: /api (API index), /mcp.json (MCP manifest), /velorix-openapi.json (OpenAPI spec), /.well-known/llms.txt (this file).
 - [VeloRix API catalog (RFC 9727 linkset)](https://velorix-hub.vercel.app/.well-known/api-catalog): machine-readable index of the VeloRix OpenAPI spec, docs and MCP handshake.
 - [VeloRix developer docs alias](https://velorix-hub.vercel.app/docs): same page as /developers, also served at /api-docs.
 - [ai.txt](https://velorix-hub.vercel.app/ai.txt): training, retrieval and attribution policy.
