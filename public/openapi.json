@@ -1,0 +1,251 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VeloRix Tournaments Public API",
+    "version": "1.0.0",
+    "summary": "Read-only JSON API for VeloRix Tournaments, an India-focused Free Fire and BGMI mobile esports tournament platform.",
+    "description": "Public, unauthenticated, read-only endpoints exposing VeloRix Tournaments content: published pages (tournaments, announcements, policies), the current Android APK release and live site status. All errors are returned as application/problem+json with a machine-readable error code, message and resolution hint. The same capabilities are available to AI agents as MCP tools; see https://velorix-hub.vercel.app/.well-known/mcp.",
+    "termsOfService": "https://velorix-hub.vercel.app/terms",
+    "contact": {
+      "name": "VeloRix Tournaments",
+      "email": "service.veloxyra@gmail.com",
+      "url": "https://velorix-hub.vercel.app/developers"
+    },
+    "license": { "name": "Proprietary — content reusable with attribution", "url": "https://velorix-hub.vercel.app/ai.txt" }
+  },
+  "externalDocs": {
+    "description": "VeloRix developer and agent resources",
+    "url": "https://velorix-hub.vercel.app/developers"
+  },
+  "servers": [{ "url": "https://velorix-hub.vercel.app/api/v1", "description": "Production" }],
+  "tags": [
+    { "name": "pages", "description": "Published VeloRix pages: tournaments, announcements, policies." },
+    { "name": "releases", "description": "VeloRix Android application releases." },
+    { "name": "platform", "description": "Platform metadata and live status." }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "getApiIndex",
+        "tags": ["platform"],
+        "summary": "API index",
+        "description": "Returns the API name, version, links to the OpenAPI document and MCP handshake, and the list of available operations.",
+        "responses": {
+          "200": {
+            "description": "API index document.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiIndex" } }
+            }
+          },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      }
+    },
+    "/pages": {
+      "get": {
+        "operationId": "listPages",
+        "tags": ["pages"],
+        "summary": "List published pages",
+        "description": "Lists every published VeloRix custom page (tournament pages, announcements, policy pages) with its slug, title, subtitle and last update time, newest first.",
+        "responses": {
+          "200": {
+            "description": "A list of published pages.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/PageList" } }
+            }
+          },
+          "502": { "$ref": "#/components/responses/UpstreamError" },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      }
+    },
+    "/pages/{slug}": {
+      "get": {
+        "operationId": "getPage",
+        "tags": ["pages"],
+        "summary": "Get one published page",
+        "description": "Fetches the full markdown content of a single published VeloRix page by its slug. Slugs are lowercase and hyphenated, for example 'diwali-cup'.",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "Lowercase, hyphenated page slug as returned by listPages.",
+            "schema": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[a-z0-9-]+$" },
+            "example": "diwali-cup"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested page.",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "502": { "$ref": "#/components/responses/UpstreamError" },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      }
+    },
+    "/apk/active": {
+      "get": {
+        "operationId": "getActiveApk",
+        "tags": ["releases"],
+        "summary": "Get the active Android release",
+        "description": "Returns the currently active VeloRix Android APK: version string, storage path, file size in bytes, changelog and release timestamp.",
+        "responses": {
+          "200": {
+            "description": "The active Android release.",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApkRelease" } } }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "502": { "$ref": "#/components/responses/UpstreamError" },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      }
+    },
+    "/status": {
+      "get": {
+        "operationId": "getSiteStatus",
+        "tags": ["platform"],
+        "summary": "Get live platform status",
+        "description": "Reports whether the VeloRix platform is live or in maintenance mode, with the operator's current status message. Call this before telling a player to register for a tournament.",
+        "responses": {
+          "200": {
+            "description": "Current platform status.",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SiteStatus" } } }
+          },
+          "502": { "$ref": "#/components/responses/UpstreamError" },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "NotFound": {
+        "description": "The requested resource does not exist.",
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "UpstreamError": {
+        "description": "The content database rejected the query.",
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "Unavailable": {
+        "description": "The backend is temporarily unavailable.",
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      }
+    },
+    "schemas": {
+      "ApiIndex": {
+        "type": "object",
+        "description": "Self-describing index of the VeloRix public API.",
+        "required": ["name", "version", "openapi", "endpoints"],
+        "properties": {
+          "name": { "type": "string" },
+          "version": { "type": "string" },
+          "openapi": { "type": "string", "format": "uri" },
+          "documentation": { "type": "string", "format": "uri" },
+          "mcp": { "type": "string", "format": "uri" },
+          "endpoints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["operationId", "method", "path"],
+              "properties": {
+                "operationId": { "type": "string" },
+                "method": { "type": "string" },
+                "path": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "PageSummary": {
+        "type": "object",
+        "description": "Summary of a published VeloRix page.",
+        "required": ["slug", "title"],
+        "properties": {
+          "slug": { "type": "string", "description": "Lowercase hyphenated identifier used in URLs." },
+          "title": { "type": "string", "description": "Page title." },
+          "subtitle": { "type": ["string", "null"], "description": "Optional one-line subtitle." },
+          "updated_at": { "type": ["string", "null"], "format": "date-time", "description": "Last edit timestamp (UTC)." }
+        }
+      },
+      "PageList": {
+        "type": "object",
+        "description": "Paginationless list of published pages.",
+        "required": ["items", "count"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/PageSummary" } },
+          "count": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "Page": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PageSummary" },
+          {
+            "type": "object",
+            "required": ["content"],
+            "properties": {
+              "content": { "type": "string", "description": "Full page body in Markdown." }
+            }
+          }
+        ]
+      },
+      "ApkRelease": {
+        "type": "object",
+        "description": "An active VeloRix Android release.",
+        "required": ["version"],
+        "properties": {
+          "version": { "type": "string", "description": "Semantic version string, e.g. '1.4.2'." },
+          "file_path": { "type": ["string", "null"], "description": "Storage path of the APK object." },
+          "file_size": { "type": ["integer", "null"], "description": "APK size in bytes." },
+          "changelog": { "type": ["string", "null"], "description": "Release notes in Markdown." },
+          "released_at": { "type": ["string", "null"], "format": "date-time" }
+        }
+      },
+      "SiteStatus": {
+        "type": "object",
+        "description": "Live platform status.",
+        "required": ["status", "maintenance", "message"],
+        "properties": {
+          "status": { "type": "string", "enum": ["live", "maintenance"] },
+          "maintenance": { "type": "boolean" },
+          "message": { "type": "string" },
+          "checked_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "description": "Structured JSON error. Every non-2xx response uses this shape.",
+        "required": ["status", "error"],
+        "properties": {
+          "type": { "type": "string", "format": "uri", "description": "Link to documentation for this error code." },
+          "title": { "type": "string", "description": "Short machine-readable error title (same as error.code)." },
+          "status": { "type": "integer", "description": "HTTP status code." },
+          "error": {
+            "type": "object",
+            "required": ["code", "message", "hint"],
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Stable error code.",
+                "enum": [
+                  "page_not_found",
+                  "no_active_release",
+                  "endpoint_not_found",
+                  "method_not_allowed",
+                  "upstream_error",
+                  "backend_unavailable",
+                  "internal_error"
+                ]
+              },
+              "message": { "type": "string", "description": "Human-readable explanation." },
+              "hint": { "type": "string", "description": "How to resolve or recover from the error." }
+            }
+          }
+        }
+      }
+    }
+  }
+}
