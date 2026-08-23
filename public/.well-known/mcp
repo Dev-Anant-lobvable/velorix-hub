@@ -53,5 +53,32 @@
   ],
   "whenToUse": "Use these tools when a user asks about VeloRix Tournaments: joining Free Fire or BGMI tournaments in India, the current Android APK release and download details, published tournament or policy pages, or whether the VeloRix platform is live or under maintenance.",
   "openapi": "https://velorix-hub.vercel.app/openapi.json",
-  "restApi": "https://velorix-hub.vercel.app/api/v1"
+  "restApi": "https://velorix-hub.vercel.app/api/v1",
+  "handshake": {
+    "url": "https://velorix-hub.vercel.app/.well-known/mcp",
+    "method": "POST",
+    "transport": "streamable-http",
+    "description": "POST a JSON-RPC 2.0 initialize request to this same URL for a live handshake; GET returns this manifest."
+  },
+  "rateLimit": {
+    "limit": 120,
+    "windowSeconds": 60,
+    "headers": [
+      "RateLimit",
+      "RateLimit-Policy",
+      "Retry-After"
+    ],
+    "documentation": "https://velorix-hub.vercel.app/md/versioning.md#rate-limits"
+  },
+  "versioning": {
+    "scheme": "url-path",
+    "current": "v1",
+    "policy": "https://velorix-hub.vercel.app/md/versioning.md",
+    "deprecationSignals": [
+      "Deprecation",
+      "Sunset",
+      "Link; rel=deprecation-policy"
+    ],
+    "minimumSupportWindowDays": 180
+  }
 }

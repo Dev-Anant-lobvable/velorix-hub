@@ -1,0 +1,45 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://velorix-hub.vercel.app",
+      "service-desc": [
+        {
+          "href": "https://velorix-hub.vercel.app/openapi.json",
+          "type": "application/json",
+          "title": "VeloRix Tournaments Public API — OpenAPI 3.1 specification"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://velorix-hub.vercel.app/developers",
+          "type": "text/html",
+          "title": "VeloRix Tournaments developer and agent resources"
+        },
+        {
+          "href": "https://velorix-hub.vercel.app/md/versioning.md",
+          "type": "text/markdown",
+          "title": "VeloRix API rate limits, versioning and deprecation policy"
+        }
+      ],
+      "service-meta": [
+        {
+          "href": "https://velorix-hub.vercel.app/.well-known/mcp",
+          "type": "application/json",
+          "title": "VeloRix MCP server handshake (Streamable HTTP)"
+        },
+        {
+          "href": "https://velorix-hub.vercel.app/llms.txt",
+          "type": "text/plain",
+          "title": "VeloRix llms.txt agent index"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://velorix-hub.vercel.app/api/v1/status",
+          "type": "application/json",
+          "title": "VeloRix live platform status"
+        }
+      ]
+    }
+  ]
+}

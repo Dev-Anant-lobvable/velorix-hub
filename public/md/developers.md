@@ -56,3 +56,37 @@ Additional markdown-only fact sheets (no HTML equivalent): [/md/pricing.md](/md/
 - Private areas (`/vx-control`, `/crew`) are excluded from crawling and are not part of any public interface.
 
 Contact for integration questions: service.veloxyra@gmail.com
+
+## VeloRix API rate limits
+
+- Quota: 120 requests per 60 second window per client IP. No key, no account.
+- Headers on every response: `RateLimit-Policy: "default";q=120;w=60`, `RateLimit: "default";r=<remaining>;t=<reset>`,
+  plus `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` and `X-API-Version`.
+- On 429: `Retry-After: <seconds>` and error code `rate_limited`. Self-throttle from `RateLimit`.
+
+## VeloRix API error model
+
+Every non-2xx response is `application/problem+json` (RFC 9457) with `type`, `title`, `status`, `detail`, `instance`
+and an `error` object carrying `code`, `message` and `hint`. Stable codes: `bad_request`, `page_not_found`,
+`no_active_release`, `endpoint_not_found`, `method_not_allowed`, `rate_limited`, `upstream_error`,
+`backend_unavailable`, `internal_error`. Every OpenAPI operation references this schema for 4xx, 5xx and `default`.
+
+## VeloRix API versioning and deprecation
+
+URL path versioning (`/api/v1`), `X-API-Version` on every response, `Deprecation` + `Sunset` headers with a minimum
+180 day window before a version is removed, and `Link; rel="deprecation-policy"` on every response. Full policy:
+https://velorix-hub.vercel.app/md/versioning.md
+
+## VeloRix MCP live handshake
+
+`POST` a JSON-RPC 2.0 `initialize` request to https://velorix-hub.vercel.app/.well-known/mcp (or /mcp) for a live
+Streamable HTTP handshake. `GET` on the same URL returns the manifest document.
+
+## Predictable VeloRix developer URLs
+
+- /developers, /docs, /api-docs — this page (HTML)
+- /md/developers.md — this page (Markdown)
+- /openapi.json, /api/openapi.json, /.well-known/openapi.json — OpenAPI 3.1 spec
+- /.well-known/api-catalog — RFC 9727 linkset
+- /.well-known/mcp — MCP manifest + live handshake
+- /md/versioning.md — rate limit, error and deprecation policy

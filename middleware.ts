@@ -3,8 +3,13 @@ import { next } from "@vercel/edge";
 export const config = {
   // Every path except static assets and the API/MCP proxies. Known routes fall
   // through untouched; unknown ones get a real 404 with an agent-readable body.
-  matcher: ["/((?!api/|mcp|md/|assets/|fonts/|sounds/|.well-known/|_vercel).*)"],
+  // `/.well-known/mcp` is matched explicitly so POST handshakes reach the live
+  // MCP server while GET keeps serving the static manifest.
+  matcher: ["/((?!api/|mcp|md/|assets/|fonts/|sounds/|.well-known/|_vercel).*)", "/.well-known/mcp"],
 };
+
+/** Live MCP endpoint behind the /mcp rewrite. */
+const MCP_UPSTREAM = "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/mcp";
 
 /** Route -> markdown mirror served via Accept negotiation (acceptmarkdown.com). */
 const MARKDOWN_MIRRORS: Record<string, string> = {
@@ -35,6 +40,8 @@ const KNOWN_PATHS = new Set([
   "/maintenance",
   "/offline",
   "/developers",
+  "/docs",
+  "/api-docs",
 ]);
 
 const KNOWN_PREFIXES = ["/blog/", "/p/", "/error/"];
@@ -87,6 +94,44 @@ export default async function middleware(request: Request) {
   const url = new URL(request.url);
   const path = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, "") : "/";
   const mirror = MARKDOWN_MIRRORS[path || "/"];
+
+  // Live MCP handshake: JSON-RPC (POST) and session teardown (DELETE) at the
+  // well-known URL are proxied to the Streamable HTTP MCP server; GET keeps
+  // returning the static manifest document.
+  if (path === "/.well-known/mcp") {
+    if (request.method === "POST" || request.method === "DELETE") {
+      const upstream = await fetch(MCP_UPSTREAM, {
+        method: request.method,
+        headers: {
+          "content-type": request.headers.get("content-type") ?? "application/json",
+          accept: request.headers.get("accept") ?? "application/json, text/event-stream",
+          ...(request.headers.get("mcp-session-id")
+            ? { "mcp-session-id": request.headers.get("mcp-session-id") as string }
+            : {}),
+          ...(request.headers.get("mcp-protocol-version")
+            ? { "mcp-protocol-version": request.headers.get("mcp-protocol-version") as string }
+            : {}),
+        },
+        body: request.method === "POST" ? await request.text() : undefined,
+      });
+      const headers = new Headers(upstream.headers);
+      headers.set("access-control-allow-origin", "*");
+      headers.set("link", `<${url.origin}/mcp>; rel="mcp-server"`);
+      return new Response(upstream.body, { status: upstream.status, headers });
+    }
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET, POST, DELETE, OPTIONS",
+          "access-control-allow-headers": "content-type, accept, mcp-session-id, mcp-protocol-version",
+        },
+      });
+    }
+    return next({ headers: { link: `<${url.origin}/mcp>; rel="mcp-server"` } });
+  }
+
 
   if (mirror && wantsMarkdown(request, url)) {
     const upstream = await fetch(new URL(mirror, url.origin), {

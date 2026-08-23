@@ -72,7 +72,7 @@
       <p>
         VeloRix publishes a first-party MCP server over Streamable HTTP with public, read-only tools. Start from the
         handshake document at <a href="/.well-known/mcp">/.well-known/mcp</a>, which carries the endpoint URL,
-        transport and tool list.
+        transport and tool list. That URL is also a <strong>live handshake</strong>: <code>POST</code> a JSON-RPC 2.0 <code>initialize</code> request to <code>/.well-known/mcp</code> (or to <code>/mcp</code>) and VeloRix answers over Streamable HTTP; <code>GET</code> returns the manifest.
       </p>
       <ul>
         <li><strong>Transport:</strong> Streamable HTTP (JSON-RPC 2.0)</li>
@@ -102,6 +102,38 @@
         <li><code>getActiveApk</code> — <code>GET /api/v1/apk/active</code> — active Android release.</li>
         <li><code>getSiteStatus</code> — <code>GET /api/v1/status</code> — live or maintenance status.</li>
       </ul>
+      <h2>VeloRix API rate limits</h2>
+      <p>
+        The VeloRix Tournaments API allows <strong>120 requests per 60 second window per client IP</strong>, with no key
+        or account. Every response carries <code>RateLimit-Policy: "default";q=120;w=60</code> and
+        <code>RateLimit: "default";r=&lt;remaining&gt;;t=&lt;reset seconds&gt;</code> (RFC 9331), mirrored by
+        <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code> and <code>X-RateLimit-Reset</code>. On
+        <code>429</code> VeloRix returns <code>Retry-After</code> plus the <code>rate_limited</code> error code; agents
+        should self-throttle from <code>RateLimit</code> rather than retrying blindly.
+      </p>
+
+      <h2>VeloRix API error model (RFC 9457)</h2>
+      <p>
+        Every non-2xx response is <code>application/problem+json</code> with <code>type</code>, <code>title</code>,
+        <code>status</code>, <code>detail</code>, <code>instance</code> and a machine-readable <code>error</code>
+        object (<code>code</code>, <code>message</code>, <code>hint</code>). Stable codes:
+        <code>bad_request</code>, <code>page_not_found</code>, <code>no_active_release</code>,
+        <code>endpoint_not_found</code>, <code>method_not_allowed</code>, <code>rate_limited</code>,
+        <code>upstream_error</code>, <code>backend_unavailable</code>, <code>internal_error</code>. Every operation in
+        the OpenAPI document references this schema for its 4xx, 5xx and <code>default</code> responses.
+      </p>
+
+      <h2>VeloRix API versioning &amp; deprecation policy</h2>
+      <p>
+        The API is versioned in the URL path (<code>/api/v1</code>) and every response carries
+        <code>X-API-Version</code>. Breaking changes ship only as a new path version; a deprecated version sends
+        <code>Deprecation</code> (RFC 9745) and <code>Sunset</code> (RFC 8594) headers for at least 180 days before
+        removal, and every response links the policy with <code>Link; rel="deprecation-policy"</code>. Full policy:
+        <a href="/md/versioning.md">/md/versioning.md</a>. Machine-readable API catalog (RFC 9727 linkset):
+        <a href="/.well-known/api-catalog">/.well-known/api-catalog</a>. This page is also served at
+        <a href="/docs">/docs</a> and <a href="/api-docs">/api-docs</a>.
+      </p>
+
       <h2>Agent files</h2>
       <ul>
         <li><a href="/llms.txt">/llms.txt</a> — curated site index including a "when to use VeloRix" section</li>

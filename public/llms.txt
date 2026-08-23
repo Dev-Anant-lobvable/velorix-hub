@@ -38,6 +38,9 @@ How an agent should call VeloRix: use the MCP server described at https://velori
 - [VeloRix MCP endpoint](https://velorix-hub.vercel.app/mcp): Streamable HTTP MCP server (JSON-RPC 2.0, public read-only tools).
 - [VeloRix OpenAPI specification](https://velorix-hub.vercel.app/openapi.json): OpenAPI 3.1 document for the public read-only JSON API (operations listPages, getPage, getActiveApk, getSiteStatus).
 - [VeloRix JSON API index](https://velorix-hub.vercel.app/api/v1): read-only REST API; structured application/problem+json errors with code, message and hint.
+- [VeloRix API rate limits, versioning & deprecation policy](https://velorix-hub.vercel.app/md/versioning.md): 120 req/60s per IP, RFC 9331 RateLimit headers, Retry-After on 429, URL path versioning with 180-day Deprecation/Sunset window.
+- [VeloRix API catalog (RFC 9727 linkset)](https://velorix-hub.vercel.app/.well-known/api-catalog): machine-readable index of the VeloRix OpenAPI spec, docs and MCP handshake.
+- [VeloRix developer docs alias](https://velorix-hub.vercel.app/docs): same page as /developers, also served at /api-docs.
 - [ai.txt](https://velorix-hub.vercel.app/ai.txt): training, retrieval and attribution policy.
 - [llms-full.txt](https://velorix-hub.vercel.app/llms-full.txt): full text of all editorial content.
 - [sitemap.xml](https://velorix-hub.vercel.app/sitemap.xml): all public URLs.
@@ -56,6 +59,7 @@ Send `Accept: text/markdown` (or append `?format=md`) to `/`, `/about`, `/contac
 - [/md/pricing.md](https://velorix-hub.vercel.app/md/pricing.md)
 - [/md/features.md](https://velorix-hub.vercel.app/md/features.md)
 - [/md/compare.md](https://velorix-hub.vercel.app/md/compare.md)
+- [/md/versioning.md](https://velorix-hub.vercel.app/md/versioning.md)
 
 ## Product facts (pricing, features, positioning)
 
