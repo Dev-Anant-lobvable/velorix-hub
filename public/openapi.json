@@ -11,60 +11,133 @@
       "email": "service.veloxyra@gmail.com",
       "url": "https://velorix-hub.vercel.app/developers"
     },
-    "license": { "name": "Proprietary — content reusable with attribution", "url": "https://velorix-hub.vercel.app/ai.txt" }
+    "license": {
+      "name": "Proprietary \u2014 content reusable with attribution",
+      "url": "https://velorix-hub.vercel.app/ai.txt"
+    }
   },
   "externalDocs": {
     "description": "VeloRix developer and agent resources (MCP server, OpenAPI, rate limits, versioning policy)",
     "url": "https://velorix-hub.vercel.app/developers"
   },
-  "servers": [{ "url": "https://velorix-hub.vercel.app/api/v1", "description": "Production (v1)" }],
+  "servers": [
+    {
+      "url": "https://velorix-hub.vercel.app/api/v1",
+      "description": "Production (v1)"
+    }
+  ],
   "x-rate-limit": {
     "policy": "120 requests per 60 second window per client IP",
-    "headers": ["RateLimit-Policy", "RateLimit", "Retry-After", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"],
+    "headers": [
+      "RateLimit-Policy",
+      "RateLimit",
+      "Retry-After",
+      "X-RateLimit-Limit",
+      "X-RateLimit-Remaining",
+      "X-RateLimit-Reset"
+    ],
     "documentation": "https://velorix-hub.vercel.app/md/versioning.md#rate-limits"
   },
   "x-versioning": {
     "scheme": "url-path",
     "current": "v1",
-    "deprecationHeaders": ["Deprecation", "Sunset", "Link"],
+    "deprecationHeaders": [
+      "Deprecation",
+      "Sunset",
+      "Link"
+    ],
     "minimumSupportWindowDays": 180,
     "policy": "https://velorix-hub.vercel.app/md/versioning.md"
   },
   "tags": [
-    { "name": "pages", "description": "Published VeloRix pages: tournaments, announcements, policies." },
-    { "name": "releases", "description": "VeloRix Android application releases." },
-    { "name": "platform", "description": "Platform metadata and live status." }
+    {
+      "name": "pages",
+      "description": "Published VeloRix pages: tournaments, announcements, policies."
+    },
+    {
+      "name": "releases",
+      "description": "VeloRix Android application releases."
+    },
+    {
+      "name": "platform",
+      "description": "Platform metadata and live status."
+    }
   ],
   "paths": {
     "/": {
       "get": {
         "operationId": "getApiIndex",
-        "tags": ["platform"],
+        "tags": [
+          "platform"
+        ],
         "summary": "API index",
         "description": "Returns the API name, version, links to the OpenAPI document and MCP handshake, the rate-limit policy and the list of available operations.",
-        "parameters": [{ "$ref": "#/components/parameters/Pretty" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Pretty"
+          }
+        ],
         "responses": {
           "200": {
             "description": "API index document.",
-            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
+            "headers": {
+              "RateLimit-Policy": {
+                "$ref": "#/components/headers/RateLimitPolicy"
+              },
+              "RateLimit": {
+                "$ref": "#/components/headers/RateLimit"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimitReset"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/ApiVersion"
+              }
+            },
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/ApiIndex" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiIndex"
+                }
+              }
             }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
-          "429": { "$ref": "#/components/responses/RateLimited" },
-          "500": { "$ref": "#/components/responses/InternalError" },
-          "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" },
-          "default": { "$ref": "#/components/responses/ProblemDefault" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/UpstreamError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/ProblemDefault"
+          }
         }
       }
     },
     "/pages": {
       "get": {
         "operationId": "listPages",
-        "tags": ["pages"],
+        "tags": [
+          "pages"
+        ],
         "summary": "List published pages",
         "description": "Lists published VeloRix custom pages (tournament pages, announcements, policy pages) with slug, title, subtitle and last update time, newest first. Supports simple paging and a case-insensitive title search.",
         "parameters": [
@@ -73,7 +146,12 @@
             "in": "query",
             "required": false,
             "description": "Maximum number of pages to return (default 50).",
-            "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 },
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            },
             "example": 20
           },
           {
@@ -81,7 +159,11 @@
             "in": "query",
             "required": false,
             "description": "Number of pages to skip before collecting results (default 0).",
-            "schema": { "type": "integer", "minimum": 0, "default": 0 },
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
             "example": 0
           },
           {
@@ -89,33 +171,78 @@
             "in": "query",
             "required": false,
             "description": "Case-insensitive substring filter applied to the page title.",
-            "schema": { "type": "string", "minLength": 1, "maxLength": 80 },
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
             "example": "diwali"
           },
-          { "$ref": "#/components/parameters/Pretty" }
+          {
+            "$ref": "#/components/parameters/Pretty"
+          }
         ],
         "responses": {
           "200": {
             "description": "A list of published pages.",
-            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
+            "headers": {
+              "RateLimit-Policy": {
+                "$ref": "#/components/headers/RateLimitPolicy"
+              },
+              "RateLimit": {
+                "$ref": "#/components/headers/RateLimit"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimitReset"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/ApiVersion"
+              }
+            },
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/PageList" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageList"
+                }
+              }
             }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
-          "429": { "$ref": "#/components/responses/RateLimited" },
-          "500": { "$ref": "#/components/responses/InternalError" },
-          "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" },
-          "default": { "$ref": "#/components/responses/ProblemDefault" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/UpstreamError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/ProblemDefault"
+          }
         }
       }
     },
     "/pages/{slug}": {
       "get": {
         "operationId": "getPage",
-        "tags": ["pages"],
+        "tags": [
+          "pages"
+        ],
         "summary": "Get one published page",
         "description": "Fetches the full markdown content of a single published VeloRix page by its slug. Slugs are lowercase and hyphenated, for example 'diwali-cup'.",
         "parameters": [
@@ -124,72 +251,212 @@
             "in": "path",
             "required": true,
             "description": "Lowercase, hyphenated page slug as returned by listPages.",
-            "schema": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[a-z0-9-]+$" },
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120,
+              "pattern": "^[a-z0-9-]+$"
+            },
             "example": "diwali-cup"
           },
-          { "$ref": "#/components/parameters/Pretty" }
+          {
+            "$ref": "#/components/parameters/Pretty"
+          }
         ],
         "responses": {
           "200": {
             "description": "The requested page.",
-            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } }
+            "headers": {
+              "RateLimit-Policy": {
+                "$ref": "#/components/headers/RateLimitPolicy"
+              },
+              "RateLimit": {
+                "$ref": "#/components/headers/RateLimit"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimitReset"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/ApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "404": { "$ref": "#/components/responses/NotFound" },
-          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
-          "429": { "$ref": "#/components/responses/RateLimited" },
-          "500": { "$ref": "#/components/responses/InternalError" },
-          "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" },
-          "default": { "$ref": "#/components/responses/ProblemDefault" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/UpstreamError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/ProblemDefault"
+          }
         }
       }
     },
     "/apk/active": {
       "get": {
         "operationId": "getActiveApk",
-        "tags": ["releases"],
+        "tags": [
+          "releases"
+        ],
         "summary": "Get the active Android release",
         "description": "Returns the currently active VeloRix Android APK: version string, storage path, file size in bytes, changelog and release timestamp.",
-        "parameters": [{ "$ref": "#/components/parameters/Pretty" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Pretty"
+          }
+        ],
         "responses": {
           "200": {
             "description": "The active Android release.",
-            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApkRelease" } } }
+            "headers": {
+              "RateLimit-Policy": {
+                "$ref": "#/components/headers/RateLimitPolicy"
+              },
+              "RateLimit": {
+                "$ref": "#/components/headers/RateLimit"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimitReset"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/ApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApkRelease"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "404": { "$ref": "#/components/responses/NotFound" },
-          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
-          "429": { "$ref": "#/components/responses/RateLimited" },
-          "500": { "$ref": "#/components/responses/InternalError" },
-          "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" },
-          "default": { "$ref": "#/components/responses/ProblemDefault" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/UpstreamError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/ProblemDefault"
+          }
         }
       }
     },
     "/status": {
       "get": {
         "operationId": "getSiteStatus",
-        "tags": ["platform"],
+        "tags": [
+          "platform"
+        ],
         "summary": "Get live platform status",
         "description": "Reports whether the VeloRix platform is live or in maintenance mode, with the operator's current status message. Call this before telling a player to register for a tournament.",
-        "parameters": [{ "$ref": "#/components/parameters/Pretty" }],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Pretty"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Current platform status.",
-            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SiteStatus" } } }
+            "headers": {
+              "RateLimit-Policy": {
+                "$ref": "#/components/headers/RateLimitPolicy"
+              },
+              "RateLimit": {
+                "$ref": "#/components/headers/RateLimit"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimitLimit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimitRemaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimitReset"
+              },
+              "X-API-Version": {
+                "$ref": "#/components/headers/ApiVersion"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteStatus"
+                }
+              }
+            }
           },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
-          "429": { "$ref": "#/components/responses/RateLimited" },
-          "500": { "$ref": "#/components/responses/InternalError" },
-          "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" },
-          "default": { "$ref": "#/components/responses/ProblemDefault" }
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/UpstreamError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          },
+          "default": {
+            "$ref": "#/components/responses/ProblemDefault"
+          }
         }
       }
     }
@@ -201,135 +468,407 @@
         "in": "query",
         "required": false,
         "description": "Pretty-print the JSON response body with two-space indentation.",
-        "schema": { "type": "boolean", "default": true },
+        "schema": {
+          "type": "boolean",
+          "default": true
+        },
         "example": true
       }
     },
     "headers": {
       "RateLimitPolicy": {
         "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
-        "schema": { "type": "string" },
+        "schema": {
+          "type": "string"
+        },
         "example": "\"default\";q=120;w=60"
       },
       "RateLimit": {
         "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
-        "schema": { "type": "string" },
+        "schema": {
+          "type": "string"
+        },
         "example": "\"default\";r=118;t=57"
       },
       "RateLimitLimit": {
         "description": "Legacy mirror: requests allowed per window.",
-        "schema": { "type": "integer" },
+        "schema": {
+          "type": "integer"
+        },
         "example": 120
       },
       "RateLimitRemaining": {
         "description": "Legacy mirror: requests left in the current window.",
-        "schema": { "type": "integer" },
+        "schema": {
+          "type": "integer"
+        },
         "example": 118
       },
       "RateLimitReset": {
         "description": "Legacy mirror: seconds until the current window resets.",
-        "schema": { "type": "integer" },
+        "schema": {
+          "type": "integer"
+        },
         "example": 57
       },
       "ApiVersion": {
         "description": "API version serving the response.",
-        "schema": { "type": "string" },
+        "schema": {
+          "type": "string"
+        },
         "example": "v1"
       },
       "RetryAfter": {
         "description": "Seconds to wait before retrying (sent on 429 and 503).",
-        "schema": { "type": "integer" },
+        "schema": {
+          "type": "integer"
+        },
         "example": 30
-      },
-      "StandardHeaderSet": {
-        "description": "Rate-limit and version headers present on every VeloRix API response: RateLimit-Policy, RateLimit, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-API-Version.",
-        "schema": { "type": "string" },
-        "example": "see /md/versioning.md"
       }
     },
     "responses": {
       "BadRequest": {
         "description": "A query parameter failed validation.",
-        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "NotFound": {
         "description": "The requested resource does not exist.",
-        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "MethodNotAllowed": {
         "description": "The API is read-only; only GET, HEAD and OPTIONS are accepted.",
-        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "RateLimited": {
         "description": "The client exceeded the published quota. Honour Retry-After before retrying.",
-        "headers": { "$ref": "#/components/headers/RetryAfter" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          },
+          "Retry-After": {
+            "$ref": "#/components/headers/RetryAfter"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "InternalError": {
         "description": "Unexpected server error.",
-        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "UpstreamError": {
         "description": "The content database rejected the query.",
-        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "Unavailable": {
         "description": "The backend is temporarily unavailable.",
-        "headers": { "$ref": "#/components/headers/RetryAfter" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          },
+          "Retry-After": {
+            "$ref": "#/components/headers/RetryAfter"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       },
       "ProblemDefault": {
         "description": "Any other failure. Always the same typed problem document.",
-        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
-        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimitLimit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimitRemaining"
+          },
+          "X-RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimitReset"
+          },
+          "X-API-Version": {
+            "$ref": "#/components/headers/ApiVersion"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
       }
     },
     "schemas": {
       "ApiIndex": {
         "type": "object",
         "description": "Self-describing index of the VeloRix public API.",
-        "required": ["name", "version", "openapi", "endpoints"],
+        "required": [
+          "name",
+          "version",
+          "openapi",
+          "endpoints"
+        ],
         "properties": {
-          "name": { "type": "string" },
-          "version": { "type": "string" },
-          "openapi": { "type": "string", "format": "uri" },
-          "documentation": { "type": "string", "format": "uri" },
-          "mcp": { "type": "string", "format": "uri" },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "openapi": {
+            "type": "string",
+            "format": "uri"
+          },
+          "documentation": {
+            "type": "string",
+            "format": "uri"
+          },
+          "mcp": {
+            "type": "string",
+            "format": "uri"
+          },
           "rate_limit": {
             "type": "object",
             "description": "Published quota for this API.",
             "properties": {
-              "limit": { "type": "integer" },
-              "window_seconds": { "type": "integer" },
-              "headers": { "type": "array", "items": { "type": "string" } },
-              "documentation": { "type": "string", "format": "uri" }
+              "limit": {
+                "type": "integer"
+              },
+              "window_seconds": {
+                "type": "integer"
+              },
+              "headers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "documentation": {
+                "type": "string",
+                "format": "uri"
+              }
             }
           },
           "versioning": {
             "type": "object",
             "description": "Versioning and deprecation policy summary.",
             "properties": {
-              "current": { "type": "string" },
-              "scheme": { "type": "string" },
-              "deprecation_signals": { "type": "array", "items": { "type": "string" } },
-              "minimum_support_window_days": { "type": "integer" },
-              "policy": { "type": "string", "format": "uri" }
+              "current": {
+                "type": "string"
+              },
+              "scheme": {
+                "type": "string"
+              },
+              "deprecation_signals": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "minimum_support_window_days": {
+                "type": "integer"
+              },
+              "policy": {
+                "type": "string",
+                "format": "uri"
+              }
             }
           },
           "endpoints": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["operationId", "method", "path"],
+              "required": [
+                "operationId",
+                "method",
+                "path"
+              ],
               "properties": {
-                "operationId": { "type": "string" },
-                "method": { "type": "string" },
-                "path": { "type": "string" }
+                "operationId": {
+                  "type": "string"
+                },
+                "method": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -338,34 +877,86 @@
       "PageSummary": {
         "type": "object",
         "description": "Summary of a published VeloRix page.",
-        "required": ["slug", "title"],
+        "required": [
+          "slug",
+          "title"
+        ],
         "properties": {
-          "slug": { "type": "string", "description": "Lowercase hyphenated identifier used in URLs." },
-          "title": { "type": "string", "description": "Page title." },
-          "subtitle": { "type": ["string", "null"], "description": "Optional one-line subtitle." },
-          "updated_at": { "type": ["string", "null"], "format": "date-time", "description": "Last edit timestamp (UTC)." }
+          "slug": {
+            "type": "string",
+            "description": "Lowercase hyphenated identifier used in URLs."
+          },
+          "title": {
+            "type": "string",
+            "description": "Page title."
+          },
+          "subtitle": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional one-line subtitle."
+          },
+          "updated_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "Last edit timestamp (UTC)."
+          }
         }
       },
       "PageList": {
         "type": "object",
         "description": "List of published pages with the paging window that produced it.",
-        "required": ["items", "count"],
+        "required": [
+          "items",
+          "count"
+        ],
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/PageSummary" } },
-          "count": { "type": "integer", "minimum": 0 },
-          "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
-          "offset": { "type": "integer", "minimum": 0 },
-          "query": { "type": ["string", "null"] }
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PageSummary"
+            }
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "query": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         }
       },
       "Page": {
         "allOf": [
-          { "$ref": "#/components/schemas/PageSummary" },
+          {
+            "$ref": "#/components/schemas/PageSummary"
+          },
           {
             "type": "object",
-            "required": ["content"],
+            "required": [
+              "content"
+            ],
             "properties": {
-              "content": { "type": "string", "description": "Full page body in Markdown." }
+              "content": {
+                "type": "string",
+                "description": "Full page body in Markdown."
+              }
             }
           }
         ]
@@ -373,40 +964,109 @@
       "ApkRelease": {
         "type": "object",
         "description": "An active VeloRix Android release.",
-        "required": ["version"],
+        "required": [
+          "version"
+        ],
         "properties": {
-          "version": { "type": "string", "description": "Semantic version string, e.g. '1.4.2'." },
-          "file_path": { "type": ["string", "null"], "description": "Storage path of the APK object." },
-          "file_size": { "type": ["integer", "null"], "description": "APK size in bytes." },
-          "changelog": { "type": ["string", "null"], "description": "Release notes in Markdown." },
-          "released_at": { "type": ["string", "null"], "format": "date-time" }
+          "version": {
+            "type": "string",
+            "description": "Semantic version string, e.g. '1.4.2'."
+          },
+          "file_path": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Storage path of the APK object."
+          },
+          "file_size": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "APK size in bytes."
+          },
+          "changelog": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Release notes in Markdown."
+          },
+          "released_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
         }
       },
       "SiteStatus": {
         "type": "object",
         "description": "Live platform status.",
-        "required": ["status", "maintenance", "message"],
+        "required": [
+          "status",
+          "maintenance",
+          "message"
+        ],
         "properties": {
-          "status": { "type": "string", "enum": ["live", "maintenance"] },
-          "maintenance": { "type": "boolean" },
-          "message": { "type": "string" },
-          "checked_at": { "type": "string", "format": "date-time" }
+          "status": {
+            "type": "string",
+            "enum": [
+              "live",
+              "maintenance"
+            ]
+          },
+          "maintenance": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Error": {
         "type": "object",
         "description": "Structured RFC 9457 problem document. Every non-2xx response uses this shape.",
-        "required": ["status", "error", "title"],
+        "required": [
+          "status",
+          "error",
+          "title"
+        ],
         "properties": {
-          "type": { "type": "string", "format": "uri", "description": "Link to documentation for this error code." },
-          "title": { "type": "string", "description": "Short machine-readable error title (same as error.code)." },
-          "status": { "type": "integer", "description": "HTTP status code." },
-          "detail": { "type": "string", "description": "Human-readable explanation (mirrors error.message)." },
-          "instance": { "type": "string", "description": "Path of the request that failed." },
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "Link to documentation for this error code."
+          },
+          "title": {
+            "type": "string",
+            "description": "Short machine-readable error title (same as error.code)."
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status code."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Human-readable explanation (mirrors error.message)."
+          },
+          "instance": {
+            "type": "string",
+            "description": "Path of the request that failed."
+          },
           "error": {
             "type": "object",
             "description": "Machine-readable error payload.",
-            "required": ["code", "message"],
+            "required": [
+              "code",
+              "message"
+            ],
             "properties": {
               "code": {
                 "type": "string",
@@ -423,9 +1083,21 @@
                   "internal_error"
                 ]
               },
-              "message": { "type": "string", "description": "Human-readable explanation." },
-              "hint": { "type": "string", "description": "How to resolve or recover from the error." },
-              "retry_after": { "type": ["integer", "null"], "description": "Seconds to wait before retrying, when applicable." }
+              "message": {
+                "type": "string",
+                "description": "Human-readable explanation."
+              },
+              "hint": {
+                "type": "string",
+                "description": "How to resolve or recover from the error."
+              },
+              "retry_after": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "Seconds to wait before retrying, when applicable."
+              }
             }
           }
         }
