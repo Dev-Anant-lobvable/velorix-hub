@@ -93,6 +93,44 @@ export default async function middleware(request: Request) {
   const path = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, "") : "/";
   const mirror = MARKDOWN_MIRRORS[path || "/"];
 
+  // Live MCP handshake: JSON-RPC (POST) and session teardown (DELETE) at the
+  // well-known URL are proxied to the Streamable HTTP MCP server; GET keeps
+  // returning the static manifest document.
+  if (path === "/.well-known/mcp") {
+    if (request.method === "POST" || request.method === "DELETE") {
+      const upstream = await fetch(MCP_UPSTREAM, {
+        method: request.method,
+        headers: {
+          "content-type": request.headers.get("content-type") ?? "application/json",
+          accept: request.headers.get("accept") ?? "application/json, text/event-stream",
+          ...(request.headers.get("mcp-session-id")
+            ? { "mcp-session-id": request.headers.get("mcp-session-id") as string }
+            : {}),
+          ...(request.headers.get("mcp-protocol-version")
+            ? { "mcp-protocol-version": request.headers.get("mcp-protocol-version") as string }
+            : {}),
+        },
+        body: request.method === "POST" ? await request.text() : undefined,
+      });
+      const headers = new Headers(upstream.headers);
+      headers.set("access-control-allow-origin", "*");
+      headers.set("link", `<${url.origin}/mcp>; rel="mcp-server"`);
+      return new Response(upstream.body, { status: upstream.status, headers });
+    }
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET, POST, DELETE, OPTIONS",
+          "access-control-allow-headers": "content-type, accept, mcp-session-id, mcp-protocol-version",
+        },
+      });
+    }
+    return next({ headers: { link: `<${url.origin}/mcp>; rel="mcp-server"` } });
+  }
+
+
   if (mirror && wantsMarkdown(request, url)) {
     const upstream = await fetch(new URL(mirror, url.origin), {
       headers: { accept: "text/plain" },
