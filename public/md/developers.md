@@ -90,3 +90,16 @@ Streamable HTTP handshake. `GET` on the same URL returns the manifest document.
 - /.well-known/api-catalog — RFC 9727 linkset
 - /.well-known/mcp — MCP manifest + live handshake
 - /md/versioning.md — rate limit, error and deprecation policy
+- /developers.md — this page (Markdown, alias of /md/developers.md)
+- /api, /api/v1 — REST API index
+- /mcp.json — MCP manifest alias
+- /velorix-openapi.json — OpenAPI spec alias
+- /.well-known/llms.txt — llms.txt alias
+
+## VeloRix static-document rate limit headers
+
+Every VeloRix response — including HTML pages, `/md/*.md`, `/openapi.json` and `/.well-known/*` — carries
+`RateLimit-Policy: "static";q=600;w=60, "default";q=120;w=60`, `RateLimit`, `X-RateLimit-Limit`,
+`X-RateLimit-Remaining`, `X-RateLimit-Reset`, `X-API-Version: v1` and a `Link` header advertising
+`rel="deprecation-policy"`, `rel="service-desc"`, `rel="api-catalog"` and `rel="help"`. Live per-IP counters
+appear on `/api/v1` responses; static responses advertise the burst budget.

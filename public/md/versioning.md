@@ -20,6 +20,12 @@ Contact: service.veloxyra@gmail.com · Developer index: <https://velorix-hub.ver
 - Agents should self-throttle from `RateLimit` instead of retrying blindly. Retries must use
   exponential backoff and must honour `Retry-After`.
 - `503 backend_unavailable` also carries `Retry-After`.
+- **Static documents** (HTML pages, `/md/*.md`, `/openapi.json`, `/llms.txt`, `/.well-known/*`) are served from
+  the CDN under a separate advertised policy, `"static";q=600;w=60`. Those responses repeat
+  `RateLimit-Policy: "static";q=600;w=60, "default";q=120;w=60` together with `RateLimit`, the
+  `X-RateLimit-*` mirrors and `X-API-Version`, so an agent can read the policy before it ever calls
+  `/api/v1`. Only `/api/v1` responses carry a live per-IP remaining counter; on static documents the
+  values state the burst budget, not a live count.
 
 ## Error model
 
@@ -44,6 +50,16 @@ Every non-2xx response is an RFC 9457 problem document with `Content-Type: appli
 Stable error codes: `bad_request`, `page_not_found`, `no_active_release`, `endpoint_not_found`,
 `method_not_allowed`, `rate_limited`, `upstream_error`, `backend_unavailable`, `internal_error`.
 The full enum is published in the OpenAPI document under `components.schemas.Error`.
+
+## Predictable resource URLs
+
+- `/developers`, `/docs`, `/api-docs` — developer and agent resource index (HTML)
+- `/developers.md`, `/md/developers.md` — the same index in Markdown
+- `/openapi.json`, `/api/openapi.json`, `/.well-known/openapi.json`, `/velorix-openapi.json` — OpenAPI 3.1 document
+- `/api`, `/api/v1` — REST API index
+- `/.well-known/mcp`, `/mcp.json` — MCP manifest (`GET`) and live handshake (`POST`)
+- `/mcp` — Streamable HTTP MCP endpoint
+- `/llms.txt`, `/.well-known/llms.txt`, `/llms-full.txt`, `/ai.txt` — agent index, full text export, usage policy
 
 ## Versioning
 
