@@ -13,6 +13,11 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Vercel is the primary host: pin the server build target so a Vercel build
+  // never falls back to the Cloudflare default. Lovable's own publish pipeline
+  // pins LOVABLE_NITRO_PRESET and overrides this, so the .lovable.app URL is
+  // unaffected.
+  nitro: { preset: process.env["NITRO_PRESET"] ?? "vercel" },
   vite: {
     plugins: [mcpPlugin()],
   },
