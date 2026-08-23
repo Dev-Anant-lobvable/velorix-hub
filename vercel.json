@@ -8,6 +8,16 @@
       "source": "/mcp/:path*",
       "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/mcp/:path*"
     },
+    {
+      "source": "/api/v1",
+      "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/public-api"
+    },
+    {
+      "source": "/api/v1/:path*",
+      "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/public-api/:path*"
+    },
+    { "source": "/api/openapi.json", "destination": "/openapi.json" },
+    { "source": "/.well-known/openapi.json", "destination": "/openapi.json" },
     { "source": "/about", "destination": "/index.html" },
     { "source": "/contact", "destination": "/index.html" },
     { "source": "/privacy", "destination": "/index.html" },
@@ -39,6 +49,10 @@
       ]
     },
     {
+      "source": "/404.md",
+      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+    },
+    {
       "source": "/llms.txt",
       "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
     },
@@ -47,8 +61,19 @@
       "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
     },
     {
+      "source": "/openapi.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "public, max-age=300, s-maxage=3600" }
+      ]
+    },
+    {
       "source": "/.well-known/mcp",
-      "headers": [{ "key": "Content-Type", "value": "application/json; charset=utf-8" }]
+      "headers": [
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
     }
   ]
 }
