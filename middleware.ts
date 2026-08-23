@@ -40,6 +40,8 @@ const KNOWN_PATHS = new Set([
   "/maintenance",
   "/offline",
   "/developers",
+  "/docs",
+  "/api-docs",
 ]);
 
 const KNOWN_PREFIXES = ["/blog/", "/p/", "/error/"];
