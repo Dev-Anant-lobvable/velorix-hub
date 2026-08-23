@@ -49,11 +49,11 @@ const getGradientDirection = (position: string) =>
   (({ top: "to top", bottom: "to bottom", left: "to left", right: "to right" } as any)[position] ||
     "to bottom");
 
-const useIntersectionObserver = (ref: React.RefObject<HTMLElement>, shouldObserve = false) => {
+const useIntersectionObserver = (ref: React.RefObject<HTMLElement | null>, shouldObserve = false) => {
   const [isVisible, setIsVisible] = useState(!shouldObserve);
   useEffect(() => {
-    if (!shouldObserve || !ref.current) return;
-    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
+    if (!shouldObserve || !ref.current) return undefined;
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(!!entry?.isIntersecting), {
       threshold: 0.1,
     });
     observer.observe(ref.current);
@@ -146,11 +146,10 @@ function GradualBlur(props: any) {
   const { hoverIntensity, animated, onAnimationComplete, duration } = config;
 
   useEffect(() => {
-    if (isVisible && animated === "scroll" && onAnimationComplete) {
-      const ms = parseFloat(duration) * 1000;
-      const t = setTimeout(() => onAnimationComplete(), ms);
-      return () => clearTimeout(t);
-    }
+    if (!isVisible || animated !== "scroll" || !onAnimationComplete) return undefined;
+    const ms = parseFloat(duration) * 1000;
+    const t = setTimeout(() => onAnimationComplete(), ms);
+    return () => clearTimeout(t);
   }, [isVisible, animated, onAnimationComplete, duration]);
 
   return (
