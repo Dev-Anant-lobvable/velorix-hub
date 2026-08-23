@@ -47,6 +47,8 @@ Operations (unique `operationId`, typed parameters and response schemas in the s
 
 Send `Accept: text/markdown` to `/`, `/about`, `/contact`, `/privacy`, `/terms`, `/download` or `/developers` and the site responds with `text/markdown` and `Vary: Accept, Accept-Encoding`. The same documents are also addressable directly under `/md/`, for example [/md/index.md](/md/index.md) and [/md/about.md](/md/about.md). Appending `?format=md` works as an explicit override.
 
+Additional markdown-only fact sheets (no HTML equivalent): [/md/pricing.md](/md/pricing.md), [/md/features.md](/md/features.md), [/md/compare.md](/md/compare.md).
+
 ## Conventions
 
 - Unknown paths return HTTP 404 with a short markdown body pointing at these resources.

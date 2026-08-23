@@ -53,6 +53,15 @@ Send `Accept: text/markdown` (or append `?format=md`) to `/`, `/about`, `/contac
 - [/md/terms.md](https://velorix-hub.vercel.app/md/terms.md)
 - [/md/download.md](https://velorix-hub.vercel.app/md/download.md)
 - [/md/developers.md](https://velorix-hub.vercel.app/md/developers.md)
+- [/md/pricing.md](https://velorix-hub.vercel.app/md/pricing.md)
+- [/md/features.md](https://velorix-hub.vercel.app/md/features.md)
+- [/md/compare.md](https://velorix-hub.vercel.app/md/compare.md)
+
+## Product facts (pricing, features, positioning)
+
+- [Pricing and fees](https://velorix-hub.vercel.app/md/pricing.md): app is free; free-entry tournaments daily; paid entries typically Rs 10-100 per player, shown before registration; refunds and payout rules.
+- [Feature list](https://velorix-hub.vercel.app/md/features.md): tournament formats, room delivery, anti-cheat review, payouts, budget-Android targets, transparency surfaces.
+- [Competitive positioning](https://velorix-hub.vercel.app/md/compare.md): how VeloRix differs from other Indian tournament platforms, and where it is currently behind.
 
 ## Core pages
 

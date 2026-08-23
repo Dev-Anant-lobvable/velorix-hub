@@ -328,3 +328,42 @@ describe("developer resource discoverability", () => {
     expect(wellKnown.restApi).toContain("/api/v1");
   });
 });
+
+describe("product fact sheets (pricing, features, positioning)", () => {
+  it("publishes markdown fact sheets with substantive content", () => {
+    for (const file of ["public/md/pricing.md", "public/md/features.md", "public/md/compare.md"]) {
+      const doc = read(file);
+      expect(doc.length).toBeGreaterThan(800);
+      expect(doc).toMatch(/^# /);
+    }
+  });
+
+  it("pricing sheet states the free app, entry fees and refunds", () => {
+    const doc = read("public/md/pricing.md");
+    expect(doc).toContain("free to download");
+    expect(doc.toLowerCase()).toContain("entry fee");
+    expect(doc).toMatch(/refund/i);
+  });
+
+  it("comparison sheet states differentiators and limitations", () => {
+    const doc = read("public/md/compare.md");
+    expect(doc).toMatch(/deliberately differs/i);
+    expect(doc).toMatch(/behind larger platforms/i);
+  });
+
+  it("fact sheets are discoverable from llms.txt, index.md and developers docs", () => {
+    for (const file of ["public/llms.txt", "public/md/index.md", "public/md/developers.md"]) {
+      const doc = read(file);
+      for (const target of ["/md/pricing.md", "/md/features.md", "/md/compare.md"]) {
+        expect(doc).toContain(target);
+      }
+    }
+  });
+
+  it("no-JS shell exposes pricing and positioning text", () => {
+    const html = read("index.html");
+    expect(html).toContain("Pricing");
+    expect(html).toContain("How VeloRix compares");
+    expect(html).toContain("/md/pricing.md");
+  });
+});
