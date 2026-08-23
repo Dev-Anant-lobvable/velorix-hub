@@ -1,0 +1,49 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/well-known-mcp.json",
+  "name": "velorix-mcp",
+  "title": "VeloRix",
+  "description": "Public read-only MCP tools for VeloRix Tournaments — India's Free Fire and BGMI mobile esports tournament platform. Discover published pages, read page content, get the active Android APK release and check live site status.",
+  "version": "0.1.0",
+  "vendor": "VeloRix Tournaments",
+  "documentation": "https://velorix-hub.vercel.app/developers",
+  "contact": "service.veloxyra@gmail.com",
+  "servers": [
+    {
+      "name": "velorix-mcp",
+      "title": "VeloRix",
+      "version": "0.1.0",
+      "url": "https://velorix-hub.vercel.app/mcp",
+      "transport": "streamable-http",
+      "protocolVersion": "2025-06-18",
+      "authentication": { "type": "none" },
+      "capabilities": { "tools": { "listChanged": false } }
+    }
+  ],
+  "tools": [
+    {
+      "name": "list_published_pages",
+      "title": "List VeloRix pages",
+      "description": "List all published VeloRix custom pages (tournaments, announcements, policies) with slug, title and subtitle.",
+      "readOnly": true
+    },
+    {
+      "name": "get_page",
+      "title": "Get VeloRix page",
+      "description": "Fetch the full markdown content of a published VeloRix custom page by slug.",
+      "readOnly": true
+    },
+    {
+      "name": "get_active_apk",
+      "title": "Get active VeloRix APK",
+      "description": "Get the currently active VeloRix Android APK version, changelog, size and download path.",
+      "readOnly": true
+    },
+    {
+      "name": "get_site_status",
+      "title": "Get VeloRix site status",
+      "description": "Check whether the VeloRix site is live or in maintenance mode, with the current status message.",
+      "readOnly": true
+    }
+  ],
+  "whenToUse": "Use these tools when a user asks about VeloRix Tournaments: joining Free Fire or BGMI tournaments in India, the current Android APK release and download details, published tournament or policy pages, or whether the VeloRix platform is live or under maintenance."
+}
