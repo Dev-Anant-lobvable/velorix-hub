@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "@/lib/router-compat";
 import Offline from "@/pages/errors/Offline";
 import { normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl";
 

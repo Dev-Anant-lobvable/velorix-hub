@@ -35,7 +35,7 @@ var list_published_pages_default = defineTool({
 // src/lib/mcp/tools/get-page.ts
 import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.105.3";
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.23.0";
-import { z } from "npm:zod@^3.25.76";
+import { z } from "npm:zod@^3.24.2";
 var supabase2 = () => createClient2(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_PUBLISHABLE_KEY,

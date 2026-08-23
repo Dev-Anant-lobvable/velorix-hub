@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "@/lib/icons";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { AnimatedButton } from "@/components/ui/animated-button";
 
 const STORAGE_KEY = "velorix-cookie-consent";

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { FileText, LogOut, Plus, RadioTower, Save, Star, Trash2, Wrench } from "@/lib/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";

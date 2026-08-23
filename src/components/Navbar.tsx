@@ -1,7 +1,7 @@
 import { Download, Menu, MoreHorizontal, X } from "@/lib/icons";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import { motion, AnimatePresence } from "framer-motion";
 import { playDownloadSound } from "@/hooks/useSoundEffect";
 import velorixLogo from "@/assets/velorix-logo.png";

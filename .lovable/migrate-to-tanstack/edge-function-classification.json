@@ -1,0 +1,28 @@
+{
+  "functions": [
+    {
+      "name": "admin-control",
+      "classification": "internal-only",
+      "signal": "called from src/lib/adminControl.ts via functions.invoke and probed by src/pages/Status.tsx; issues admin sessions from the server-side ADMIN_PASSWORD_HASH secret and holds in-memory rate-limit state",
+      "outcome": "left"
+    },
+    {
+      "name": "mcp",
+      "classification": "MCP server",
+      "signal": "JSON-RPC handler proxied at the fixed /.well-known/mcp and /mcp URLs from middleware.ts and vercel.json; advertised in public/.well-known/mcp",
+      "outcome": "left"
+    },
+    {
+      "name": "public-api",
+      "classification": "custom response / fixed public URL",
+      "signal": "serves the documented /api/v1 JSON API with RFC 9457 errors and RateLimit headers; URL is published in public/openapi.json and llms.txt",
+      "outcome": "left"
+    },
+    {
+      "name": "track-event",
+      "classification": "unknown",
+      "signal": "no call sites under src/ and no signature check — URL treated as load-bearing until proven otherwise",
+      "outcome": "left"
+    }
+  ]
+}

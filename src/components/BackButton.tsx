@@ -1,5 +1,5 @@
 import { ArrowLeft } from "@/lib/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { Button } from "@/components/ui/button";
 
 const BackButton = () => {

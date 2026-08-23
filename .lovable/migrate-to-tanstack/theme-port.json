@@ -1,0 +1,31 @@
+{
+  "customizations": [
+    { "token": "@import Orbitron + Inter Google fonts", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "@font-face GFF Devanagari", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--background (AMOLED 0 0% 0%)", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--card / --card-foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--popover / --popover-foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--primary (crimson 350 85% 55%) / --primary-foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--secondary / --secondary-foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--muted / --muted-foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--accent / --accent-foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--destructive / --destructive-foreground", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--border / --input / --ring", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--radius 0.75rem", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--brand-red / --brand-dark / --brand-light", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--gradient-primary / -hero / -dark / -glow / -mesh", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--shadow-soft / -card / -glow / -neon", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--glass-bg / --glass-border", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--status-ok / -ok-soft / --status-warn / -warn-soft", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "font-sans / font-display / font-devanagari families", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css (@theme inline)" },
+    { "token": "brand.red / brand.dark / brand.light color utilities", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css (@theme inline)" },
+    { "token": "borderRadius lg/md/sm from --radius", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css (@theme inline)" },
+    { "token": "animate-accordion-down / -up", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css (@theme inline + @keyframes)" },
+    { "token": "animate-fade-in / scale-in / slide-in-left / slide-in-right", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css (@theme inline + @keyframes)" },
+    { "token": "container centered, 2rem padding, 1400px cap", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css (@utility container)" },
+    { "token": "@tailwindcss/typography prose plugin", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css (@plugin)" },
+    { "token": "all @layer base/utilities/components rules and custom keyframes (1058 lines)", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "default border color token (v4 currentColor fix)", "source": "tailwind v3 default", "reappliedIn": "src/styles.css (@layer base)" }
+  ]
+}

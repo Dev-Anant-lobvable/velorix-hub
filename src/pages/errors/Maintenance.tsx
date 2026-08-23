@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Wrench, ShieldCheck } from "@/lib/icons";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import ErrorTemplate from "@/components/ErrorTemplate";
 import { DEFAULT_MAINTENANCE_MESSAGE, normalizeMaintenance, publicDb } from "@/lib/adminControl";
 
