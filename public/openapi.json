@@ -4,7 +4,7 @@
     "title": "VeloRix Tournaments Public API",
     "version": "1.0.0",
     "summary": "Read-only JSON API for VeloRix Tournaments, an India-focused Free Fire and BGMI mobile esports tournament platform.",
-    "description": "Public, unauthenticated, read-only endpoints exposing VeloRix Tournaments content: published pages (tournaments, announcements, policies), the current Android APK release and live site status. All errors are returned as application/problem+json with a machine-readable error code, message and resolution hint. The same capabilities are available to AI agents as MCP tools; see https://velorix-hub.vercel.app/.well-known/mcp.",
+    "description": "Public, unauthenticated, read-only endpoints exposing VeloRix Tournaments content: published pages (tournaments, announcements, policies), the current Android APK release and live site status.\n\n## Errors\nEvery non-2xx response is `application/problem+json` (RFC 9457) using the `Error` schema: a `type` URI, a machine-readable `title`/`error.code`, the HTTP `status`, a human-readable `error.message` and an actionable `error.hint`. Error codes are enumerated in `Error.error.code`, so agents can branch on them without parsing prose.\n\n## Rate limits\nEvery response carries RFC 9331 style rate-limit headers: `RateLimit-Policy`, `RateLimit`, plus the legacy `X-RateLimit-Limit` / `X-RateLimit-Remaining` / `X-RateLimit-Reset` mirrors. The default policy is 120 requests per 60 second window per client IP. When exhausted the API returns `429` with `Retry-After` (seconds) and the `rate_limited` error code. Agents should self-throttle from `RateLimit` rather than retrying blindly.\n\n## Versioning and deprecation\nThe API is versioned in the URL path (`/api/v1`). Breaking changes ship as a new path segment (`/api/v2`); the previous version stays available for at least 180 days. A version scheduled for removal returns `Deprecation` (RFC 9745) and `Sunset` (RFC 8594) headers on every response, plus a `Link; rel=\"deprecation\"` pointing at the policy at https://velorix-hub.vercel.app/md/versioning.md. Every response also carries `X-API-Version`. Full policy: https://velorix-hub.vercel.app/md/versioning.md",
     "termsOfService": "https://velorix-hub.vercel.app/terms",
     "contact": {
       "name": "VeloRix Tournaments",
@@ -14,10 +14,22 @@
     "license": { "name": "Proprietary — content reusable with attribution", "url": "https://velorix-hub.vercel.app/ai.txt" }
   },
   "externalDocs": {
-    "description": "VeloRix developer and agent resources",
+    "description": "VeloRix developer and agent resources (MCP server, OpenAPI, rate limits, versioning policy)",
     "url": "https://velorix-hub.vercel.app/developers"
   },
-  "servers": [{ "url": "https://velorix-hub.vercel.app/api/v1", "description": "Production" }],
+  "servers": [{ "url": "https://velorix-hub.vercel.app/api/v1", "description": "Production (v1)" }],
+  "x-rate-limit": {
+    "policy": "120 requests per 60 second window per client IP",
+    "headers": ["RateLimit-Policy", "RateLimit", "Retry-After", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"],
+    "documentation": "https://velorix-hub.vercel.app/md/versioning.md#rate-limits"
+  },
+  "x-versioning": {
+    "scheme": "url-path",
+    "current": "v1",
+    "deprecationHeaders": ["Deprecation", "Sunset", "Link"],
+    "minimumSupportWindowDays": 180,
+    "policy": "https://velorix-hub.vercel.app/md/versioning.md"
+  },
   "tags": [
     { "name": "pages", "description": "Published VeloRix pages: tournaments, announcements, policies." },
     { "name": "releases", "description": "VeloRix Android application releases." },
@@ -29,15 +41,23 @@
         "operationId": "getApiIndex",
         "tags": ["platform"],
         "summary": "API index",
-        "description": "Returns the API name, version, links to the OpenAPI document and MCP handshake, and the list of available operations.",
+        "description": "Returns the API name, version, links to the OpenAPI document and MCP handshake, the rate-limit policy and the list of available operations.",
+        "parameters": [{ "$ref": "#/components/parameters/Pretty" }],
         "responses": {
           "200": {
             "description": "API index document.",
+            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/ApiIndex" } }
             }
           },
-          "503": { "$ref": "#/components/responses/Unavailable" }
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "500": { "$ref": "#/components/responses/InternalError" },
+          "502": { "$ref": "#/components/responses/UpstreamError" },
+          "503": { "$ref": "#/components/responses/Unavailable" },
+          "default": { "$ref": "#/components/responses/ProblemDefault" }
         }
       }
     },
@@ -46,16 +66,49 @@
         "operationId": "listPages",
         "tags": ["pages"],
         "summary": "List published pages",
-        "description": "Lists every published VeloRix custom page (tournament pages, announcements, policy pages) with its slug, title, subtitle and last update time, newest first.",
+        "description": "Lists published VeloRix custom pages (tournament pages, announcements, policy pages) with slug, title, subtitle and last update time, newest first. Supports simple paging and a case-insensitive title search.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of pages to return (default 50).",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 },
+            "example": 20
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Number of pages to skip before collecting results (default 0).",
+            "schema": { "type": "integer", "minimum": 0, "default": 0 },
+            "example": 0
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Case-insensitive substring filter applied to the page title.",
+            "schema": { "type": "string", "minLength": 1, "maxLength": 80 },
+            "example": "diwali"
+          },
+          { "$ref": "#/components/parameters/Pretty" }
+        ],
         "responses": {
           "200": {
             "description": "A list of published pages.",
+            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/PageList" } }
             }
           },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "500": { "$ref": "#/components/responses/InternalError" },
           "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" }
+          "503": { "$ref": "#/components/responses/Unavailable" },
+          "default": { "$ref": "#/components/responses/ProblemDefault" }
         }
       }
     },
@@ -73,16 +126,23 @@
             "description": "Lowercase, hyphenated page slug as returned by listPages.",
             "schema": { "type": "string", "minLength": 1, "maxLength": 120, "pattern": "^[a-z0-9-]+$" },
             "example": "diwali-cup"
-          }
+          },
+          { "$ref": "#/components/parameters/Pretty" }
         ],
         "responses": {
           "200": {
             "description": "The requested page.",
+            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } }
           },
+          "400": { "$ref": "#/components/responses/BadRequest" },
           "404": { "$ref": "#/components/responses/NotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "500": { "$ref": "#/components/responses/InternalError" },
           "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" }
+          "503": { "$ref": "#/components/responses/Unavailable" },
+          "default": { "$ref": "#/components/responses/ProblemDefault" }
         }
       }
     },
@@ -92,14 +152,21 @@
         "tags": ["releases"],
         "summary": "Get the active Android release",
         "description": "Returns the currently active VeloRix Android APK: version string, storage path, file size in bytes, changelog and release timestamp.",
+        "parameters": [{ "$ref": "#/components/parameters/Pretty" }],
         "responses": {
           "200": {
             "description": "The active Android release.",
+            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApkRelease" } } }
           },
+          "400": { "$ref": "#/components/responses/BadRequest" },
           "404": { "$ref": "#/components/responses/NotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "500": { "$ref": "#/components/responses/InternalError" },
           "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" }
+          "503": { "$ref": "#/components/responses/Unavailable" },
+          "default": { "$ref": "#/components/responses/ProblemDefault" }
         }
       }
     },
@@ -109,29 +176,116 @@
         "tags": ["platform"],
         "summary": "Get live platform status",
         "description": "Reports whether the VeloRix platform is live or in maintenance mode, with the operator's current status message. Call this before telling a player to register for a tournament.",
+        "parameters": [{ "$ref": "#/components/parameters/Pretty" }],
         "responses": {
           "200": {
             "description": "Current platform status.",
+            "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SiteStatus" } } }
           },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "500": { "$ref": "#/components/responses/InternalError" },
           "502": { "$ref": "#/components/responses/UpstreamError" },
-          "503": { "$ref": "#/components/responses/Unavailable" }
+          "503": { "$ref": "#/components/responses/Unavailable" },
+          "default": { "$ref": "#/components/responses/ProblemDefault" }
         }
       }
     }
   },
   "components": {
+    "parameters": {
+      "Pretty": {
+        "name": "pretty",
+        "in": "query",
+        "required": false,
+        "description": "Pretty-print the JSON response body with two-space indentation.",
+        "schema": { "type": "boolean", "default": true },
+        "example": true
+      }
+    },
+    "headers": {
+      "RateLimitPolicy": {
+        "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+        "schema": { "type": "string" },
+        "example": "\"default\";q=120;w=60"
+      },
+      "RateLimit": {
+        "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+        "schema": { "type": "string" },
+        "example": "\"default\";r=118;t=57"
+      },
+      "RateLimitLimit": {
+        "description": "Legacy mirror: requests allowed per window.",
+        "schema": { "type": "integer" },
+        "example": 120
+      },
+      "RateLimitRemaining": {
+        "description": "Legacy mirror: requests left in the current window.",
+        "schema": { "type": "integer" },
+        "example": 118
+      },
+      "RateLimitReset": {
+        "description": "Legacy mirror: seconds until the current window resets.",
+        "schema": { "type": "integer" },
+        "example": 57
+      },
+      "ApiVersion": {
+        "description": "API version serving the response.",
+        "schema": { "type": "string" },
+        "example": "v1"
+      },
+      "RetryAfter": {
+        "description": "Seconds to wait before retrying (sent on 429 and 503).",
+        "schema": { "type": "integer" },
+        "example": 30
+      },
+      "StandardHeaderSet": {
+        "description": "Rate-limit and version headers present on every VeloRix API response: RateLimit-Policy, RateLimit, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-API-Version.",
+        "schema": { "type": "string" },
+        "example": "see /md/versioning.md"
+      }
+    },
     "responses": {
+      "BadRequest": {
+        "description": "A query parameter failed validation.",
+        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
       "NotFound": {
         "description": "The requested resource does not exist.",
+        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "MethodNotAllowed": {
+        "description": "The API is read-only; only GET, HEAD and OPTIONS are accepted.",
+        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "RateLimited": {
+        "description": "The client exceeded the published quota. Honour Retry-After before retrying.",
+        "headers": { "$ref": "#/components/headers/RetryAfter" },
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "InternalError": {
+        "description": "Unexpected server error.",
+        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
         "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
       },
       "UpstreamError": {
         "description": "The content database rejected the query.",
+        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
         "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
       },
       "Unavailable": {
         "description": "The backend is temporarily unavailable.",
+        "headers": { "$ref": "#/components/headers/RetryAfter" },
+        "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "ProblemDefault": {
+        "description": "Any other failure. Always the same typed problem document.",
+        "headers": { "$ref": "#/components/headers/StandardHeaderSet" },
         "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Error" } } }
       }
     },
@@ -146,6 +300,27 @@
           "openapi": { "type": "string", "format": "uri" },
           "documentation": { "type": "string", "format": "uri" },
           "mcp": { "type": "string", "format": "uri" },
+          "rate_limit": {
+            "type": "object",
+            "description": "Published quota for this API.",
+            "properties": {
+              "limit": { "type": "integer" },
+              "window_seconds": { "type": "integer" },
+              "headers": { "type": "array", "items": { "type": "string" } },
+              "documentation": { "type": "string", "format": "uri" }
+            }
+          },
+          "versioning": {
+            "type": "object",
+            "description": "Versioning and deprecation policy summary.",
+            "properties": {
+              "current": { "type": "string" },
+              "scheme": { "type": "string" },
+              "deprecation_signals": { "type": "array", "items": { "type": "string" } },
+              "minimum_support_window_days": { "type": "integer" },
+              "policy": { "type": "string", "format": "uri" }
+            }
+          },
           "endpoints": {
             "type": "array",
             "items": {
@@ -173,11 +348,14 @@
       },
       "PageList": {
         "type": "object",
-        "description": "Paginationless list of published pages.",
+        "description": "List of published pages with the paging window that produced it.",
         "required": ["items", "count"],
         "properties": {
           "items": { "type": "array", "items": { "$ref": "#/components/schemas/PageSummary" } },
-          "count": { "type": "integer", "minimum": 0 }
+          "count": { "type": "integer", "minimum": 0 },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+          "offset": { "type": "integer", "minimum": 0 },
+          "query": { "type": ["string", "null"] }
         }
       },
       "Page": {
@@ -217,31 +395,37 @@
       },
       "Error": {
         "type": "object",
-        "description": "Structured JSON error. Every non-2xx response uses this shape.",
-        "required": ["status", "error"],
+        "description": "Structured RFC 9457 problem document. Every non-2xx response uses this shape.",
+        "required": ["status", "error", "title"],
         "properties": {
           "type": { "type": "string", "format": "uri", "description": "Link to documentation for this error code." },
           "title": { "type": "string", "description": "Short machine-readable error title (same as error.code)." },
           "status": { "type": "integer", "description": "HTTP status code." },
+          "detail": { "type": "string", "description": "Human-readable explanation (mirrors error.message)." },
+          "instance": { "type": "string", "description": "Path of the request that failed." },
           "error": {
             "type": "object",
-            "required": ["code", "message", "hint"],
+            "description": "Machine-readable error payload.",
+            "required": ["code", "message"],
             "properties": {
               "code": {
                 "type": "string",
                 "description": "Stable error code.",
                 "enum": [
+                  "bad_request",
                   "page_not_found",
                   "no_active_release",
                   "endpoint_not_found",
                   "method_not_allowed",
+                  "rate_limited",
                   "upstream_error",
                   "backend_unavailable",
                   "internal_error"
                 ]
               },
               "message": { "type": "string", "description": "Human-readable explanation." },
-              "hint": { "type": "string", "description": "How to resolve or recover from the error." }
+              "hint": { "type": "string", "description": "How to resolve or recover from the error." },
+              "retry_after": { "type": ["integer", "null"], "description": "Seconds to wait before retrying, when applicable." }
             }
           }
         }
