@@ -254,7 +254,8 @@ describe("OpenAPI specification", () => {
 
   it("types every parameter and every response body", () => {
     for (const { op } of operations) {
-      for (const param of op.parameters ?? []) {
+      for (const raw of op.parameters ?? []) {
+        const param = raw.$ref ? spec.components.parameters[raw.$ref.split("/").pop()] : raw;
         expect(param.schema).toBeTruthy();
         expect(param.description).toBeTruthy();
       }
@@ -267,7 +268,7 @@ describe("OpenAPI specification", () => {
   it("documents structured JSON errors with code, message and hint", () => {
     const err = spec.components.schemas.Error;
     const props = err.properties.error.properties;
-    expect(Object.keys(props).sort()).toEqual(["code", "hint", "message"]);
+    expect(Object.keys(props).sort()).toEqual(["code", "hint", "message", "retry_after"]);
     expect(props.code.enum).toContain("page_not_found");
     for (const response of Object.values<any>(spec.components.responses)) {
       expect(response.content["application/problem+json"].schema.$ref).toContain("Error");
@@ -300,7 +301,10 @@ describe("public JSON API implementation", () => {
   });
 
   it("is read-only", () => {
-    expect(fn).not.toMatch(/\.(insert|update|delete|upsert)\(/);
+    // No table mutations: only the in-memory rate-limit map is written to.
+    expect(fn).not.toMatch(/\b(insert|upsert)\(/);
+    expect(fn).not.toMatch(/from\("[a-z_]+"\)[\s\S]{0,80}\.(update|delete)\(/);
+    expect(fn).toContain('"Access-Control-Allow-Methods": "GET, HEAD, OPTIONS"');
     expect(fn).not.toContain("SERVICE_ROLE");
   });
 });
