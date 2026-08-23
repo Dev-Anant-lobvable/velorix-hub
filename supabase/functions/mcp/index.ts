@@ -3,11 +3,11 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { defineMcp } from "npm:@lovable.dev/mcp-js@0.23.0";
+import { defineMcp } from "npm:@lovable.dev/mcp-js@0.27.0";
 
 // src/lib/mcp/tools/list-published-pages.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.105.3";
-import { defineTool } from "npm:@lovable.dev/mcp-js@0.23.0";
+import { defineTool } from "npm:@lovable.dev/mcp-js@0.27.0";
 var env = globalThis.process?.env ?? {};
 var SUPABASE_URL = env.SUPABASE_URL ?? "https://pvzoeafqfkwfgiiflaol.supabase.co";
 var SUPABASE_PUBLISHABLE_KEY = env.SUPABASE_PUBLISHABLE_KEY ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2em9lYWZxZmt3ZmdpaWZsYW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MzMxMzYsImV4cCI6MjA4NzUwOTEzNn0.fE4wau0tHvOlkiJw3qiLqz-TVAnVccrKLCS_3zZ5jGQ";
@@ -34,7 +34,7 @@ var list_published_pages_default = defineTool({
 
 // src/lib/mcp/tools/get-page.ts
 import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.105.3";
-import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.23.0";
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.27.0";
 import { z } from "npm:zod@^3.24.2";
 var supabase2 = () => createClient2(
   process.env.SUPABASE_URL,
@@ -66,7 +66,7 @@ ${data.content}` }],
 
 // src/lib/mcp/tools/get-active-apk.ts
 import { createClient as createClient3 } from "npm:@supabase/supabase-js@^2.105.3";
-import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.23.0";
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.27.0";
 var supabase3 = () => createClient3(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_PUBLISHABLE_KEY,
@@ -91,7 +91,7 @@ var get_active_apk_default = defineTool3({
 
 // src/lib/mcp/tools/get-site-status.ts
 import { createClient as createClient4 } from "npm:@supabase/supabase-js@^2.105.3";
-import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.23.0";
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.27.0";
 var supabase4 = () => createClient4(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_PUBLISHABLE_KEY,
@@ -127,5 +127,5 @@ var mcp_default = defineMcp({
 });
 
 // lovable-mcp-supabase-entry.ts
-import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.23.0/stacks/supabase";
+import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.27.0/stacks/supabase";
 Deno.serve(createSupabaseHandler(mcp_default, { functionName: "mcp" }));
