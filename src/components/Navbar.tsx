@@ -115,8 +115,12 @@ const Navbar = () => {
           </div>
 
           <motion.button
+            type="button"
             className="md:hidden text-foreground p-2"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-nav-menu"
             whileTap={{ scale: 0.9 }}
           >
             <AnimatePresence mode="wait">
@@ -136,6 +140,7 @@ const Navbar = () => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
+              id="mobile-nav-menu"
               className="md:hidden mt-4 pb-4 pt-4 mobile-menu-glass rounded-2xl px-4 -mx-2"
               initial={{ opacity: 0, height: 0, y: -10 }}
               animate={{ opacity: 1, height: "auto", y: 0 }}
