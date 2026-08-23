@@ -390,6 +390,9 @@ describe("rate limit, error model, versioning and MCP handshake", () => {
       );
     }
     expect(spec.components.responses.RateLimited.headers["Retry-After"]).toBeTruthy();
+    for (const op of ops) {
+      expect(op.responses["429"].headers["Retry-After"]).toBeTruthy();
+    }
   });
 
   it("gives every operation typed error responses referencing the Error schema", () => {
@@ -397,9 +400,10 @@ describe("rate limit, error model, versioning and MCP handshake", () => {
       for (const status of ["400", "405", "429", "500", "502", "503", "default"]) {
         const res = op.responses[status];
         expect(res, `${op.operationId} missing ${status}`).toBeTruthy();
-        const name = res.$ref.split("/").pop();
-        const target = spec.components.responses[name];
-        expect(target.content["application/problem+json"].schema.$ref).toBe("#/components/schemas/Error");
+        // Responses are inlined (no $ref indirection) so naive spec readers and
+        // function-calling converters still see the typed error schema.
+        expect(res.$ref, `${op.operationId} ${status} still uses $ref`).toBeUndefined();
+        expect(res.content["application/problem+json"].schema.$ref).toBe("#/components/schemas/Error");
       }
     }
     expect(spec.components.schemas.Error.properties.error.properties.code.enum).toContain("rate_limited");
@@ -456,9 +460,51 @@ describe("rate limit, error model, versioning and MCP handshake", () => {
     const catalog = JSON.parse(read("public/api-catalog.json"));
     expect(catalog.linkset[0]["service-desc"][0].href).toContain("/openapi.json");
     expect(catalog.linkset[0]["service-desc"][0].title).toContain("VeloRix");
+    for (const s of ["/api", "/mcp.json", "/developers.md", "/velorix-openapi.json", "/.well-known/llms.txt"]) {
+      expect(sources, `${s} alias missing`).toContain(s);
+    }
     const docs = read("public/developers/index.html");
     expect(docs).toContain("VeloRix API rate limits");
     expect(docs).toContain("VeloRix API versioning");
     expect(read("public/md/developers.md")).toContain("VeloRix MCP live handshake");
+  });
+});
+
+describe("rate-limit and policy headers on document responses", () => {
+  const vercel = JSON.parse(read("vercel.json"));
+  const globalHeaders = vercel.headers.find((h: { source: string }) => h.source === "/(.*)").headers;
+  const byKey = Object.fromEntries(globalHeaders.map((h: { key: string; value: string }) => [h.key, h.value]));
+
+  it("advertises RateLimit headers on every static response", () => {
+    for (const key of [
+      "RateLimit-Policy",
+      "RateLimit",
+      "X-RateLimit-Limit",
+      "X-RateLimit-Remaining",
+      "X-RateLimit-Reset",
+      "X-API-Version",
+      "Link",
+    ]) {
+      expect(byKey[key], `${key} missing from global headers`).toBeTruthy();
+    }
+    expect(byKey["RateLimit-Policy"]).toContain('"default";q=120;w=60');
+    expect(byKey["X-API-Version"]).toBe("v1");
+    expect(byKey.Link).toContain('rel="deprecation-policy"');
+    expect(byKey.Link).toContain('rel="service-desc"');
+  });
+
+  it("repeats the same signals from middleware responses", () => {
+    const mw = read("middleware.ts");
+    expect(mw).toContain("function agentHeaders(");
+    expect(mw).toContain('"ratelimit-policy"');
+    expect(mw).toContain('rel="deprecation-policy"');
+    expect(mw).toMatch(/agentHeaders\(url\.origin/);
+  });
+
+  it("documents the static policy alongside the API policy", () => {
+    const policy = read("public/md/versioning.md");
+    expect(policy).toContain('"static";q=600;w=60');
+    expect(policy).toContain("Predictable resource URLs");
+    expect(read("public/md/developers.md")).toContain("static-document rate limit headers");
   });
 });
