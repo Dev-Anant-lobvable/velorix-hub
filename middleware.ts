@@ -124,7 +124,12 @@ export default async function middleware(request: Request) {
   }
 
 
-  if (mirror && wantsMarkdown(request, url)) {
+  // Clients that cannot take HTML at all (plain agents sending
+  // `Accept: application/json`) get the markdown mirror instead of the SSR
+  // handler, which rejects non-HTML document requests.
+  const acceptsHtml = /text\/html|\*\/\*/i.test(request.headers.get("accept") ?? "*/*");
+
+  if (mirror && (wantsMarkdown(request, url) || !acceptsHtml)) {
     const upstream = await fetch(new URL(mirror, url.origin), {
       headers: { accept: "text/plain" },
     });
