@@ -12,7 +12,7 @@
       "url": "https://velorix-hub.vercel.app/developers"
     },
     "license": {
-      "name": "Proprietary \u2014 content reusable with attribution",
+      "name": "Proprietary — content reusable with attribution",
       "url": "https://velorix-hub.vercel.app/ai.txt"
     }
   },
@@ -74,7 +74,15 @@
         "description": "Returns the API name, version, links to the OpenAPI document and MCP handshake, the rate-limit policy and the list of available operations.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/Pretty"
+            "name": "pretty",
+            "in": "query",
+            "required": false,
+            "description": "Pretty-print the JSON response body with two-space indentation.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -82,22 +90,46 @@
             "description": "API index document.",
             "headers": {
               "RateLimit-Policy": {
-                "$ref": "#/components/headers/RateLimitPolicy"
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
               },
               "RateLimit": {
-                "$ref": "#/components/headers/RateLimit"
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
               },
               "X-RateLimit-Limit": {
-                "$ref": "#/components/headers/RateLimitLimit"
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
               },
               "X-RateLimit-Remaining": {
-                "$ref": "#/components/headers/RateLimitRemaining"
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
               },
               "X-RateLimit-Reset": {
-                "$ref": "#/components/headers/RateLimitReset"
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
               },
               "X-API-Version": {
-                "$ref": "#/components/headers/ApiVersion"
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
               }
             },
             "content": {
@@ -109,25 +141,396 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "description": "A query parameter failed validation.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "description": "The API is read-only; only GET, HEAD and OPTIONS are accepted.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "429": {
-            "$ref": "#/components/responses/RateLimited"
+            "description": "The client exceeded the published quota. Honour Retry-After before retrying.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "500": {
-            "$ref": "#/components/responses/InternalError"
+            "description": "Unexpected server error.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "502": {
-            "$ref": "#/components/responses/UpstreamError"
+            "description": "The content database rejected the query.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "503": {
-            "$ref": "#/components/responses/Unavailable"
+            "description": "The backend is temporarily unavailable.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "default": {
-            "$ref": "#/components/responses/ProblemDefault"
+            "description": "Any other failure. Always the same typed problem document.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -179,7 +582,15 @@
             "example": "diwali"
           },
           {
-            "$ref": "#/components/parameters/Pretty"
+            "name": "pretty",
+            "in": "query",
+            "required": false,
+            "description": "Pretty-print the JSON response body with two-space indentation.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -187,22 +598,46 @@
             "description": "A list of published pages.",
             "headers": {
               "RateLimit-Policy": {
-                "$ref": "#/components/headers/RateLimitPolicy"
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
               },
               "RateLimit": {
-                "$ref": "#/components/headers/RateLimit"
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
               },
               "X-RateLimit-Limit": {
-                "$ref": "#/components/headers/RateLimitLimit"
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
               },
               "X-RateLimit-Remaining": {
-                "$ref": "#/components/headers/RateLimitRemaining"
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
               },
               "X-RateLimit-Reset": {
-                "$ref": "#/components/headers/RateLimitReset"
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
               },
               "X-API-Version": {
-                "$ref": "#/components/headers/ApiVersion"
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
               }
             },
             "content": {
@@ -214,25 +649,396 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "description": "A query parameter failed validation.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "description": "The API is read-only; only GET, HEAD and OPTIONS are accepted.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "429": {
-            "$ref": "#/components/responses/RateLimited"
+            "description": "The client exceeded the published quota. Honour Retry-After before retrying.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "500": {
-            "$ref": "#/components/responses/InternalError"
+            "description": "Unexpected server error.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "502": {
-            "$ref": "#/components/responses/UpstreamError"
+            "description": "The content database rejected the query.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "503": {
-            "$ref": "#/components/responses/Unavailable"
+            "description": "The backend is temporarily unavailable.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "default": {
-            "$ref": "#/components/responses/ProblemDefault"
+            "description": "Any other failure. Always the same typed problem document.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -260,7 +1066,15 @@
             "example": "diwali-cup"
           },
           {
-            "$ref": "#/components/parameters/Pretty"
+            "name": "pretty",
+            "in": "query",
+            "required": false,
+            "description": "Pretty-print the JSON response body with two-space indentation.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -268,22 +1082,46 @@
             "description": "The requested page.",
             "headers": {
               "RateLimit-Policy": {
-                "$ref": "#/components/headers/RateLimitPolicy"
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
               },
               "RateLimit": {
-                "$ref": "#/components/headers/RateLimit"
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
               },
               "X-RateLimit-Limit": {
-                "$ref": "#/components/headers/RateLimitLimit"
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
               },
               "X-RateLimit-Remaining": {
-                "$ref": "#/components/headers/RateLimitRemaining"
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
               },
               "X-RateLimit-Reset": {
-                "$ref": "#/components/headers/RateLimitReset"
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
               },
               "X-API-Version": {
-                "$ref": "#/components/headers/ApiVersion"
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
               }
             },
             "content": {
@@ -295,28 +1133,450 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "description": "A query parameter failed validation.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "description": "The requested resource does not exist.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "description": "The API is read-only; only GET, HEAD and OPTIONS are accepted.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "429": {
-            "$ref": "#/components/responses/RateLimited"
+            "description": "The client exceeded the published quota. Honour Retry-After before retrying.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "500": {
-            "$ref": "#/components/responses/InternalError"
+            "description": "Unexpected server error.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "502": {
-            "$ref": "#/components/responses/UpstreamError"
+            "description": "The content database rejected the query.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "503": {
-            "$ref": "#/components/responses/Unavailable"
+            "description": "The backend is temporarily unavailable.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "default": {
-            "$ref": "#/components/responses/ProblemDefault"
+            "description": "Any other failure. Always the same typed problem document.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -331,7 +1591,15 @@
         "description": "Returns the currently active VeloRix Android APK: version string, storage path, file size in bytes, changelog and release timestamp.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/Pretty"
+            "name": "pretty",
+            "in": "query",
+            "required": false,
+            "description": "Pretty-print the JSON response body with two-space indentation.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -339,22 +1607,46 @@
             "description": "The active Android release.",
             "headers": {
               "RateLimit-Policy": {
-                "$ref": "#/components/headers/RateLimitPolicy"
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
               },
               "RateLimit": {
-                "$ref": "#/components/headers/RateLimit"
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
               },
               "X-RateLimit-Limit": {
-                "$ref": "#/components/headers/RateLimitLimit"
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
               },
               "X-RateLimit-Remaining": {
-                "$ref": "#/components/headers/RateLimitRemaining"
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
               },
               "X-RateLimit-Reset": {
-                "$ref": "#/components/headers/RateLimitReset"
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
               },
               "X-API-Version": {
-                "$ref": "#/components/headers/ApiVersion"
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
               }
             },
             "content": {
@@ -366,28 +1658,450 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "description": "A query parameter failed validation.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "404": {
-            "$ref": "#/components/responses/NotFound"
+            "description": "The requested resource does not exist.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "description": "The API is read-only; only GET, HEAD and OPTIONS are accepted.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "429": {
-            "$ref": "#/components/responses/RateLimited"
+            "description": "The client exceeded the published quota. Honour Retry-After before retrying.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "500": {
-            "$ref": "#/components/responses/InternalError"
+            "description": "Unexpected server error.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "502": {
-            "$ref": "#/components/responses/UpstreamError"
+            "description": "The content database rejected the query.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "503": {
-            "$ref": "#/components/responses/Unavailable"
+            "description": "The backend is temporarily unavailable.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "default": {
-            "$ref": "#/components/responses/ProblemDefault"
+            "description": "Any other failure. Always the same typed problem document.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -402,7 +2116,15 @@
         "description": "Reports whether the VeloRix platform is live or in maintenance mode, with the operator's current status message. Call this before telling a player to register for a tournament.",
         "parameters": [
           {
-            "$ref": "#/components/parameters/Pretty"
+            "name": "pretty",
+            "in": "query",
+            "required": false,
+            "description": "Pretty-print the JSON response body with two-space indentation.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "example": true
           }
         ],
         "responses": {
@@ -410,22 +2132,46 @@
             "description": "Current platform status.",
             "headers": {
               "RateLimit-Policy": {
-                "$ref": "#/components/headers/RateLimitPolicy"
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
               },
               "RateLimit": {
-                "$ref": "#/components/headers/RateLimit"
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
               },
               "X-RateLimit-Limit": {
-                "$ref": "#/components/headers/RateLimitLimit"
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
               },
               "X-RateLimit-Remaining": {
-                "$ref": "#/components/headers/RateLimitRemaining"
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
               },
               "X-RateLimit-Reset": {
-                "$ref": "#/components/headers/RateLimitReset"
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
               },
               "X-API-Version": {
-                "$ref": "#/components/headers/ApiVersion"
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
               }
             },
             "content": {
@@ -437,25 +2183,396 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "description": "A query parameter failed validation.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "405": {
-            "$ref": "#/components/responses/MethodNotAllowed"
+            "description": "The API is read-only; only GET, HEAD and OPTIONS are accepted.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "429": {
-            "$ref": "#/components/responses/RateLimited"
+            "description": "The client exceeded the published quota. Honour Retry-After before retrying.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "500": {
-            "$ref": "#/components/responses/InternalError"
+            "description": "Unexpected server error.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "502": {
-            "$ref": "#/components/responses/UpstreamError"
+            "description": "The content database rejected the query.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "503": {
-            "$ref": "#/components/responses/Unavailable"
+            "description": "The backend is temporarily unavailable.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              },
+              "Retry-After": {
+                "description": "Seconds to wait before retrying (sent on 429 and 503).",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 30
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "default": {
-            "$ref": "#/components/responses/ProblemDefault"
+            "description": "Any other failure. Always the same typed problem document.",
+            "headers": {
+              "RateLimit-Policy": {
+                "description": "Advertised quota policy, RFC 9331 style. Example: \"default\";q=120;w=60",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";q=120;w=60"
+              },
+              "RateLimit": {
+                "description": "Current quota state for this client. Example: \"default\";r=118;t=57",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "\"default\";r=118;t=57"
+              },
+              "X-RateLimit-Limit": {
+                "description": "Legacy mirror: requests allowed per window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 120
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Legacy mirror: requests left in the current window.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 118
+              },
+              "X-RateLimit-Reset": {
+                "description": "Legacy mirror: seconds until the current window resets.",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 57
+              },
+              "X-API-Version": {
+                "description": "API version serving the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "v1"
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
