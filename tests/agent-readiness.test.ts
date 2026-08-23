@@ -41,14 +41,17 @@ describe("agent-friendly 404s", () => {
 describe("content without JavaScript", () => {
   const root_tsx = read("src/routes/__root.tsx");
 
-  it("renders a noscript shell for crawlers", () => {
-    expect(root_tsx).toContain("<noscript>");
+  it("server-renders documents (no SSR opt-out on the root route)", () => {
+    expect(root_tsx).toContain("<HeadContent />");
+    expect(root_tsx).toContain("<Scripts />");
+    expect(root_tsx).not.toMatch(/ssr:\s*false/);
   });
 
-  it("noscript shell carries substantive static text", () => {
-    const shell = root_tsx.slice(root_tsx.indexOf("<noscript>"), root_tsx.indexOf("</noscript>"));
-    const text = shell.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-    expect(text.length).toBeGreaterThan(200);
+  it("keeps a plain-text mirror of every negotiated page for no-JS clients", () => {
+    for (const file of ["index", "about", "contact", "privacy", "terms", "download", "developers"]) {
+      const doc = read(`public/md/${file}.md`);
+      expect(doc.length, `${file}.md too short`).toBeGreaterThan(500);
+    }
   });
 });
 
