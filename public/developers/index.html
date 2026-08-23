@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VeloRix Tournaments Developer &amp; Agent Resources — MCP Server, llms.txt, API Docs</title>
+    <meta
+      name="description"
+      content="Developer and AI agent resources for VeloRix Tournaments: MCP server over Streamable HTTP, .well-known/mcp handshake, llms.txt, markdown content negotiation and sitemap."
+    />
+    <link rel="canonical" href="https://velorix-hub.vercel.app/developers" />
+    <link rel="icon" type="image/png" href="/velorix-favicon.png" />
+    <link rel="alternate" type="text/markdown" href="/md/developers.md" title="Markdown version" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="VeloRix Tournaments" />
+    <meta property="og:title" content="VeloRix Tournaments Developer &amp; Agent Resources" />
+    <meta
+      property="og:description"
+      content="MCP server, llms.txt, ai.txt, markdown content negotiation and sitemap for VeloRix Tournaments."
+    />
+    <meta property="og:url" content="https://velorix-hub.vercel.app/developers" />
+    <style>
+      :root { color-scheme: dark; }
+      body {
+        margin: 0;
+        background: #000;
+        color: #d6d6d6;
+        font-family: Inter, system-ui, -apple-system, sans-serif;
+        line-height: 1.7;
+      }
+      main { max-width: 780px; margin: 0 auto; padding: 48px 20px 80px; }
+      h1, h2, h3 { color: #fff; line-height: 1.25; }
+      h1 { font-size: 2rem; margin-bottom: 8px; }
+      h2 { font-size: 1.25rem; margin-top: 40px; }
+      a { color: hsl(350 85% 62%); }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: #141414;
+        border: 1px solid #262626;
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-size: 0.88em;
+      }
+      ul { padding-left: 20px; }
+      .lede { color: #9c9c9c; }
+      footer { margin-top: 56px; color: #7d7d7d; font-size: 0.9rem; }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "VeloRix Tournaments Developer & Agent Resources",
+        "description": "MCP server, llms.txt, ai.txt, markdown content negotiation and sitemap for VeloRix Tournaments.",
+        "url": "https://velorix-hub.vercel.app/developers",
+        "inLanguage": "en-IN",
+        "author": { "@type": "Organization", "name": "VeloRix Tournaments", "url": "https://velorix-hub.vercel.app" },
+        "publisher": { "@id": "https://velorix-hub.vercel.app/#organization" }
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>VeloRix Tournaments Developer &amp; Agent Resources</h1>
+      <p class="lede">
+        Every machine-readable resource VeloRix Tournaments publishes, so AI agents and developers can integrate with
+        the VeloRix esports tournament platform without scraping the app shell. A markdown version of this page is at
+        <a href="/md/developers.md">/md/developers.md</a>.
+      </p>
+
+      <h2>VeloRix MCP server (Model Context Protocol)</h2>
+      <p>
+        VeloRix publishes a first-party MCP server over Streamable HTTP with public, read-only tools. Start from the
+        handshake document at <a href="/.well-known/mcp">/.well-known/mcp</a>, which carries the endpoint URL,
+        transport and tool list.
+      </p>
+      <ul>
+        <li><strong>Transport:</strong> Streamable HTTP (JSON-RPC 2.0)</li>
+        <li><strong>Authentication:</strong> none — public read-only tools</li>
+        <li><strong>Server:</strong> <code>velorix-mcp</code> (title "VeloRix", version 0.1.0)</li>
+      </ul>
+      <h3>Tools</h3>
+      <ul>
+        <li><code>list_published_pages</code> — list published VeloRix pages (tournaments, announcements, policies).</li>
+        <li><code>get_page</code> — full markdown of one published page by <code>slug</code>.</li>
+        <li><code>get_active_apk</code> — active Android APK version, changelog, size and download path.</li>
+        <li><code>get_site_status</code> — live or maintenance state plus the current status message.</li>
+      </ul>
+
+      <h2>Agent files</h2>
+      <ul>
+        <li><a href="/llms.txt">/llms.txt</a> — curated site index including a "when to use VeloRix" section</li>
+        <li><a href="/llms-full.txt">/llms-full.txt</a> — full text of all VeloRix editorial guides</li>
+        <li><a href="/ai.txt">/ai.txt</a> — training, retrieval and attribution policy</li>
+        <li><a href="/robots.txt">/robots.txt</a> — crawler rules; AI crawlers explicitly allowed</li>
+        <li><a href="/sitemap.xml">/sitemap.xml</a> — all public URLs</li>
+      </ul>
+
+      <h2>Markdown content negotiation</h2>
+      <p>
+        Send <code>Accept: text/markdown</code> to <code>/</code>, <code>/about</code>, <code>/contact</code>,
+        <code>/privacy</code>, <code>/terms</code>, <code>/download</code> or <code>/developers</code> and VeloRix
+        responds with <code>text/markdown</code> plus <code>Vary: Accept, Accept-Encoding</code>. The same documents are
+        directly addressable under <code>/md/</code>, for example <a href="/md/index.md">/md/index.md</a>. Appending
+        <code>?format=md</code> forces the markdown variant.
+      </p>
+
+      <h2>Conventions</h2>
+      <ul>
+        <li>Unknown paths return a real HTTP 404 with a short markdown body linking these resources.</li>
+        <li>Public content may be quoted with attribution to "VeloRix Tournaments" and a link to the source page.</li>
+        <li>Private areas (<code>/vx-control</code>, <code>/crew</code>) are excluded from crawling.</li>
+      </ul>
+
+      <footer>
+        Integration questions: <a href="mailto:service.veloxyra@gmail.com">service.veloxyra@gmail.com</a> ·
+        <a href="/">VeloRix Tournaments home</a>
+      </footer>
+    </main>
+  </body>
+</html>
