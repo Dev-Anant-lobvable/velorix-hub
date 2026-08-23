@@ -1,5 +1,13 @@
 {
   "rewrites": [
+    {
+      "source": "/mcp",
+      "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/mcp"
+    },
+    {
+      "source": "/mcp/:path*",
+      "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/mcp/:path*"
+    },
     { "source": "/about", "destination": "/index.html" },
     { "source": "/contact", "destination": "/index.html" },
     { "source": "/privacy", "destination": "/index.html" },
