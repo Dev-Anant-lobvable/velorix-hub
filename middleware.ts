@@ -146,7 +146,9 @@ export default async function middleware(request: Request) {
       });
       const headers = new Headers(upstream.headers);
       headers.set("access-control-allow-origin", "*");
-      headers.set("link", `<${url.origin}/mcp>; rel="mcp-server"`);
+      for (const [key, value] of Object.entries(agentHeaders(url.origin, { link: `<${url.origin}/mcp>; rel="mcp-server"` }))) {
+        headers.set(key, value);
+      }
       return new Response(upstream.body, { status: upstream.status, headers });
     }
     if (request.method === "OPTIONS") {
@@ -159,7 +161,7 @@ export default async function middleware(request: Request) {
         },
       });
     }
-    return next({ headers: { link: `<${url.origin}/mcp>; rel="mcp-server"` } });
+    return next({ headers: agentHeaders(url.origin, { link: `<${url.origin}/mcp>; rel="mcp-server"`, vary: VARY }) });
   }
 
 
@@ -174,7 +176,9 @@ export default async function middleware(request: Request) {
           "content-type": "text/markdown; charset=utf-8",
           vary: VARY,
           "cache-control": "public, max-age=300, s-maxage=600",
-          link: `<${url.origin}${mirror}>; rel="alternate"; type="text/markdown"`,
+          ...agentHeaders(url.origin, {
+            link: `<${url.origin}${mirror}>; rel="alternate"; type="text/markdown"`,
+          }),
         },
       });
     }
@@ -191,11 +195,11 @@ export default async function middleware(request: Request) {
           "content-type": "text/markdown; charset=utf-8",
           vary: VARY,
           "x-robots-tag": "noindex, follow",
-          link: `<${url.origin}/llms.txt>; rel="help"`,
+          ...agentHeaders(url.origin),
         },
       });
     }
   }
 
-  return next({ headers: { vary: VARY } });
+  return next({ headers: agentHeaders(url.origin, { vary: VARY }) });
 }
