@@ -1,6 +1,26 @@
 {
   "rewrites": [
     {
+      "source": "/api",
+      "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/public-api"
+    },
+    {
+      "source": "/mcp.json",
+      "destination": "/.well-known/mcp"
+    },
+    {
+      "source": "/developers.md",
+      "destination": "/md/developers.md"
+    },
+    {
+      "source": "/.well-known/llms.txt",
+      "destination": "/llms.txt"
+    },
+    {
+      "source": "/velorix-openapi.json",
+      "destination": "/openapi.json"
+    },
+    {
       "source": "/mcp",
       "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/mcp"
     },
@@ -155,7 +175,6 @@
         }
       ]
     },
-
     {
       "source": "/md/(.*)",
       "headers": [
