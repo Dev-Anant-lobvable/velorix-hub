@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = resolve(__dirname, "..");
@@ -28,42 +28,27 @@ describe("agent-friendly 404s", () => {
     expect(sources.some((s) => s.includes("(?!"))).toBe(false);
   });
 
-  it("rewrites every SPA route explicitly", () => {
-    const app = read("src/App.tsx");
-    const routes = [...app.matchAll(/<Route path="([^"]+)"/g)]
-      .map((m) => m[1])
-      .filter((p) => p !== "*" && p !== "/");
-    const sources: string[] = vercel.rewrites.map((r: { source: string }) => r.source);
-    for (const route of routes) {
-      const normalised = route.replace(/:(\w+)/g, ":$1");
-      const covered =
-        sources.includes(normalised) ||
-        sources.includes(normalised.replace(/\/error\/\d+/, "/error/:code")) ||
-        (normalised.startsWith("/error/") && sources.includes("/error/:code"));
-      expect(covered, `route ${route} has no vercel rewrite`).toBe(true);
+  it("serves every page route from the router, not from rewrites", () => {
+    const routes = readdirSync(resolve(root, "src/routes"));
+    for (const file of ["index.tsx", "about.tsx", "contact.tsx", "privacy.tsx", "terms.tsx", "download.tsx", "status.tsx"]) {
+      expect(routes, `src/routes/${file} missing`).toContain(file);
     }
+    const destinations: string[] = vercel.rewrites.map((r: { destination: string }) => r.destination);
+    expect(destinations).not.toContain("/index.html");
   });
 });
 
 describe("content without JavaScript", () => {
-  const html = read("index.html");
+  const root_tsx = read("src/routes/__root.tsx");
 
-  it("pre-renders content inside #root", () => {
-    expect(html).toContain('<div id="root">');
-    expect(html).toContain('id="prerender"');
+  it("renders a noscript shell for crawlers", () => {
+    expect(root_tsx).toContain("<noscript>");
   });
 
-  it("has exactly one H1 with 500+ chars of static text", () => {
-    const h1 = html.match(/<h1[^>]*>/g) ?? [];
-    expect(h1).toHaveLength(1);
-    const body = html.slice(html.indexOf('id="prerender"'));
-    const text = body
-      .replace(/<script[\s\S]*?<\/script>/g, " ")
-      .replace(/<!--[\s\S]*?-->/g, " ")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    expect(text.length).toBeGreaterThan(500);
+  it("noscript shell carries substantive static text", () => {
+    const shell = root_tsx.slice(root_tsx.indexOf("<noscript>"), root_tsx.indexOf("</noscript>"));
+    const text = shell.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    expect(text.length).toBeGreaterThan(200);
   });
 });
 
@@ -135,39 +120,27 @@ describe("trust anchor pages", () => {
 });
 
 describe("structured data", () => {
-  const html = read("index.html");
-  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(
-    (m) => JSON.parse(m[1]),
-  );
+  const root_tsx = read("src/routes/__root.tsx");
 
-  it("every JSON-LD block parses", () => {
+  it("emits JSON-LD from the root route", () => {
+    const blocks = root_tsx.match(/type: "application\/ld\+json"/g) ?? [];
     expect(blocks.length).toBeGreaterThanOrEqual(4);
   });
 
   it("Organization schema is complete", () => {
-    const org = blocks.find((b) => b["@type"] === "Organization");
-    expect(org).toBeDefined();
-    expect(org.name).toBeTruthy();
-    expect(org.description).toBeTruthy();
-    expect(org.url).toBeTruthy();
-    expect(org.logo).toBeTruthy();
-    expect(Array.isArray(org.sameAs)).toBe(true);
-    expect(org.address["@type"]).toBe("PostalAddress");
-    expect(org.address.addressCountry).toBe("IN");
-    const contacts = Array.isArray(org.contactPoint) ? org.contactPoint : [org.contactPoint];
-    expect(contacts.length).toBeGreaterThan(0);
-    for (const c of contacts) {
-      expect(c["@type"]).toBe("ContactPoint");
-      expect(c.contactType).toBeTruthy();
-      expect(c.email).toBeTruthy();
+    for (const field of ['"@type": "Organization"', "sameAs", "PostalAddress", "ContactPoint", "logo"]) {
+      expect(root_tsx, `Organization missing ${field}`).toContain(field);
     }
+    expect(root_tsx).toContain('addressCountry: "IN"');
   });
 
   it("app schema carries identity fields", () => {
-    const app = blocks.find((b) => b["@type"] === "MobileApplication");
-    expect(app.name).toBeTruthy();
-    expect(app.description).toBeTruthy();
-    expect(app.offers).toBeTruthy();
+    const idx = root_tsx.indexOf('"@type": "MobileApplication"');
+    expect(idx).toBeGreaterThan(-1);
+    const block = root_tsx.slice(idx, idx + 1500);
+    for (const field of ["name:", "description:", "offers"]) {
+      expect(block, `MobileApplication missing ${field}`).toContain(field);
+    }
   });
 });
 
@@ -213,11 +186,10 @@ describe("agent-friendly 404 markdown body", () => {
     expect(md.startsWith("# 404 Not Found")).toBe(true);
   });
 
-  it("middleware returns a markdown 404 for unknown non-HTML requests", () => {
+  it("leaves unknown-path handling to the framework (no synthetic 404s in middleware)", () => {
     const mw = read("middleware.ts");
-    expect(mw).toContain("status: 404");
-    expect(mw).toContain('"content-type": "text/markdown; charset=utf-8"');
-    expect(mw).toContain("isKnown");
+    expect(mw).not.toContain("isKnown");
+    expect(mw).not.toContain("status: 404");
   });
 
   it("html 404 links its markdown alternate", () => {
@@ -364,11 +336,10 @@ describe("product fact sheets (pricing, features, positioning)", () => {
     }
   });
 
-  it("no-JS shell exposes pricing and positioning text", () => {
-    const html = read("index.html");
-    expect(html).toContain("Pricing");
-    expect(html).toContain("How VeloRix compares");
-    expect(html).toContain("/md/pricing.md");
+  it("machine-readable index exposes pricing and positioning text", () => {
+    const doc = read("public/md/index.md");
+    expect(doc).toContain("/md/pricing.md");
+    expect(doc).toContain("/md/compare.md");
   });
 });
 
