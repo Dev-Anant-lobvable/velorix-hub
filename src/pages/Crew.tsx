@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Crown, Shield, Swords, Terminal } from "@/lib/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";

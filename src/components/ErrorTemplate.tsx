@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
 import { Home, RotateCcw, LucideIcon } from "@/lib/icons";
 import { AnimatedButton } from "@/components/ui/animated-button";

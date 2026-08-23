@@ -1,7 +1,7 @@
 import { Download, ChevronDown, Smartphone, HardDrive } from "@/lib/icons";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { playDownloadSound } from "@/hooks/useSoundEffect";
 import GradientText from "@/components/reactbits/GradientText";
 import Aurora from "@/components/reactbits/Aurora";

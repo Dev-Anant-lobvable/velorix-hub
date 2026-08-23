@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "@/lib/router-compat";
 import { ArrowLeft, ArrowUpRight, Calendar, Clock, Users } from "@/lib/icons";
 import useScrollToTop from "@/hooks/useScrollToTop";
 import useSeo from "@/hooks/useSeo";

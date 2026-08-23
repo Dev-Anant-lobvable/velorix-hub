@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "@/lib/icons";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { AnimatedButton } from "@/components/ui/animated-button";
 
 const STORAGE_KEY = "velorix-cookie-consent";
@@ -10,12 +10,11 @@ const CookieConsent = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return undefined;
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      const t = window.setTimeout(() => setVisible(true), 1500);
-      return () => window.clearTimeout(t);
-    }
+    if (stored) return undefined;
+    const t = window.setTimeout(() => setVisible(true), 1500);
+    return () => window.clearTimeout(t);
   }, []);
 
   const handleChoice = (choice: "accept" | "reject") => {
