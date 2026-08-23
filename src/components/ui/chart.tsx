@@ -17,6 +17,23 @@ type ChartContextProps = {
   config: ChartConfig;
 };
 
+/**
+ * Recharts v3 no longer exposes `payload`/`label` on the public Tooltip/Legend
+ * prop types (they are injected from context), so the shadcn wrappers below
+ * declare the shapes they consume explicitly.
+ */
+type ChartPayloadItem = {
+  dataKey?: string | number;
+  name?: string | number;
+  value?: number | string;
+  color?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+};
+
+
 const ChartContext = React.createContext<ChartContextProps | null>(null);
 
 function useChart() {
