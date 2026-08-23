@@ -87,6 +87,21 @@
         <li><code>get_site_status</code> — live or maintenance state plus the current status message.</li>
       </ul>
 
+      <h2>Public JSON API (OpenAPI 3.1)</h2>
+      <p>
+        VeloRix Tournaments publishes a read-only REST API described by an OpenAPI 3.1 document at
+        <a href="/openapi.json">/openapi.json</a> (mirrored at <a href="/api/openapi.json">/api/openapi.json</a>).
+        Base URL <code>https://velorix-hub.vercel.app/api/v1</code>. No authentication is required.
+        Errors use <code>application/problem+json</code> with an <code>error</code> object carrying
+        <code>code</code>, <code>message</code> and <code>hint</code> so agents can recover without parsing HTML.
+      </p>
+      <ul>
+        <li><code>getApiIndex</code> — <code>GET /api/v1</code> — API metadata and operation list.</li>
+        <li><code>listPages</code> — <code>GET /api/v1/pages</code> — published VeloRix pages.</li>
+        <li><code>getPage</code> — <code>GET /api/v1/pages/{slug}</code> — full markdown of one page.</li>
+        <li><code>getActiveApk</code> — <code>GET /api/v1/apk/active</code> — active Android release.</li>
+        <li><code>getSiteStatus</code> — <code>GET /api/v1/status</code> — live or maintenance status.</li>
+      </ul>
       <h2>Agent files</h2>
       <ul>
         <li><a href="/llms.txt">/llms.txt</a> — curated site index including a "when to use VeloRix" section</li>

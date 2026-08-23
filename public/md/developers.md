@@ -18,6 +18,23 @@ Tools exposed:
 - `get_active_apk` — current Android APK version, changelog, size and download path.
 - `get_site_status` — whether the site is live or in maintenance, plus the current status message.
 
+## Public JSON API
+
+VeloRix publishes a read-only REST API described by an OpenAPI 3.1 document.
+
+- OpenAPI specification: [/openapi.json](/openapi.json) (also at [/api/openapi.json](/api/openapi.json))
+- Base URL: `https://velorix-hub.vercel.app/api/v1`
+- Authentication: none (public, read-only)
+- Errors: `application/problem+json` with `status` and an `error` object carrying `code`, `message` and `hint`
+
+Operations (unique `operationId`, typed parameters and response schemas in the spec):
+
+- `getApiIndex` — `GET /api/v1` — API metadata and operation list.
+- `listPages` — `GET /api/v1/pages` — published pages with slug, title, subtitle, updated_at.
+- `getPage` — `GET /api/v1/pages/{slug}` — full markdown of one published page.
+- `getActiveApk` — `GET /api/v1/apk/active` — active Android release: version, size, changelog, path.
+- `getSiteStatus` — `GET /api/v1/status` — live or maintenance, with the current status message.
+
 ## Agent files
 
 - [/llms.txt](/llms.txt) — curated site index with a "when to use" section
