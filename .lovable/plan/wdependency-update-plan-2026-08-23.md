@@ -1,4 +1,4 @@
-# Dependency Update Plan
+# WDependency Update Plan
 
 Short answer: the core stack is already modern (React 19, Vite 8, Tailwind v4, TanStack Start/Router), but 26 packages have newer releases — 12 of them are major-version jumps that can break the site if applied blindly.
 
