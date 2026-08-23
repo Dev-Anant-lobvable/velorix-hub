@@ -3,8 +3,13 @@ import { next } from "@vercel/edge";
 export const config = {
   // Every path except static assets and the API/MCP proxies. Known routes fall
   // through untouched; unknown ones get a real 404 with an agent-readable body.
-  matcher: ["/((?!api/|mcp|md/|assets/|fonts/|sounds/|.well-known/|_vercel).*)"],
+  // `/.well-known/mcp` is matched explicitly so POST handshakes reach the live
+  // MCP server while GET keeps serving the static manifest.
+  matcher: ["/((?!api/|mcp|md/|assets/|fonts/|sounds/|.well-known/|_vercel).*)", "/.well-known/mcp"],
 };
+
+/** Live MCP endpoint behind the /mcp rewrite. */
+const MCP_UPSTREAM = "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/mcp";
 
 /** Route -> markdown mirror served via Accept negotiation (acceptmarkdown.com). */
 const MARKDOWN_MIRRORS: Record<string, string> = {
