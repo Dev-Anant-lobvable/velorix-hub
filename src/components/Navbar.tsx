@@ -140,6 +140,7 @@ const Navbar = () => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
+              id="mobile-nav-menu"
               className="md:hidden mt-4 pb-4 pt-4 mobile-menu-glass rounded-2xl px-4 -mx-2"
               initial={{ opacity: 0, height: 0, y: -10 }}
               animate={{ opacity: 1, height: "auto", y: 0 }}
