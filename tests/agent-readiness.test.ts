@@ -367,3 +367,94 @@ describe("product fact sheets (pricing, features, positioning)", () => {
     expect(html).toContain("/md/pricing.md");
   });
 });
+
+describe("rate limit, error model, versioning and MCP handshake", () => {
+  const spec = JSON.parse(read("public/openapi.json"));
+  const fn = read("supabase/functions/public-api/index.ts");
+  const ops = Object.values(spec.paths).map((p: any) => p.get);
+
+  it("advertises RFC 9331 rate-limit headers on every API response", () => {
+    for (const h of ["RateLimit-Policy", "RateLimit", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"]) {
+      expect(fn).toContain(h);
+    }
+    expect(fn).toContain('"Retry-After"');
+    expect(fn).toContain("rate_limited");
+    for (const op of ops) {
+      expect(Object.keys(op.responses)).toContain("429");
+      expect(Object.keys(op.responses["200"].headers)).toEqual(
+        expect.arrayContaining(["RateLimit", "RateLimit-Policy", "X-API-Version"]),
+      );
+    }
+    expect(spec.components.responses.RateLimited.headers["Retry-After"]).toBeTruthy();
+  });
+
+  it("gives every operation typed error responses referencing the Error schema", () => {
+    for (const op of ops) {
+      for (const status of ["400", "405", "429", "500", "502", "503", "default"]) {
+        const res = op.responses[status];
+        expect(res, `${op.operationId} missing ${status}`).toBeTruthy();
+        const name = res.$ref.split("/").pop();
+        const target = spec.components.responses[name];
+        expect(target.content["application/problem+json"].schema.$ref).toBe("#/components/schemas/Error");
+      }
+    }
+    expect(spec.components.schemas.Error.properties.error.properties.code.enum).toContain("rate_limited");
+  });
+
+  it("has unique operationIds and typed parameter schemas on all operations", () => {
+    const ids = ops.map((o: any) => o.operationId);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const op of ops) {
+      expect(op.description.length).toBeGreaterThan(20);
+      expect(Array.isArray(op.parameters) && op.parameters.length > 0, `${op.operationId} has no parameters`).toBe(true);
+      for (const param of op.parameters) {
+        const resolved = param.$ref ? spec.components.parameters[param.$ref.split("/").pop()] : param;
+        expect(resolved.schema.type, `${op.operationId} untyped param`).toBeTruthy();
+        expect(resolved.description.length).toBeGreaterThan(5);
+      }
+    }
+  });
+
+  it("validates query parameters and returns bad_request", () => {
+    expect(fn).toContain("bad_request");
+    expect(fn).toContain("'limit' must be an integer between 1 and 100.");
+  });
+
+  it("publishes a versioning and deprecation policy", () => {
+    const policy = read("public/md/versioning.md");
+    for (const token of ["Sunset", "Deprecation", "180", "RateLimit-Policy", "rate_limited"]) {
+      expect(policy).toContain(token);
+    }
+    expect(spec["x-versioning"].policy).toContain("/md/versioning.md");
+    expect(fn).toContain('rel="deprecation-policy"');
+    expect(fn).toContain('"X-API-Version": API_VERSION');
+    expect(read("public/llms.txt")).toContain("/md/versioning.md");
+    expect(read("public/sitemap.xml")).toContain("/md/versioning.md");
+  });
+
+  it("exposes a live MCP handshake at /.well-known/mcp", () => {
+    const mw = read("middleware.ts");
+    expect(mw).toContain('"/.well-known/mcp"');
+    expect(mw).toContain("MCP_UPSTREAM");
+    expect(mw).toContain('request.method === "POST"');
+    const manifest = JSON.parse(read("public/.well-known/mcp"));
+    expect(manifest.handshake.method).toBe("POST");
+    expect(manifest.servers[0].transport).toBe("streamable-http");
+    expect(manifest.rateLimit.limit).toBe(120);
+  });
+
+  it("publishes developer resources at predictable, name-bearing URLs", () => {
+    const vercel = JSON.parse(read("vercel.json"));
+    const sources = vercel.rewrites.map((r: { source: string }) => r.source);
+    for (const s of ["/docs", "/api-docs", "/.well-known/api-catalog", "/.well-known/openapi.json"]) {
+      expect(sources, `${s} rewrite missing`).toContain(s);
+    }
+    const catalog = JSON.parse(read("public/api-catalog.json"));
+    expect(catalog.linkset[0]["service-desc"][0].href).toContain("/openapi.json");
+    expect(catalog.linkset[0]["service-desc"][0].title).toContain("VeloRix");
+    const docs = read("public/developers/index.html");
+    expect(docs).toContain("VeloRix API rate limits");
+    expect(docs).toContain("VeloRix API versioning");
+    expect(read("public/md/developers.md")).toContain("VeloRix MCP live handshake");
+  });
+});
