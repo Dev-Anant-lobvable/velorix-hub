@@ -72,6 +72,8 @@ const ErrorTemplate = ({
             </button>
           </div>
 
+          {extra}
+
           <p className="mt-10 text-xs text-muted-foreground/60 font-mono">{errorTag}</p>
         </motion.div>
       </div>
