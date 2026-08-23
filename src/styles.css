@@ -121,7 +121,9 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
     background-image: var(--gradient-primary);
   }
 
