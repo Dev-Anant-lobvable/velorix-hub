@@ -115,8 +115,12 @@ const Navbar = () => {
           </div>
 
           <motion.button
+            type="button"
             className="md:hidden text-foreground p-2"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-nav-menu"
             whileTap={{ scale: 0.9 }}
           >
             <AnimatePresence mode="wait">
