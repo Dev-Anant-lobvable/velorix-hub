@@ -16,6 +16,7 @@ export interface ErrorTemplateProps {
   secondaryAction?: "back" | "reload";
   secondaryLabel?: string;
   accentHue?: number; // optional override (HSL hue)
+  extra?: ReactNode;
 }
 
 const ErrorTemplate = ({
@@ -29,6 +30,7 @@ const ErrorTemplate = ({
   primaryLabel = "Respawn at Home",
   secondaryAction = "back",
   secondaryLabel = "Go Back",
+  extra,
 }: ErrorTemplateProps) => {
   const handleSecondary = () => {
     if (secondaryAction === "reload") window.location.reload();
