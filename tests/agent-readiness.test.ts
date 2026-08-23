@@ -195,3 +195,136 @@ describe("MCP manifest", () => {
     expect(wellKnown.name).toBe(manifest.mcp.server.name);
   });
 });
+
+describe("agent-friendly 404 markdown body", () => {
+  it("ships a markdown 404 document with recovery links", () => {
+    const md = read("public/404.md");
+    for (const target of [
+      "/llms.txt",
+      "/llms-full.txt",
+      "/developers",
+      "/openapi.json",
+      "/api/v1",
+      "/.well-known/mcp",
+      "/sitemap.xml",
+    ]) {
+      expect(md).toContain(target);
+    }
+    expect(md.startsWith("# 404 Not Found")).toBe(true);
+  });
+
+  it("middleware returns a markdown 404 for unknown non-HTML requests", () => {
+    const mw = read("middleware.ts");
+    expect(mw).toContain("status: 404");
+    expect(mw).toContain('"content-type": "text/markdown; charset=utf-8"');
+    expect(mw).toContain("isKnown");
+  });
+
+  it("html 404 links its markdown alternate", () => {
+    const html = read("public/404.html");
+    expect(html).toContain('type="text/markdown" href="/404.md"');
+    expect(html).toContain("/openapi.json");
+  });
+});
+
+describe("OpenAPI specification", () => {
+  const spec = JSON.parse(read("public/openapi.json"));
+  const operations = Object.entries(spec.paths).flatMap(([path, item]: [string, any]) =>
+    Object.entries(item).map(([method, op]: [string, any]) => ({ path, method, op })),
+  );
+
+  it("is OpenAPI 3.1 with server, contact and external docs", () => {
+    expect(spec.openapi).toMatch(/^3\.1/);
+    expect(spec.servers[0].url).toBe("https://velorix-hub.vercel.app/api/v1");
+    expect(spec.info.contact.email).toBeTruthy();
+    expect(spec.externalDocs.url).toContain("/developers");
+  });
+
+  it("gives every operation a unique operationId, summary and description", () => {
+    const ids = operations.map(({ op }) => op.operationId);
+    expect(ids.length).toBeGreaterThanOrEqual(5);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const { op } of operations) {
+      expect(op.operationId).toMatch(/^[a-zA-Z][a-zA-Z0-9]*$/);
+      expect(op.summary?.length).toBeGreaterThan(3);
+      expect(op.description?.length).toBeGreaterThan(20);
+      expect(op.tags?.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("types every parameter and every response body", () => {
+    for (const { op } of operations) {
+      for (const param of op.parameters ?? []) {
+        expect(param.schema).toBeTruthy();
+        expect(param.description).toBeTruthy();
+      }
+      const success = op.responses["200"];
+      expect(success.description).toBeTruthy();
+      expect(success.content["application/json"].schema).toBeTruthy();
+    }
+  });
+
+  it("documents structured JSON errors with code, message and hint", () => {
+    const err = spec.components.schemas.Error;
+    const props = err.properties.error.properties;
+    expect(Object.keys(props).sort()).toEqual(["code", "hint", "message"]);
+    expect(props.code.enum).toContain("page_not_found");
+    for (const response of Object.values<any>(spec.components.responses)) {
+      expect(response.content["application/problem+json"].schema.$ref).toContain("Error");
+    }
+  });
+
+  it("is reachable at predictable URLs via rewrites", () => {
+    const vercel = JSON.parse(read("vercel.json"));
+    const sources = vercel.rewrites.map((r: { source: string }) => r.source);
+    expect(sources).toContain("/api/openapi.json");
+    expect(sources).toContain("/api/v1");
+    expect(sources).toContain("/api/v1/:path*");
+  });
+});
+
+describe("public JSON API implementation", () => {
+  const fn = read("supabase/functions/public-api/index.ts");
+
+  it("implements every documented operation path", () => {
+    for (const path of ["/pages", "/pages/", "/apk/active", "/status"]) {
+      expect(fn).toContain(path);
+    }
+  });
+
+  it("returns problem+json errors with code, message and hint", () => {
+    expect(fn).toContain("application/problem+json");
+    expect(fn).toContain("hint");
+    expect(fn).toContain("endpoint_not_found");
+    expect(fn).toContain("method_not_allowed");
+  });
+
+  it("is read-only", () => {
+    expect(fn).not.toMatch(/\.(insert|update|delete|upsert)\(/);
+    expect(fn).not.toContain("SERVICE_ROLE");
+  });
+});
+
+describe("developer resource discoverability", () => {
+  it("llms.txt names the OpenAPI spec and REST API", () => {
+    const llms = read("public/llms.txt");
+    expect(llms).toContain("/openapi.json");
+    expect(llms).toContain("/api/v1");
+  });
+
+  it("developers page documents the API surface", () => {
+    const html = read("public/developers/index.html");
+    const md = read("public/md/developers.md");
+    for (const doc of [html, md]) {
+      expect(doc).toContain("/openapi.json");
+      expect(doc).toContain("listPages");
+      expect(doc).toContain("getSiteStatus");
+    }
+  });
+
+  it("mcp handshake links the OpenAPI spec and REST API", () => {
+    const wellKnown = JSON.parse(read("public/.well-known/mcp"));
+    expect(wellKnown.openapi).toContain("/openapi.json");
+    expect(wellKnown.restApi).toContain("/api/v1");
+  });
+});
