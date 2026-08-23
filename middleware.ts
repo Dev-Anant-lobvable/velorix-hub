@@ -48,6 +48,36 @@ const KNOWN_PREFIXES = ["/blog/", "/p/", "/error/"];
 
 const VARY = "Accept, Accept-Encoding";
 
+/**
+ * Advisory quota + policy signals repeated on every document response so agents
+ * can self-throttle before they ever touch /api/v1 (which returns live counters).
+ */
+const AGENT_HEADERS: Record<string, string> = {
+  "ratelimit-policy": '"static";q=600;w=60, "default";q=120;w=60',
+  ratelimit: '"static";r=600;t=60',
+  "x-ratelimit-limit": "600",
+  "x-ratelimit-remaining": "600",
+  "x-ratelimit-reset": "60",
+  "x-api-version": "v1",
+  "access-control-expose-headers":
+    "RateLimit, RateLimit-Policy, Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-API-Version, Link",
+};
+
+function agentHeaders(origin: string, extra: Record<string, string> = {}): Record<string, string> {
+  return {
+    ...AGENT_HEADERS,
+    link: [
+      `<${origin}/md/versioning.md>; rel="deprecation-policy"`,
+      `<${origin}/openapi.json>; rel="service-desc"`,
+      `<${origin}/.well-known/api-catalog>; rel="api-catalog"`,
+      `<${origin}/llms.txt>; rel="help"`,
+      ...(extra.link ? [extra.link] : []),
+    ].join(", "),
+    ...Object.fromEntries(Object.entries(extra).filter(([key]) => key !== "link")),
+  };
+}
+
+
 function wantsMarkdown(request: Request, url: URL): boolean {
   if (url.searchParams.get("format") === "md") return true;
   const accept = request.headers.get("accept") ?? "";
