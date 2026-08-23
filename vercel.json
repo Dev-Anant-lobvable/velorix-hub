@@ -1,6 +1,26 @@
 {
   "rewrites": [
     {
+      "source": "/api",
+      "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/public-api"
+    },
+    {
+      "source": "/mcp.json",
+      "destination": "/.well-known/mcp"
+    },
+    {
+      "source": "/developers.md",
+      "destination": "/md/developers.md"
+    },
+    {
+      "source": "/.well-known/llms.txt",
+      "destination": "/llms.txt"
+    },
+    {
+      "source": "/velorix-openapi.json",
+      "destination": "/openapi.json"
+    },
+    {
       "source": "/mcp",
       "destination": "https://pvzoeafqfkwfgiiflaol.supabase.co/functions/v1/mcp"
     },
@@ -120,6 +140,38 @@
         {
           "key": "Vary",
           "value": "Accept, Accept-Encoding"
+        },
+        {
+          "key": "RateLimit-Policy",
+          "value": "\"static\";q=600;w=60, \"default\";q=120;w=60"
+        },
+        {
+          "key": "RateLimit",
+          "value": "\"static\";r=600;t=60"
+        },
+        {
+          "key": "X-RateLimit-Limit",
+          "value": "600"
+        },
+        {
+          "key": "X-RateLimit-Remaining",
+          "value": "600"
+        },
+        {
+          "key": "X-RateLimit-Reset",
+          "value": "60"
+        },
+        {
+          "key": "X-API-Version",
+          "value": "v1"
+        },
+        {
+          "key": "Link",
+          "value": "<https://velorix-hub.vercel.app/md/versioning.md>; rel=\"deprecation-policy\", <https://velorix-hub.vercel.app/openapi.json>; rel=\"service-desc\", <https://velorix-hub.vercel.app/.well-known/api-catalog>; rel=\"api-catalog\", <https://velorix-hub.vercel.app/llms.txt>; rel=\"help\""
+        },
+        {
+          "key": "Access-Control-Expose-Headers",
+          "value": "RateLimit, RateLimit-Policy, Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-API-Version, Link"
         }
       ]
     },
