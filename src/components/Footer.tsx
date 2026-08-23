@@ -24,6 +24,14 @@ const Footer = () => {
     { name: "Cookie Policy", href: "/cookies" },
   ];
 
+  const developerLinks = [
+    { name: "VeloRix Developer Docs", href: "/developers" },
+    { name: "VeloRix API (JSON)", href: "/api/v1" },
+    { name: "VeloRix OpenAPI Spec", href: "/openapi.json" },
+    { name: "VeloRix MCP Server", href: "/.well-known/mcp" },
+    { name: "llms.txt", href: "/llms.txt" },
+  ];
+
   const socialLinks = [
     { icon: Instagram, href: "https://www.instagram.com/velorix_tournaments", label: "Follow us on Instagram" },
     { icon: XIcon, href: "https://x.com/Anant__sgh", label: "Follow us on X", isCustom: true },
@@ -65,6 +73,22 @@ const Footer = () => {
                   >
                     {link.name}
                   </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-semibold text-foreground">Developers &amp; API</h3>
+            <ul className="space-y-2">
+              {developerLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                  >
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
