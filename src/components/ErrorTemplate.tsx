@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
 import { Home, RotateCcw, LucideIcon } from "@/lib/icons";
@@ -15,6 +16,7 @@ export interface ErrorTemplateProps {
   secondaryAction?: "back" | "reload";
   secondaryLabel?: string;
   accentHue?: number; // optional override (HSL hue)
+  extra?: ReactNode;
 }
 
 const ErrorTemplate = ({
@@ -28,6 +30,7 @@ const ErrorTemplate = ({
   primaryLabel = "Respawn at Home",
   secondaryAction = "back",
   secondaryLabel = "Go Back",
+  extra,
 }: ErrorTemplateProps) => {
   const handleSecondary = () => {
     if (secondaryAction === "reload") window.location.reload();
@@ -71,6 +74,8 @@ const ErrorTemplate = ({
               </AnimatedButton>
             </button>
           </div>
+
+          {extra}
 
           <p className="mt-10 text-xs text-muted-foreground/60 font-mono">{errorTag}</p>
         </motion.div>

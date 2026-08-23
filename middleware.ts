@@ -62,6 +62,14 @@ function agentHeaders(origin: string, extra: Record<string, string> = {}): Recor
 }
 
 
+/** Normalize an inbound Accept header for the MCP Streamable HTTP transport. */
+function mcpAccept(accept: string | null): string {
+  const value = accept ?? "";
+  const hasJson = /application\/json/i.test(value);
+  const hasStream = /text\/event-stream/i.test(value);
+  return hasJson && hasStream ? value : "application/json, text/event-stream";
+}
+
 function wantsMarkdown(request: Request, url: URL): boolean {
   if (url.searchParams.get("format") === "md") return true;
   const accept = request.headers.get("accept") ?? "";
@@ -93,7 +101,9 @@ export default async function middleware(request: Request) {
         method: request.method,
         headers: {
           "content-type": request.headers.get("content-type") ?? "application/json",
-          accept: request.headers.get("accept") ?? "application/json, text/event-stream",
+          // The MCP Streamable HTTP transport requires BOTH media types; plain
+          // agents send `*/*` (or nothing), which upstream rejects with 406.
+          accept: mcpAccept(request.headers.get("accept")),
           ...(request.headers.get("mcp-session-id")
             ? { "mcp-session-id": request.headers.get("mcp-session-id") as string }
             : {}),

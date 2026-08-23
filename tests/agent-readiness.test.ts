@@ -482,3 +482,57 @@ describe("rate-limit and policy headers on document responses", () => {
     expect(read("public/md/developers.md")).toContain("static-document rate limit headers");
   });
 });
+
+describe("SSR content is not replaced by the offline screen", () => {
+  const watcher = read("src/components/ConnectivityWatcher.tsx");
+
+  it("assumes online for the server-rendered paint", () => {
+    expect(watcher).toContain("useState(true)");
+    expect(watcher).not.toContain('typeof navigator !== "undefined" ? navigator.onLine : true');
+  });
+
+  it("only trusts navigator.onLine when it is a real boolean, inside an effect", () => {
+    expect(watcher).toContain('typeof navigator.onLine === "boolean"');
+  });
+});
+
+describe("in-app 404 body carries markdown recovery hints", () => {
+  const notFound = read("src/pages/NotFound.tsx");
+
+  it("links agents to the machine-readable entry points", () => {
+    for (const target of ["/sitemap.xml", "/llms.txt", "/developers", "/openapi.json", "/api/v1", "/.well-known/mcp"]) {
+      expect(notFound).toContain(target);
+    }
+  });
+
+  it("renders a markdown body block", () => {
+    expect(notFound).toContain("# 404 Not Found");
+    expect(notFound).toContain("Where to look next");
+  });
+});
+
+describe("developer resources linked from the homepage footer", () => {
+  const footer = read("src/components/Footer.tsx");
+
+  it("exposes named VeloRix developer links", () => {
+    expect(footer).toContain("VeloRix Developer Docs");
+    expect(footer).toContain("VeloRix OpenAPI Spec");
+    expect(footer).toContain("VeloRix MCP Server");
+    expect(footer).toContain("/api/v1");
+    expect(footer).toContain("/llms.txt");
+  });
+
+  it("is rendered on the homepage", () => {
+    expect(read("src/pages/Index.tsx")).toContain("<Footer />");
+  });
+});
+
+describe("MCP handshake accept negotiation", () => {
+  const mw = read("middleware.ts");
+
+  it("forces both required media types for the Streamable HTTP handshake", () => {
+    expect(mw).toContain("function mcpAccept");
+    expect(mw).toContain('"application/json, text/event-stream"');
+    expect(mw).toContain("accept: mcpAccept(request.headers.get(\"accept\"))");
+  });
+});
