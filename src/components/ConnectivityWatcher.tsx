@@ -6,14 +6,16 @@ import { normalizeMaintenance, publicDb, withTimeout } from "@/lib/adminControl"
 const MAINTENANCE_POLL_MS = 60_000;
 
 const ConnectivityWatcher = ({ children }: { children: React.ReactNode }) => {
-  const [isOnline, setIsOnline] = useState(
-    typeof navigator !== "undefined" ? navigator.onLine : true
-  );
+  // Always assume online for the first (server-rendered) paint: on SSR runtimes
+  // `navigator` exists but `navigator.onLine` is undefined, which would render
+  // the offline screen into the HTML crawlers and agents receive.
+  const [isOnline, setIsOnline] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Online/offline listeners
   useEffect(() => {
+    if (typeof navigator.onLine === "boolean") setIsOnline(navigator.onLine);
     const onOnline = () => setIsOnline(true);
     const onOffline = () => setIsOnline(false);
     window.addEventListener("online", onOnline);
