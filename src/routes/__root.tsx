@@ -385,6 +385,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     scripts: [
       { children: GTM_SNIPPET },
       {
+        src: "https://news.google.com/swg/js/v1/publisher.js",
+        async: true,
+      },
+      {
         src: "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js",
         async: true,
       },
