@@ -60,6 +60,7 @@ const Footer = () => {
             <p className="text-muted-foreground text-sm max-w-xs">
               The premier esports tournament platform. Compete, win, and dominate.
             </p>
+            <PreferredSourceButton />
           </div>
 
           <div className="space-y-4">
