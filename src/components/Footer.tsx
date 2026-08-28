@@ -2,6 +2,7 @@ import { Instagram, Mail } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
 import velorixLogo from "@/assets/velorix-logo.png";
+import PreferredSourceButton from "@/components/PreferredSourceButton";
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
@@ -60,6 +61,7 @@ const Footer = () => {
             <p className="text-muted-foreground text-sm max-w-xs">
               The premier esports tournament platform. Compete, win, and dominate.
             </p>
+            <PreferredSourceButton />
           </div>
 
           <div className="space-y-4">
