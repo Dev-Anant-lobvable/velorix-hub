@@ -389,6 +389,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         async: true,
       },
       {
+        src: "https://news.google.com/swg/js/v1/swg-basic.js",
+        async: true,
+        type: "application/javascript",
+      },
+      { children: SWG_BASIC_SNIPPET },
+
+      {
         src: "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js",
         async: true,
       },
