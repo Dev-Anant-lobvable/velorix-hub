@@ -43,6 +43,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`;
 
+// Google Reader Revenue Manager (Publisher Center) CMS sync snippet
+const SWG_BASIC_SNIPPET = `(self.SWG_BASIC = self.SWG_BASIC || []).push(function(basicSubscriptions){
+  basicSubscriptions.init({
+    type: "NewsArticle",
+    isPartOfType: ["Product"],
+    isPartOfProductId: "CAow39XHDA:openaccess",
+    clientOptions: { theme: "dark", lang: "en" },
+  });
+});`;
+
+
 const mobileApplicationJsonLd = {
   "@context": "https://schema.org",
   "@type": "MobileApplication",
@@ -388,6 +399,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         src: "https://news.google.com/swg/js/v1/publisher.js",
         async: true,
       },
+      {
+        src: "https://news.google.com/swg/js/v1/swg-basic.js",
+        async: true,
+        type: "application/javascript",
+      },
+      { children: SWG_BASIC_SNIPPET },
+
       {
         src: "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js",
         async: true,
