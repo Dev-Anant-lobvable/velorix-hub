@@ -1,3 +1,4 @@
+import PrizeCrest from "@/components/three/PrizeCrest";
 import { Download, Smartphone } from "@/lib/icons";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
@@ -25,6 +26,9 @@ const DownloadCTA = () => {
         >
           {/* CSS shimmer — no JS animation */}
           <div className="absolute inset-0 cta-shimmer pointer-events-none" />
+
+          {/* three.js wireframe crest — code-split, paused off-screen */}
+          <PrizeCrest className="absolute inset-0 opacity-60 pointer-events-none" />
 
           <div className="flex justify-center mb-6 relative z-10">
             <div className="w-16 h-16 rounded-2xl bg-primary-foreground flex items-center justify-center">

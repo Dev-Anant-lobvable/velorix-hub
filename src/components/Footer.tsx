@@ -23,6 +23,7 @@ const Footer = () => {
     { name: "Terms of Service", href: "/terms" },
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Cookie Policy", href: "/cookies" },
+    { name: "Refund & Cancellation", href: "/refunds" },
   ];
 
   const developerLinks = [
@@ -123,7 +124,51 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Legal & compliance block — what gamers and payment gateways look for */}
+        <div className="pt-8 border-t border-border grid gap-6 md:grid-cols-3 text-xs text-muted-foreground">
+          <div className="space-y-1">
+            <p className="font-semibold text-foreground text-sm">Grievance Officer</p>
+            <p>Anant Singh — VeloRix Tournaments</p>
+            <p>
+              <a
+                href="mailto:service.veloxyra@gmail.com"
+                className="hover:text-primary transition-colors"
+              >
+                service.veloxyra@gmail.com
+              </a>
+            </p>
+            <p>Acknowledged in 24 hours · resolved within 15 days</p>
+          </div>
+          <div className="space-y-1">
+            <p className="font-semibold text-foreground text-sm">Support &amp; Refunds</p>
+            <p>
+              <Link to="/refunds" className="hover:text-primary transition-colors">
+                Refund &amp; Cancellation Policy
+              </Link>
+            </p>
+            <p>
+              <Link to="/help" className="hover:text-primary transition-colors">
+                Help Center
+              </Link>
+            </p>
+            <p>
+              <a
+                href="/.well-known/security.txt"
+                className="hover:text-primary transition-colors"
+              >
+                Report a security issue
+              </a>
+            </p>
+          </div>
+          <div className="space-y-1">
+            <p className="font-semibold text-foreground text-sm">Fair Play</p>
+            <p>Skill-based esports only — no betting or games of chance.</p>
+            <p>18+ only. Play where skill contests are permitted.</p>
+            <p>Registered in India · payouts in INR</p>
+          </div>
+        </div>
+
+        <div className="pt-6 mt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
             © {currentYear} VeloRix Tournaments. All rights reserved.
           </p>

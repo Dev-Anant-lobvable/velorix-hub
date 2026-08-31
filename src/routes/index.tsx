@@ -1,17 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Index from "@/pages/Index";
+import { buildTournamentEventsJsonLd } from "@/lib/tournamentEvents";
+
+const TITLE =
+  "VeloRix Tournaments - Free Fire, BGMI & Esports Tournament App | Play & Win";
+const DESCRIPTION =
+  "Join VeloRix Tournaments - India's best Free Fire, BGMI & esports tournament app. Compete in daily Free Fire tournaments, win real cash prizes, and climb the leaderboard. Download free!";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "VeloRix Tournaments - Free Fire, BGMI & Esports Tournament App | Play & Win" },
-      { name: "description", content: "Join VeloRix Tournaments - India's best Free Fire, BGMI & esports tournament app. Compete in daily Free Fire tournaments, win real cash prizes, and climb the leaderboard. Download free!" },
-      { property: "og:title", content: "VeloRix Tournaments - Free Fire, BGMI & Esports Tournament App | Play & Win" },
-      { property: "og:description", content: "Join VeloRix Tournaments - India's best Free Fire, BGMI & esports tournament app. Compete in daily Free Fire tournaments, win real cash prizes, and climb the leaderboard. Download free!" },
-      { name: "twitter:title", content: "VeloRix Tournaments - Free Fire, BGMI & Esports Tournament App | Play & Win" },
-      { name: "twitter:description", content: "Join VeloRix Tournaments - India's best Free Fire, BGMI & esports tournament app. Compete in daily Free Fire tournaments, win real cash prizes, and climb the leaderboard. Download free!" },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
     ],
     links: [{ rel: "canonical", href: "https://velorix-hub.vercel.app" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(buildTournamentEventsJsonLd()),
+      },
+    ],
   }),
   component: Index,
 });

@@ -20,6 +20,7 @@ import { Route as HelpRouteImport } from './routes/help'
 import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as OfflineRouteImport } from './routes/offline'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VxControlRouteImport } from './routes/vx-control'
@@ -89,6 +90,11 @@ const OfflineRoute = OfflineRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundsRoute = RefundsRouteImport.update({
+  id: '/refunds',
+  path: '/refunds',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StatusRoute = StatusRouteImport.update({
@@ -179,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/maintenance': typeof MaintenanceRoute
   '/offline': typeof OfflineRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/status': typeof StatusRoute
   '/terms': typeof TermsRoute
   '/vx-control': typeof VxControlRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByTo {
   '/maintenance': typeof MaintenanceRoute
   '/offline': typeof OfflineRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/status': typeof StatusRoute
   '/terms': typeof TermsRoute
   '/vx-control': typeof VxControlRoute
@@ -236,6 +244,7 @@ export interface FileRoutesById {
   '/maintenance': typeof MaintenanceRoute
   '/offline': typeof OfflineRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/status': typeof StatusRoute
   '/terms': typeof TermsRoute
   '/vx-control': typeof VxControlRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/offline'
     | '/privacy'
+    | '/refunds'
     | '/status'
     | '/terms'
     | '/vx-control'
@@ -294,6 +304,7 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/offline'
     | '/privacy'
+    | '/refunds'
     | '/status'
     | '/terms'
     | '/vx-control'
@@ -322,6 +333,7 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/offline'
     | '/privacy'
+    | '/refunds'
     | '/status'
     | '/terms'
     | '/vx-control'
@@ -351,6 +363,7 @@ export interface RootRouteChildren {
   MaintenanceRoute: typeof MaintenanceRoute
   OfflineRoute: typeof OfflineRoute
   PrivacyRoute: typeof PrivacyRoute
+  RefundsRoute: typeof RefundsRoute
   StatusRoute: typeof StatusRoute
   TermsRoute: typeof TermsRoute
   VxControlRoute: typeof VxControlRoute
@@ -445,6 +458,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refunds': {
+      id: '/refunds'
+      path: '/refunds'
+      fullPath: '/refunds'
+      preLoaderRoute: typeof RefundsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/status': {
@@ -567,6 +587,7 @@ const rootRouteChildren: RootRouteChildren = {
   MaintenanceRoute: MaintenanceRoute,
   OfflineRoute: OfflineRoute,
   PrivacyRoute: PrivacyRoute,
+  RefundsRoute: RefundsRoute,
   StatusRoute: StatusRoute,
   TermsRoute: TermsRoute,
   VxControlRoute: VxControlRoute,
