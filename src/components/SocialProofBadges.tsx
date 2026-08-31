@@ -125,6 +125,9 @@ const SocialProofBadges = () => {
             <p className="mb-3 text-sm text-muted-foreground">
               Enjoying VeloRix? <span className="text-foreground">Drop a quick review on Trustpilot.</span>
             </p>
+            {/* Trustpilot's script replaces this node's children before React
+                hydrates, so keep it empty + suppress hydration to avoid the
+                mismatch that was re-rendering (and breaking) the page tree. */}
             <div
               ref={trustpilotWidgetRef}
               className="trustpilot-widget"
@@ -134,15 +137,9 @@ const SocialProofBadges = () => {
               data-style-height="52px"
               data-style-width="100%"
               data-token="a7c54dba-c0d0-4d6f-8444-56d348f63941"
-            >
-              <a
-                href="https://www.trustpilot.com/review/velorix-hub.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Trustpilot
-              </a>
-            </div>
+              suppressHydrationWarning
+            />
+
           </div>
         </motion.div>
 
