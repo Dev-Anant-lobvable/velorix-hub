@@ -100,7 +100,7 @@ const AnimeHeading = ({ parts, className }: AnimeHeadingProps) => {
               <span
                 key={`char-${partIndex}-${charIndex}`}
                 data-anime-char
-                className={`inline-block will-change-transform opacity-0 ${part.className ?? ""}`}
+                className={`inline-block will-change-transform ${part.className ?? ""}`}
               >
                 {char}
               </span>
