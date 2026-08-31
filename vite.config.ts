@@ -20,5 +20,9 @@ export default defineConfig({
   nitro: { preset: process.env["NITRO_PRESET"] ?? "vercel" },
   vite: {
     plugins: [mcpPlugin()],
+    // three + animejs are loaded lazily (PrizeCrest / AnimeHeading), so Vite only
+    // discovers them mid-session and then force-reloads the page, which aborts the
+    // in-flight SSR request ("Error: aborted"). Pre-bundle them at dev startup.
+    optimizeDeps: { include: ["three", "animejs"] },
   },
 });
