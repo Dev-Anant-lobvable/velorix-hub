@@ -92,7 +92,7 @@ const AnimeHeading = ({ parts, className }: AnimeHeadingProps) => {
   return (
     <span ref={ref} className={className}>
       {parts.map((part, partIndex) => (
-        <span key={`${part.text}-${partIndex}`} className={part.className}>
+        <span key={`${part.text}-${partIndex}`}>
           {Array.from(part.text).map((char, charIndex) =>
             char === " " ? (
               <span key={`space-${partIndex}-${charIndex}`}> </span>
@@ -100,7 +100,7 @@ const AnimeHeading = ({ parts, className }: AnimeHeadingProps) => {
               <span
                 key={`char-${partIndex}-${charIndex}`}
                 data-anime-char
-                className="inline-block will-change-transform opacity-0"
+                className={`inline-block will-change-transform opacity-0 ${part.className ?? ""}`}
               >
                 {char}
               </span>
