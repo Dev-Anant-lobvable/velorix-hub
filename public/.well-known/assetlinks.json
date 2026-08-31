@@ -3,7 +3,7 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.velorix.tournaments",
+      "package_name": "com.tournaments.velorix",
       "sha256_cert_fingerprints": [
         "F3:22:D8:68:70:52:D9:8C:9D:98:9F:DE:6C:30:76:8B:85:D3:00:E5:CC:B8:D5:F5:26:D2:27:45:1F:F4:64:5C"
       ]
