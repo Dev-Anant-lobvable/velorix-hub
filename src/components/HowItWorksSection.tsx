@@ -1,3 +1,4 @@
+import AnimeHeading from "@/components/AnimeHeading";
 import { Download, Smartphone, UserPlus, Gamepad2 } from "@/lib/icons";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -54,7 +55,12 @@ const HowItWorksSection = () => {
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
-            How <span className="text-gradient text-glow">It Works</span>
+            <AnimeHeading
+              parts={[
+                { text: "How " },
+                { text: "It Works", className: "text-gradient text-glow" },
+              ]}
+            />
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Get started in under a minute. No complicated setup — just download, sign up, and you're in.

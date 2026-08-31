@@ -1,3 +1,4 @@
+import AnimeHeading from "@/components/AnimeHeading";
 import { Shield, Zap, Bell, Award } from "@/lib/icons";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -50,7 +51,13 @@ const FeaturesSection = () => {
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
-            Why <span className="text-gradient text-glow">VeloRix</span>?
+            <AnimeHeading
+              parts={[
+                { text: "Why " },
+                { text: "VeloRix", className: "text-gradient text-glow" },
+                { text: "?" },
+              ]}
+            />
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Built by gamers who were tired of scammy tournament apps. Here's what makes us different.

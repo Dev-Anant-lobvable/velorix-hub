@@ -67,6 +67,12 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://velorix-hub.vercel.app/refunds</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://velorix-hub.vercel.app/blog/free-fire-sensitivity-settings-guide</loc>
     <lastmod>2026-08-02</lastmod>
     <changefreq>monthly</changefreq>

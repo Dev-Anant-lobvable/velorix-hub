@@ -95,6 +95,8 @@ Send `Accept: text/markdown` (or append `?format=md`) to `/`, `/about`, `/contac
 - [Terms of Service](https://velorix-hub.vercel.app/terms)
 - [Privacy Policy](https://velorix-hub.vercel.app/privacy)
 - [Cookie Policy](https://velorix-hub.vercel.app/cookies)
+- [Refund & Cancellation Policy](https://velorix-hub.vercel.app/refunds): Entry-fee refunds, cancellation window, Grievance Officer contact (India)
+- [Security Policy (security.txt)](https://velorix-hub.vercel.app/.well-known/security.txt): RFC 9116 vulnerability disclosure contact
 
 ## Usage notes
 
